@@ -1,0 +1,6 @@
+- path: https://towardsdatascience.com/yolov7-a-deep-dive-into-the-current-state-of-the-art-for-object-detection-ce3ffedeeaeb
+  title: "YOLOv7: A Deep Dive into the Current State-of-the-Art for Object Detection"
+  subtitle: "Everything you need to know to use YOLOv7 in custom training scripts"
+  description: "This article provides a comprehensive overview of YOLOv7, the latest and most advanced model in the YOLO series for object detection. It covers the architecture, training process, and practical implementation details, making it a valuable resource for anyone looking to leverage YOLOv7 in their projects."
+  date: "2022-11-25"
+  reading-time: 53

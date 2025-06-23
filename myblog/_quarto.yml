@@ -1,0 +1,32 @@
+project:
+  type: website
+
+website:
+  title: "Chris Hughes"
+  favicon: profile.jpg
+  navbar:
+    menu: false
+    title: "Chris Hughes"
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/Chris-hughes10/
+      - icon: linkedin
+        href: https://www.linkedin.com/in/chris-hughes1/
+      - icon: medium
+        href: https://medium.com/@chris.p.hughes10
+      # - icon: twitter
+      #   href: https://twitter.com
+format:
+  html:
+    theme:
+      light: [default, theme.scss]
+      dark: [default, theme-dark.scss]
+    css: styles.css
+
+resources:
+  - CNAME
+  - collapsible.js
+
+
+

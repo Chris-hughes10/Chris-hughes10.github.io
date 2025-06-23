@@ -1,0 +1,57 @@
+---
+listing:
+ - id: post-listings
+   contents:
+   - posts
+   - posts/externals/metadata.yml
+   sort: "date desc"
+   type: default
+   categories: false
+   sort-ui: true
+   filter-ui: true
+   fields: [date, title, subtitle]
+
+ - id: projects-listings
+   contents:
+   - projects
+   - projects/metadata.yml
+   sort: "date desc"
+   type: default
+   categories: false
+   sort-ui: true
+   filter-ui: true
+   fields: [date, title, subtitle, description]
+
+page-layout: article
+---
+::::: {#about-header .column-body}
+
+::: {#about-image}
+![](profile.jpg)
+:::
+
+# Chris Hughes
+Principal Machine Learning Engineer/Scientist Manager at Microsoft
+<br>
+:::::
+
+## Contents
+
+- [Blog Posts](#blog-posts)
+- [Public Projects](#public-projects)
+
+## Blog Posts {.collapsible}
+
+::: {.collapsible-content}
+::: {#post-listings}
+:::
+:::
+
+## Public Projects {.collapsible}
+
+::: {.collapsible-content}
+::: {#projects-listings}
+:::
+:::
+
+<script src="collapsible.js"></script>

@@ -1,0 +1,10 @@
+---
+title: "Sample Project"
+subtitle: "A demonstration project"
+description: "This is a sample project to show how the projects listing works"
+date: "2024-01-01"
+---
+
+# Sample Project
+
+This is a sample project file. You can replace this with your actual projects.
