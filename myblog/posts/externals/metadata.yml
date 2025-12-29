@@ -1,3 +1,9 @@
+- path: https://medium.com/@chris.p.hughes10/beyond-vanilla-moe-fine-grained-experts-shared-experts-and-modern-architectural-innovations-f89dd62e433b
+  title: "Beyond Vanilla MoE: Fine-Grained Experts, Shared Experts, and Modern Architectural Innovations"
+  subtitle: "Exploring architectural innovations in state-of-the-art MoE models like DeepSeek V3, Qwen, and Llama 4"
+  date: "2024-12-15"
+  reading-time: 15
+
 - path: https://medium.com/@chris.p.hughes10/how-moe-models-actually-learn-a-guide-to-auxiliary-losses-and-expert-balancing-293084e3f600
   title: "How MoE Models Actually Learn: A Guide to Auxiliary Losses and Expert Balancing"
   subtitle: "Understanding how Mixture of Experts models balance learning across experts"
