@@ -1,3 +1,33 @@
+- path: https://medium.com/@chris.p.hughes10/how-moe-models-actually-learn-a-guide-to-auxiliary-losses-and-expert-balancing-293084e3f600
+  title: "How MoE Models Actually Learn: A Guide to Auxiliary Losses and Expert Balancing"
+  subtitle: "Understanding how Mixture of Experts models balance learning across experts"
+  date: "2024-12-01"
+  reading-time: 12
+
+- path: https://medium.com/@chris.p.hughes10/inside-openais-gpt-oss-how-production-moe-really-works-cfa5f6a23caa
+  title: "Inside OpenAI's gpt-oss: How Production MoE Really Works"
+  subtitle: "A deep dive into how OpenAI implements Mixture of Experts architecture"
+  date: "2024-11-15"
+  reading-time: 15
+
+- path: https://medium.com/@chris.p.hughes10/building-scalable-mcp-servers-with-domain-driven-design-fb9454d4c726
+  title: "Building Scalable MCP Servers with Domain-Driven Design"
+  subtitle: "Applying DDD principles to build robust Model Context Protocol servers"
+  date: "2024-07-31"
+  reading-time: 10
+
+- path: https://medium.com/@chris.p.hughes10/rethinking-object-detection-as-language-modelling-lessons-from-reimplementing-pix2seq-049104083747
+  title: "Rethinking Object Detection as Language Modelling: Lessons from Reimplementing Pix2Seq"
+  subtitle: "Insights from building a modern object detection system using sequence generation"
+  date: "2024-06-15"
+  reading-time: 18
+
+- path: https://medium.com/@chris.p.hughes10/a-brief-overview-of-cross-entropy-loss-523aa56b75d5
+  title: "A Brief Overview of Cross Entropy Loss"
+  subtitle: "A refresher on one of the most commonly used loss functions in machine learning"
+  date: "2023-09-02"
+  reading-time: 8
+
 - path: https://towardsdatascience.com/yolov7-a-deep-dive-into-the-current-state-of-the-art-for-object-detection-ce3ffedeeaeb
   title: "YOLOv7: A Deep Dive into the Current State-of-the-Art for Object Detection"
   subtitle: "Everything you need to know to use YOLOv7 in custom training scripts"

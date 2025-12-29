@@ -1,6 +1,41 @@
-- path: https://towardsdatascience.com/yolov7-a-deep-dive-into-the-current-state-of-the-art-for-object-detection-ce3ffedeeaeb
-  title: "YOLOv7: A Deep Dive into the Current State-of-the-Art for Object Detection"
-  subtitle: "Everything you need to know to use YOLOv7 in custom training scripts"
-  description: "This article provides a comprehensive overview of YOLOv7, the latest and most advanced model in the YOLO series for object detection. It covers the architecture, training process, and practical implementation details, making it a valuable resource for anyone looking to leverage YOLOv7 in their projects."
-  date: "2022-11-25"
-  reading-time: 53
+- path: https://github.com/Chris-hughes10/pytorch-accelerated
+  title: "PyTorch Accelerated"
+  subtitle: "A lightweight library to accelerate PyTorch model training"
+  description: "A lightweight library designed to accelerate the process of training PyTorch models by providing a minimal, but extensible training loop which is flexible enough to handle the majority of use cases."
+  date: "2024-12-25"
+  reading-time: 5
+
+- path: https://github.com/Chris-hughes10/Yolov7-training
+  title: "YOLOv7 Training"
+  subtitle: "Clean, modular YOLOv7 implementation for custom training"
+  description: "A clean, modular implementation of the Yolov7 model family, which uses the official pretrained weights, with utilities for training the model on custom tasks."
+  date: "2024-07-13"
+  reading-time: 5
+
+- path: https://github.com/Chris-hughes10/simple-ppo
+  title: "Simple PPO"
+  subtitle: "Educational implementation of Proximal Policy Optimization"
+  description: "A clean, modular implementation of the Proximal Policy Optimization (PPO) algorithm in PyTorch, written with a strong focus on readability and educational value."
+  date: "2024-11-20"
+  reading-time: 5
+
+- path: https://github.com/Chris-hughes10/pix2seq
+  title: "Pix2Seq"
+  subtitle: "Object detection as autoregressive sequence generation"
+  description: "Implementation of Pix2Seq for object detection formulated as autoregressive sequence generation, supporting transformer and Llama architectures."
+  date: "2024-10-16"
+  reading-time: 5
+
+- path: https://github.com/Chris-hughes10/mcp-ddd
+  title: "MCP DDD"
+  subtitle: "Domain-Driven Design for Model Context Protocol servers"
+  description: "Demonstrates Domain-Driven Design principles applied to Model Context Protocol servers."
+  date: "2024-10-08"
+  reading-time: 3
+
+- path: https://github.com/Chris-hughes10/func-to-script
+  title: "Func-to-Script"
+  subtitle: "Turn Python functions into CLI scripts with minimal boilerplate"
+  description: "A lightweight and convenient tool which can be used to turn a Python function into a command line script, with minimal boilerplate!"
+  date: "2024-12-29"
+  reading-time: 3
