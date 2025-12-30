@@ -17,6 +17,18 @@ div.quarto-post {
     border-radius: 50%;
 }
 
+#social-links {
+    margin-top: 1rem;
+}
+
+#social-links a {
+    margin: 0 0.25rem;
+}
+
+#social-links img {
+    height: 28px;
+}
+
 .navbar-logo {
     border-radius: 50%;
 }

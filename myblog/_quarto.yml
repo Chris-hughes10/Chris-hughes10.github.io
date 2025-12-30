@@ -7,16 +7,6 @@ website:
   navbar:
     menu: false
     title: "Chris Hughes"
-    right:
-      - about.qmd
-      - icon: github
-        href: https://github.com/Chris-hughes10/
-      - icon: linkedin
-        href: https://www.linkedin.com/in/chris-hughes1/
-      - icon: medium
-        href: https://medium.com/@chris.p.hughes10
-      # - icon: twitter
-      #   href: https://twitter.com
 format:
   html:
     theme:
