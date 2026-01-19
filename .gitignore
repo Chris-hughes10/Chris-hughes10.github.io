@@ -1,6 +1,7 @@
 # Quarto
 .quarto/
 _site/
+site_libs/
 
 # Python
 __pycache__/

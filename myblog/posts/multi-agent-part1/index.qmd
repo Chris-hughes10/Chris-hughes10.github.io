@@ -6,6 +6,8 @@ categories: [Agents, Architecture, "Domain-Driven Design"]
 reading-time: 25
 ---
 
+![Image generated with M365 Copilot](image.png)
+
 Since the release of ChatGPT, AI agents have captured everyone's imagination. The promise is compelling: give an AI system a goal, let it break down the problem, use tools to gather information, and synthesize a result.
 
 The AI agent landscape is crowded. LangChain, CrewAI, AutoGen, Semantic Kernel, Microsoft's Agent Framework - new frameworks appear constantly, each promising to simplify building intelligent applications. Yet most tutorials focus on "hello world" demos: a single agent answering questions, maybe calling a tool or two.
