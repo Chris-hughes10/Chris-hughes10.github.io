@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 600" font-family="system-ui, -apple-system, sans-serif">
+  <!-- Background -->
+  <rect width="520" height="600" fill="#ffffff"/>
+
+
+  <!-- Layer 1: Presentation -->
+  <rect x="50" y="55" width="400" height="65" rx="6" fill="#E8F4FD" stroke="#1DA1F2" stroke-width="2"/>
+  <text x="70" y="77" font-size="13" font-weight="600" fill="#1a1a1a">presentation/</text>
+  <text x="70" y="95" font-size="11" fill="#666666">User-facing command interface (e.g. CLI, Web, API)</text>
+  <text x="70" y="111" font-size="10" fill="#1DA1F2" font-style="italic">[Presentation Layer]</text>
+
+  <!-- Arrow -->
+  <path d="M250 120 L250 133" stroke="#999" stroke-width="1.5"/>
+
+  <!-- Layer 2: Agents -->
+  <rect x="50" y="135" width="400" height="78" rx="6" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="70" y="157" font-size="13" font-weight="600" fill="#1a1a1a">agents/</text>
+  <text x="70" y="175" font-size="11" fill="#666666">LLM personas with instructions + tools</text>
+  <text x="70" y="191" font-size="10" fill="#8B5CF6" font-style="italic">[Application Layer]</text>
+  <text x="70" y="205" font-size="10" fill="#666666">Orchestrates domain operations</text>
+
+  <!-- Arrow -->
+  <path d="M250 213 L250 226" stroke="#999" stroke-width="1.5"/>
+
+  <!-- Layer 3: Tools (highlighted as the key boundary) -->
+  <rect x="50" y="228" width="400" height="78" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="3"/>
+  <text x="70" y="250" font-size="13" font-weight="600" fill="#1a1a1a">tools/</text>
+  <text x="70" y="268" font-size="11" fill="#666666">Thin wrappers exposing services to LLM</text>
+  <text x="70" y="284" font-size="10" fill="#92400E" font-style="italic">[Anti-Corruption Layer / Adapters]</text>
+  <text x="70" y="298" font-size="10" fill="#666666">Translates between LLM and domain language</text>
+
+  <!-- Arrow -->
+  <path d="M250 306 L250 319" stroke="#999" stroke-width="1.5"/>
+
+  <!-- Layer 4: Services -->
+  <rect x="50" y="321" width="400" height="78" rx="6" fill="#DCFCE7" stroke="#22C55E" stroke-width="2"/>
+  <text x="70" y="343" font-size="13" font-weight="600" fill="#1a1a1a">services/</text>
+  <text x="70" y="361" font-size="11" fill="#666666">Business logic and domain rules</text>
+  <text x="70" y="377" font-size="10" fill="#22C55E" font-style="italic">[Domain Layer]</text>
+  <text x="70" y="391" font-size="10" fill="#666666">The heart of your application</text>
+
+  <!-- Arrow -->
+  <path d="M250 399 L250 412" stroke="#999" stroke-width="1.5"/>
+
+  <!-- Layer 5: Models -->
+  <rect x="50" y="414" width="400" height="65" rx="6" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+  <text x="70" y="436" font-size="13" font-weight="600" fill="#1a1a1a">models/</text>
+  <text x="70" y="454" font-size="11" fill="#666666">Data structures and DTOs</text>
+  <text x="70" y="470" font-size="10" fill="#64748B" font-style="italic">[Domain Model / Entities]</text>
+
+  <!-- Arrow -->
+  <path d="M250 479 L250 492" stroke="#999" stroke-width="1.5"/>
+
+  <!-- Layer 6: Infrastructure -->
+  <rect x="50" y="494" width="400" height="78" rx="6" fill="#FEE2E2" stroke="#EF4444" stroke-width="2"/>
+  <text x="70" y="516" font-size="13" font-weight="600" fill="#1a1a1a">infra/</text>
+  <text x="70" y="534" font-size="11" fill="#666666">Framework infrastructure (clients)</text>
+  <text x="70" y="550" font-size="10" fill="#EF4444" font-style="italic">[Infrastructure Layer]</text>
+  <text x="70" y="564" font-size="10" fill="#666666">External systems, persistence, APIs</text>
+</svg>

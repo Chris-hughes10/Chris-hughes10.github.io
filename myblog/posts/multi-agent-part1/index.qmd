@@ -276,59 +276,7 @@ This isn't theoretical—I've refactored the YouTube service twice without touch
 
 The tools/services split is one boundary. But a complete agent system needs more structure. After some experimentation, I settled on a layered architecture that cleanly separates concerns; six layers, each with a single, well-defined responsibility. If you're familiar with Domain-Driven Design, you'll recognise the structure:
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                   presentation/                         │
-│              User-facing command interface              |
-|                   (e.g. CLI, Web, API)                  │
-│                                                         │
-│                   [Presentation Layer]                  │
-└─────────────────────────────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────┐
-│                     agents/                             │
-│         LLM personas with instructions + tools          │
-│                                                         │
-│                   [Application Layer]                   │
-│            Orchestrates domain operations               │
-└─────────────────────────────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────┐
-│                      tools/                             │
-│          Thin wrappers exposing services to LLM         │
-│                                                         │
-│             [Anti-Corruption Layer / Adapters]          │
-│         Translates between LLM and domain language      │
-└─────────────────────────────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────┐
-│                    services/                            │
-│              Business logic and domain rules            │
-│                                                         │
-│                    [Domain Layer]                       │
-│              The heart of your application              │
-└─────────────────────────────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────┐
-│                     models/                             │
-│               Data structures and DTOs                  │
-│                                                         │
-│               [Domain Model / Entities]                 │
-└─────────────────────────────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────┐
-│                      infra/                             │
-│            Framework infrastructure (clients)           │
-│                                                         │
-│                 [Infrastructure Layer]                  │
-│            External systems, persistence, APIs          │
-└─────────────────────────────────────────────────────────┘
-```
+![Layered Architecture for Agentic Systems](layered_architecture_detailed.svg)
 
 Here's what this looks like in practice:
 
