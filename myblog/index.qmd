@@ -22,6 +22,17 @@ listing:
    filter-ui: true
    fields: [date, title, subtitle, description]
 
+ - id: writing-listings
+   contents:
+   - writing
+   - writing/metadata.yml
+   sort: "date desc"
+   type: default
+   categories: true
+   sort-ui: true
+   filter-ui: true
+   fields: [date, title, subtitle]
+
 page-layout: article
 ---
 ::::: {#about-header .column-body}
@@ -31,7 +42,14 @@ page-layout: article
 :::
 
 # Chris Hughes
-Principal Machine Learning Engineer/Scientist Manager at Microsoft
+
+I lead AI teams at Microsoft, helping large organisations close the gap between what they want AI to do and what actually ships. That gap—and why projects stall there—is what I think about most.
+
+I write about applied AI, software architecture, and the discipline of building things that work. On the technical side, I enjoy understanding how things actually work—I learn by building and running experiments.
+
+Outside of work: guitar, rock and blues, and the gym.
+
+Views are my own.
 
 ::: {#social-links}
 [![](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white)](https://github.com/Chris-hughes10/)
@@ -43,8 +61,16 @@ Principal Machine Learning Engineer/Scientist Manager at Microsoft
 
 ## Contents
 
+- [Writing](#writing)
 - [Technical Blog Posts](#technical-blog-posts)
 - [Public Projects](#public-projects)
+
+## Writing {.collapsible}
+
+::: {.collapsible-content}
+::: {#writing-listings}
+:::
+:::
 
 ## Technical Blog Posts {.collapsible}
 
