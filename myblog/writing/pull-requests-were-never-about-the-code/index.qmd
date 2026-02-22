@@ -1,0 +1,100 @@
+---
+title: "Pull Requests Were Never Really About the Code"
+subtitle: "What agentic coding reveals about how teams actually work"
+date: "2026-02-22"
+categories: [AI, Software Engineering]
+reading-time: 12
+image: "ChatGPT Image Feb 22, 2026, 02_15_12 PM.png"
+description: "Agentic coding hasn't broken code review — it's exposed what pull requests were really for. Understanding and learning, not line-by-line correctness."
+---
+
+![](ChatGPT Image Feb 22, 2026, 02_15_12 PM.png)
+
+I've been reviewing pull requests for over a decade. Recently, something shifted in what I'm actually doing.
+
+When I review a PR from someone using an AI coding agent, I still do the usual things --- understand what changed, check how it fits the system, look at whether the key ideas are sound. But increasingly, I'm trying to figure out something else: does this person understand what they've submitted?
+
+Did they guide the agent with clear intent --- knowing what they wanted, making deliberate choices about structure and trade-offs? Or did they just accept whatever it produced?
+
+Sometimes the diff makes it obvious. You can see the inconsistencies, the patterns that don't match the codebase, the code that nobody who understood the system would have written. But often the output looks perfectly plausible --- and you can't tell.
+
+That's not a code review. It's a trust assessment disguised as a code review. And I don't think I'm the only one doing it.
+
+## I've seen this before
+
+This feels new. It isn't.
+
+Across multiple teams I've led, I'd review PRs and wonder whether the author understood a particular block of code or just pasted it from Stack Overflow. Usually it was junior engineers --- but not always. The review conversation was how I'd find out. "Walk me through what this section does." "What happens if this call fails?" The ones who understood could explain their thinking. The ones who'd pasted without understanding couldn't.
+
+That was manageable when it was occasional. Agentic coding has made it far easier to do. With Stack Overflow, you at least had to think about the problem --- formulate a search, evaluate answers, adapt the code to your context. With agents, you can go from a vague description to working code without ever engaging with the mechanics. The friction that forced some level of understanding is gone --- and the dynamic that used to be occasional is now the default.
+
+And reviewers are spending more and more of their time trying to assess this. Not reviewing the code. Evaluating whether the author understood it.
+
+I think this instinct is right --- understanding matters --- but the mechanism is wrong. Sometimes the diff gives it away. But often it doesn't, and you're left spending significant review time trying to infer understanding from code you didn't write. It's unreliable and expensive.
+
+## What were PRs actually for?
+
+The reason this is breaking down goes deeper than AI. It goes back to what teams thought pull requests were for in the first place.
+
+A lot of engineers treat PRs as a quality gate --- the reviewer's job is to check correctness, catch bugs, enforce standards. This has always been a weak use of PRs; some of the worst reviews I've seen --- from junior and senior engineers alike --- were nit-picking.
+
+Good reviews do catch bugs --- but usually because the reviewer understood the intent well enough to spot where it breaks down, not because they were checking line by line. If correctness depends on a human reading a diff, something else is broken --- your tests, your CI pipeline, your linting.
+
+Worse, it focuses attention on the wrong thing. I've seen teams spend review cycles flagging PEP 8 compliance and missing type hints on a PR that represented a genuine leap toward the outcome --- something that wasn't there before. Especially during exploration, the question isn't whether every line is polished. It's whether this moves us closer to where we need to be. When you treat every PR as a correctness exercise, you lose sight of that.
+
+But the quality-gate approach mostly worked, because the effort was manageable. Code was written at human speed. Diffs were a reasonable size.
+
+Agentic coding broke that equilibrium. A recent study of AI-generated pull requests found that 70% are merged without any discussion at all --- and honestly, that matches what I've observed. The volume has made the quality-gate approach impossible to sustain.
+
+The response I keep seeing is to try to make the old approach work at the new speed. AI to review AI-generated code. More automated checks. Faster review tooling. These aren't bad ideas --- but they're trying to preserve a process rather than asking what the process was for.
+
+In the best teams I've worked with, PRs served two different purposes --- and neither was catching bugs.
+
+- **The first: helping me understand what changed in the codebase.** Not at the level of individual lines --- at the level of intent. What capability was added? What behaviour changed? What assumptions shifted? If I'm working in an adjacent area, I need to know what moved around me. Not every line of the diff --- the shape of the change.
+- **The second: a structured opportunity for learning.** In my first ML engineer role --- a small team, high trust, everyone technically strong --- I read my colleagues' PRs to learn. Not to check their work. I trusted what they wrote. But seeing how they approached a problem, how they structured a solution I'd have done differently --- that made me better. I genuinely looked forward to reviewing code.
+
+Later, leading teams with a wider range of experience, PRs became something else entirely. That's where the real coaching happened. "Have you thought about what happens when this runs on the full dataset, not just the sample?" "Have you considered vectorising this instead of looping row by row?" Those conversations were some of the most valuable teaching I've done.
+
+Same tool. Completely different dynamics. Both genuinely useful --- because the people involved understood what the process was for.
+
+This is why agentic coding is exposing a fault line. Teams that used PRs for understanding and learning are adapting. Teams that used PRs as a correctness check --- or worse, as a venue for style nits --- are struggling. The volume of code now exceeds their ability to review line by line, and that was the only function their reviews served.
+
+## The conversation was always the review
+
+I solved this for myself years ago, before agents were part of the picture.
+
+When someone on my team submitted a PR that was really big or really complex --- the kind where reading the diff would take longer than the conversation --- I'd go and sit with them instead. "Talk me through it."
+
+Not as a test. As a genuine shortcut to understanding. And it almost always worked better than reading the diff would have. They'd walk me through the intent, explain why they'd structured it this way, flag the areas they were less certain about. I'd ask questions. We'd have a real discussion about the design, not a line-by-line inspection of the code.
+
+It saved me time. But more importantly, it revealed things a diff never would: where they thought the key decisions were, what trade-offs they'd made, and --- occasionally --- where their own understanding was thinner than they'd realised.
+
+I remember reviewing a complete overhaul of an internal ML experimentation framework --- over a hundred files changed, the entire project structure redesigned, core tooling replaced. There was no way I was going to understand that change by reading the diff. So we talked through it. The author walked me through each major decision: why the project structure had been reorganised, why the dependency management had been replaced, why the CLI had been completely rebuilt. Some choices I'd have made differently --- and I said so. But the conversation made it clear they had a precise mental model of the system they were building, and a coherent rationale for every structural decision. I didn't need to agree with all of it. I needed to know the thinking was sound.
+
+The conversation itself was the review. The diff was just the excuse to have it.
+
+Now, with agents producing code at a pace that makes every PR feel like one of those massive ones, the approach I used --- sitting down and talking it through --- clearly can't happen for every change. But the principle behind it can. The review that mattered was never the diff. It was the author's ability to articulate what they'd done and why.
+
+## What this means for teams
+
+If the conversation is the real review, then two things follow.
+
+The first is that accountability needs to sit with the author. Right now, we put most of the review burden on the person reading the diff. They're expected to assess correctness, understand intent, evaluate architectural fit --- often for code they didn't write.
+
+That was already backwards. The person who made the change is the one who should demonstrate they understand it. Not by writing a perfunctory PR description --- by articulating the intent, the trade-offs, and how the change fits the system. The same conversation I'd have in person, captured in a structured way.
+
+When authors take ownership of demonstrating understanding before the review starts, reviewers can focus on what actually matters: does this change fit the system? What can I learn from it? Does something here change my mental model of how this part of the codebase works?
+
+The second is that not every change deserves the same scrutiny. Pretending otherwise is how you end up with a team that reviews nothing carefully because they're trying to review everything equally. Changes to critical paths and architectural boundaries deserve deep review regardless of who submits them. Changes to well-tested, low-risk areas deserve lighter review. This already happens informally in every team --- senior engineers get rubber-stamped, junior engineers get scrutinised. The problem with the informal version is that it's based on seniority rather than demonstrated understanding or what the code actually touches.
+
+If accountability sits with the author, over time it creates something else: a trust signal. An engineer who consistently articulates clear intent, flags genuine trade-offs, and shows they understand how their changes fit the system builds a record. That record should mean something. Not a free pass --- but a reason to focus your limited review time where it matters most.
+
+Software engineering as we know it is changing. The instinct to preserve tried-and-tested processes is understandable --- but the processes themselves aren't sacred. What matters is the intent behind them. Strip a process back to why it exists, and you can rethink how to serve that purpose as the tools evolve.
+
+Pull requests exist so that teams maintain shared understanding of their codebase, and so that engineers learn from each other. Those needs don't go away because agents write more code. If anything, they become more important --- because the risk of losing shared understanding increases when code is produced faster than anyone can read.
+
+The conversation was always the review. Everything else was scaffolding.
+
+---
+
+*The 70% statistic is from ["Quiet Contributions: AI-Generated Silent Pull Requests"](https://arxiv.org/abs/2601.21102) (arXiv, 2026)*
