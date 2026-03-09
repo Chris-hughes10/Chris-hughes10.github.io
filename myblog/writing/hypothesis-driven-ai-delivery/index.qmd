@@ -200,7 +200,7 @@ In practice, that meant the project looked something like this:
 
 -   **Goal**: Drive additional sales by recommending items customers wouldn't have purchased otherwise.
 
--   **Objective**: Demonstrate measurable uplift from personalised outfit recommendations versus the existing experience.
+-   **Objective**: Demonstrate measurable uplift from personalised outfit recommendations.
 
 -   **Assumption**: Customer behaviour and outfit data contain enough signal to learn which items work well together.
 
