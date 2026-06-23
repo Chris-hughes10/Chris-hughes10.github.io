@@ -142,7 +142,7 @@ The goals of experimentation:
 
 -   Deliver objective and interpretable results
 
-One warning from experience: the numbers these experiments produce are noisier than they look. Early experiments typically run on a few dozen examples, and at that size a few-point difference between approaches is often indistinguishable from chance — which means a hypothesis can be 'validated' by luck. I've written separately about how to read eval numbers honestly, and how big an eval needs to be before it can answer the question you're asking: [Your AI Eval Isn't a Test. It's a Measurement.](../evals-are-measurements-not-tests/)
+One warning from experience: the numbers these experiments produce are noisier than they look. Early experiments typically run on a few dozen examples, and at that size a few-point difference between approaches is often indistinguishable from chance — which means a hypothesis can be 'validated' by luck. I've written separately about how to read eval numbers honestly, and how big an eval needs to be before it can answer the question you're asking: [Your AI Eval Isn't a Test. It's a Measurement.](../../posts/evals-are-measurements-not-tests/)
 
 The mindset shift here is crucial: invalidating a hypothesis quickly is a win. It's not failure - it's valuable information that prevents wasted investment. It's far better to discover in week three that your approach doesn't work than to discover in month four after building a production system around it.
 
