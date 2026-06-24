@@ -155,7 +155,7 @@ At 47/50 the naive interval puts its upper bound above 100%, which is impossible
 
 The boundary failure, though, is the fault of the *crude* Wald interval — which is, admittedly, the one most people actually use. Better frequentist intervals (Wilson, Clopper–Pearson) avoid it with no prior in sight (the appendix has the details). But which interval we pick isn't really the point: none of them fixes the *interpretation*. A confidence interval still doesn't mean what the room thinks it does — and that's the real reason I reach for the credible interval, the one that also means what we'll say out loud.
 
-**What you say in the room.** *"We got 47 out of 50, but on only fifty questions the honest range is something like 82% to 97% — we can't claim better than that yet."* The number with its uncertainty, in one breath.
+**What you say in the room.** *"We got 47 out of 50, but on only fifty questions. The honest range is something like 82% to 97% — we can't claim better than that yet."* The number with its uncertainty, in one breath.
 
 ## How many questions do you actually have?
 
