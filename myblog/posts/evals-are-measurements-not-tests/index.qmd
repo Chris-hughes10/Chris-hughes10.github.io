@@ -10,10 +10,6 @@ description: "An eval score is not a deterministic verdict; it is an uncertain m
 
 ![](headline.png)
 
-# Your AI Eval Isn't a Test. It's a Measurement.
-
-### Why the unit-test instinct quietly fails when you're measuring an AI feature on a few hundred examples — and a way of thinking about it that non-statisticians can actually follow
-
 I once advised a major retailer not to ship a customer-assistant chatbot that had only ever been vibe-tested. They shipped it anyway, and found it quietly drove customers away from the search and recommendation systems they had spent years tuning; conversions fell and money was lost. After rolling it back, they then asked the question that should have come first — how should we be evaluating this?
 
 Not so long ago, evaluation wasn't controversial. Across the data-science and machine-learning teams I've been a part of, measuring what we built was simply part of the job — we didn't ship a model we hadn't evaluated. Sometimes the metrics were legible to everyone: in computer vision, a model, a set of images, and an accuracy that outsiders grasped at once, with precision and recall a sentence or two behind. Sometimes they weren't legible at all — anyone who has tried to explain a recommender system's NDCG to a stakeholder knows the number can be a black box even to the team reporting it. But the practice itself was never in question. The argument was never *whether* to measure; at most it was about what the number meant.
@@ -45,7 +41,9 @@ I also lean on the word itself three ways: an **eval** is the whole exercise —
 
 > **If you read nothing else.** Three things, in plain English:
 > 1. A single eval question may be pass/fail, but the *score* — the aggregate over many of them — is a *measurement*, not a verdict: a noisy estimate of the system's true capability, with a margin of error (from the model's token-level randomness, and from having sampled only so many questions). Treating the number as the capability itself is the core mistake.
+>
 > 2. Small eval sets are far noisier than they look. A 400-question eval is often still underpowered for the few-point improvements teams usually care about, and most enterprise eval sets are smaller than that.
+>
 > 3. The fix isn't a fancier harness. It's reporting a number *with its uncertainty*, ideally as a plain-English probability — "B is probably better, about 72% likely" — and making decisions on that, not on a bare number.
 >
 > The rest of this article discusses how to do that, and when it actually matters — in plain language, with runnable code throughout. If you skip every code block you'll still get the argument.

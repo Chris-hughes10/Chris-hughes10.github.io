@@ -14,6 +14,7 @@ website:
 format:
   html:
     include-in-header: google-verification.html
+    include-after-body: include-scripts.html
     theme:
       light: [default, theme.scss]
       dark: [default, theme-dark.scss]
@@ -22,6 +23,7 @@ format:
 resources:
   - CNAME
   - collapsible.js
+  - code-modal.js
   - robots.txt
 
 
