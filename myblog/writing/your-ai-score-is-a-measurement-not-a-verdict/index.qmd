@@ -1,0 +1,104 @@
+---
+title: "Your AI Score Is a Measurement, Not a Verdict"
+subtitle: "The build mindset spread. The measure mindset didn't."
+date: "2026-06-24"
+categories: [AI, Evaluation]
+reading-time: 12
+image: "headline.png"
+description: "Building with AI got easy. Measuring it — really knowing what the number is worth — didn't."
+---
+
+![](headline.png)
+
+A few years ago, people started coming to me with a question I couldn't answer cleanly.
+
+They had built something with a large language model — a retrieval system, an assistant, a prototype that demoed well — and they wanted to know how to evaluate it. Often there was nothing there yet. A thumbs-up button in a UI. A handful of examples someone had clicked through by eye. A vague promise to collect user feedback later.
+
+I had spent the better part of a decade measuring models. In computer vision there was usually a ground truth and clear metrics you could explain in a sentence; in recommendations, more opaque metrics like NDCG that even the team reporting them had to think hard about. Either way the practice was never in question — we didn't ship a model we hadn't evaluated.
+
+So I was surprised to find myself, in front of these new systems, without a stock answer. This felt different: no single right answer, the output free text, and the thing generating it could give two different responses to the same question on two different runs.
+
+Then the industry reached for a fix that made me uneasy: using LLMs to evaluate LLMs — what we now call LLM-as-a-judge. My first reaction was that it felt wrong. You can't grade one black box with another and call it measurement.
+
+But the discomfort didn't survive first principles, and working out why taught me more than the unease did.
+
+A judge is just a classifier. I had reported metrics from text classification models I'd trained for years and never lost sleep over it. Why did I trust those? Because I knew the data they were trained on. I had seen what they'd learned from, so I knew where they were reliable and where they weren't. With an LLM judge I had no such map. I didn't know its preferences. It was an instrument I had never calibrated, and its verdicts were going straight into the scores I'd be asked to stake decisions on.
+
+That was the thing that actually bothered me. Not that a model was grading a model — but that nobody could tell me how often the grader was right, or where it was wrong, or by how much. As the industry moved this way anyway, and the conversation turned to aligning these judges with human preference, I started thinking about how you would actually quantify that uncertainty rather than wave at it.
+
+## The mindset that didn't spread
+
+There was a second thing happening at the same time.
+
+The same APIs that made this hard to evaluate also made building easy. People who had never trained a model could stand up something impressive in an afternoon; which is a good thing. 
+
+However, building something and quantifying how well it works call for two different mindsets, and only one of them spread. I think of them as the build mindset and the measure mindset. The build mindset went everywhere — ship something, see if it does what you hoped. The measure mindset — ask not just whether it works, but how you'd know, and how sure you could be — mostly didn't.
+
+Identifying the mindset was the easy part. For these new systems, nobody had worked out what good evaluation actually looked like yet. It's easy to point at a thumbs-up button and call it inadequate. It's much harder to say what should replace it. So I stripped it back and asked what measuring should actually mean here.
+
+What I kept arriving at was concrete. Knowing what a number means. What it hides. How much it would move if you ran it again. What decision it can, and cannot, support. 
+
+## A score is evidence, not a verdict
+
+Once I saw the judge as an uncalibrated instrument, I couldn't unsee it in the rest of the eval. We have got very good at producing a number — almost any team can build a dashboard now. The harder question is whether we know what the score means.
+
+Here is where the build mindset quietly misleads us. When AI systems entered mainstream software engineering, we reached for the closest idea to hand: the test. Write down examples, score the outputs, run the same checks every time you change a prompt. It is the build world's idea of measurement, and as far as it goes a real improvement over clicking around by eye — on a recent project I watched our engineers do exactly this, defining mock user journeys and scoring them against expected outcomes, convincing a sceptical customer it was worth the effort. More than once I've heard the satisfied realisation land: "I get it, these are like unit tests for AI."
+
+That realisation is useful. It is also where the next mistake starts.
+
+An individual eval case can look like a test. Did the agent call the right tool? Did the answer contain the required fact? Pass or fail. But the aggregate score is different. If a system gets 47 of 50 examples right, the number you report is not the system's capability. It is a measurement of that capability, taken through a small and noisy instrument. Run a different fifty and the number moves. Hold the fifty fixed and rerun a stochastic system — it moves again. Swap the judge — it may be completely different.
+
+The score is evidence. It is not a verdict. And the words we inherited from testing — green, red, pass, regression — are decisive in a way the thing being measured is not.
+
+Suppose a new prompt lifts an eval from 72% to 75% on a few hundred examples. In a meeting, that three-point lift quietly becomes the story: the new version is better. But maybe the eval is too small to tell a real gain from noise. Maybe the improvement lives in one slice and a regression hides in another. Maybe it would vanish if you ran it again tomorrow. None of that makes the eval useless. It makes it a measurement — partial evidence under uncertainty. The mistake is reading it as if the dashboard's single number were the capability itself.
+
+## Why this bites hardest in the field
+
+In forward-deployed work, this matters more than it does in cleaner environments, because every safety net is gone.
+
+A research lab might evaluate on thousands of questions, with peer review and a culture that expects error bars. We get twenty questions in a spreadsheet. On the first retrieval system I built, I asked the customer's subject-matter experts for curated question-and-answer pairs, and what came back — beautifully judged, clearly hard-won — was twenty of them, with no appetite to produce more. We generated more with an LLM and had the experts review those, which always felt a little like marking our own homework. On a later project — a customer-facing recommendation assistant — we couldn't get time with the customer's own domain experts at all, so we built the evaluation sets ourselves. That is the normal case, not the unlucky one.
+
+And the decision is real regardless. A customer wants to know if the agent is ready. A product owner wants to know if the latest prompt is better. Someone wants a sentence they can repeat upward.
+
+I once advised a major retailer not to ship an assistant that had only ever been demoed. They shipped it anyway. It quietly pulled customers away from the search and recommendation systems they'd spent years tuning; conversions fell, and it was rolled back. Only then did the question arrive, late and expensive: how should we have evaluated this? The failure wasn't only the missing eval. It was that nobody had earned the right to trust the decision.
+
+That is where the craft lives. Forward-deployed teams are often the people in the room closest to both the model and the decision. We understand enough of the system to know why the number moved, and enough of the context to know what it is being used for. That combination is a responsibility. Our job is not just to produce the metric. It is to say what the metric can support, and what it cannot.
+
+That can be uncomfortable. It is easier to say "B is three points better" than "B is ahead, but on this eval I'd only call it likely, not proven." It is harder still to say "this eval can't answer the question you're asking." But that is often the most valuable sentence in the room.
+
+## What good judgement sounds like
+
+The answer is not to turn every readout into a statistics seminar. Most people don't need standard errors and credible intervals. They need the judgement those tools enable, in sentences they can act on:
+
+*"The new version is probably better — about a 72% chance — but not enough to ship on this evidence alone."*
+
+*"That slice looks bad, but it's five examples. It might be a real issue or it might be noise. If it matters, we need more data before we touch the system."*
+
+*"The judge scored us at 81%, but we've checked it against humans and it runs harsh — so the real number is probably higher, and the range is wider, because the judge is imperfect too."*
+
+Those aren't hedges. They are precision about belief. The best technical people I work with are not the ones who hide uncertainty; they are the ones who make it usable — who can turn a messy measurement into a posture: ship, hold, investigate, collect more data, or stop pretending the evidence says more than it does.
+
+That is a different kind of confidence. Not the confidence of sounding certain. The confidence of knowing exactly how certain you are.
+
+## Slowing the right thing down
+
+Teams worry this will slow them down. Honestly, at first, it does. It takes time to define examples, agree what good looks like, calibrate a judge, and report uncertainty instead of a bare score.
+
+But the alternative to measurement isn't speed — it's rework disguised as speed. It's shipping an assistant that hurts conversion. It's a week spent optimising a prompt against noise. It's telling a customer the system improved, then finding the next run doesn't reproduce it. Good eval discipline slows down the one moment where false confidence is cheapest, and speeds up everything after.
+
+It matters most when we leave. An eval only the original builders can interpret is not an asset — it's a liability with a dashboard. If a customer inherits a score but not the judgement to read it, we haven't transferred capability. We've transferred ceremony.
+
+That is what the measure mindset is for. Not the model — anyone can call the model now. The measurement. Knowing what the number is worth.
+
+The strongest AI teams will still build fast, experiment aggressively, swap models, and chase performance. But they won't confuse movement with evidence. They'll know when a number is strong enough to act on, when it's only a hint, and when it's a precise answer to the wrong question.
+
+The number matters. Of course it does.
+
+But the number is not the decision. The decision is what you do after asking how much trust the number deserves.
+
+---
+
+*Here we explored one question: how much to trust the number an eval gives you. Whether it's the right number — whether the eval measures what the business actually values — is a separate question, and a subject for another piece. 
+
+*I unpack the technical machinery behind this one — what a single score is really worth, comparing two versions honestly, how big an eval needs to be, how independent your questions actually are, and whether you can trust an LLM judge — here: [Your AI Eval Isn't a Test. It's a Measurement.](/posts/evals-are-measurements-not-tests/).*
+
