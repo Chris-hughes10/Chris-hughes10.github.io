@@ -64,6 +64,8 @@ The other, which matters far less, is the *arithmetic* underneath: the particula
 
 The aim isn't to make evals more elaborate. It is to stop them misleading us, and to say what they tell us in language the room can use.
 
+![](measuring-insight.png)
+
 ## Why this matters most when the data is messy
 
 In the field, data is small and expensive to label, the success rates hug zero or one, the examples arrive correlated rather than independent, the grader is often itself a fallible model, and a decision rides on the number tomorrow. Where a research lab may have huge public benchmarks, peer review, a culture that expects error bars, and colleagues who flag an overclaim before it leaves the building, the further we get from that environment the thinner those supports become — and forward-deployed, where I've spent most of my time, they're gone entirely, and the stakes are higher. That's the world I'll draw my examples from: where the mess is densest and the safety nets fewest.
@@ -73,6 +75,8 @@ Start by considering the data, which is at the foundation of everything else. A 
 Then there's what a wrong number costs. When a lab's eval misleads, the damage is internal and recoverable — a dead-end ablation, a line in a paper. In a forward-deployed context, when ours misleads, we've told a paying customer their system improved when it didn't, or shipped a regression into something they depend on. The currency of this work is the customer's belief that we know what we're doing, and a confidently-wrong number spends it fast. Worse, we may be the only ones equipped to catch it: there's no reviewer, no stats-literate colleague, so the discipline is self-imposed or it doesn't happen. And then we roll off, leaving the eval to be run and read by a customer's team less practised than us. An eval only we can interpret correctly becomes a liability the day we depart, which is exactly why saying the result in plain language isn't polish. It's how the work survives us.
 
 So we have to *be* the error bar ourselves, because nothing around us will draw it for us. Even the raw material is on us: on a recent project building an AI stylist, we pushed hard for time with the customer's real stylists to ground the evaluation, couldn't get it, and ended up building the eval sets ourselves — which is how these things usually go. That's the why; everything that follows is the how.
+
+![](measurement-scales.png)
 
 ## A note on method: no real model required
 
@@ -491,6 +495,8 @@ This is the moment the unit-test instinct fails most clearly. We ran our suite, 
 
 Saying that protects the stakeholder from a decision the data can't support, which is the entire job.
 
+![](power-analysis.png)
+
 ## Can you trust the model doing the grading?
 
 Increasingly the grader is itself a model — an LLM judge — and an LLM judge is a fallible instrument with its own error rate. Many people have written sharply on the problem of validating the validators, and the issue is real: if our judge agrees with a human only nine times in ten, our measured accuracy is taken through a slightly warped lens.
@@ -631,6 +637,8 @@ The teams that get this right will not necessarily be the ones with the most ela
 For forward-deployed teams, this is not statistical polish. It is delivery discipline. We are often the people in the room closest to both the model and the decision, which means we are responsible for saying what the number can support — and what it cannot.
 
 That is the discipline AI engineering needs next: not just to evaluate more, but to read evals correctly. The eval went up three points. The important question is not whether that sounds good. It is: how sure are we?
+
+![](conclusion-measure.png)
 
 ## Appendix — for the statistician in the room
 
