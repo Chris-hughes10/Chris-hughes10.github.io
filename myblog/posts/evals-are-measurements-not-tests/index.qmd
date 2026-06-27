@@ -8,6 +8,9 @@ image: headline.png
 description: "An eval score is not a deterministic verdict; it is an uncertain measurement. This article walks through the perspective shift from treating evals as binary tests to understanding them as noisy estimates of true capability."
 ---
 
+::: {.source-button}
+:::
+
 ![](headline.png)
 
 I once advised a major retailer not to ship a customer-assistant chatbot that had only ever been vibe-tested. They shipped it anyway, and found it quietly drove customers away from the search and recommendation systems they had spent years tuning; conversions fell and money was lost. After rolling it back, they then asked the question that should have come first — how should we be evaluating this?

@@ -7,6 +7,9 @@ reading-time: 20
 description: "Using a planner and DAG execution pattern for predictable, cost-effective multi-agent workflows."
 ---
 
+::: {.source-button}
+:::
+
 *This is Part 3 of a series on building multi-agent systems. [Part 1](../multi-agent-part1/) covered clean architecture for agents (tools vs services, domain-driven design). [Part 2](../multi-agent-part2/) explored goal-aware agent coordination (distributed reasoning, event-driven handoffs).*
 
 ---
