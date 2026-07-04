@@ -1,6 +1,9 @@
 project:
   type: website
 
+filters:
+  - source-button.lua
+
 website:
   title: "Chris Hughes"
   site-url: "https://chris-hughes10.github.io"
@@ -24,6 +27,7 @@ resources:
   - CNAME
   - collapsible.js
   - code-modal.js
+  - source-modal.js
   - robots.txt
 
 

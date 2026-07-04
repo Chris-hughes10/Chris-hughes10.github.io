@@ -289,3 +289,35 @@ section.collapsible::after {
     border-color: #999;
     color: #333;
 }
+
+/* Raw markdown source button (rendered by source-button.lua) */
+.source-button-wrapper {
+    margin: 0 0 1.5rem 0;
+}
+
+.source-md-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.85rem;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    line-height: 1.2;
+    color: #555;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.source-md-button:hover {
+    background-color: #f0f0f0;
+    border-color: #999;
+    color: #222;
+}
+
+/* Markdown prose can have very long lines, so wrap rather than scroll */
+.source-modal-overlay .code-modal-body pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+}

@@ -7,6 +7,9 @@ reading-time: 25
 description: "How layered architecture and domain-driven design apply to multi-agent AI systems — with a working example."
 ---
 
+::: {.source-button}
+:::
+
 ![Image generated with M365 Copilot](image.png)
 
 Since the release of ChatGPT, AI agents have captured everyone's imagination. The promise is compelling: give an AI system a goal, let it break down the problem, use tools to gather information, and synthesize a result.

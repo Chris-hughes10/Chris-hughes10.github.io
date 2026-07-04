@@ -7,6 +7,9 @@ reading-time: 25
 description: "What happens when you remove the central orchestrator and let every agent reason about the user's goal."
 ---
 
+::: {.source-button}
+:::
+
 In [Part 1](../multi-agent-part1/), we discussed a YouTube research assistant with an orchestrator coordinating four specialized agents. The orchestrator received user requests, delegated to specialists, collected results, and synthesized responses. It worked - and for many use cases, it's the right pattern.
 
 But I noticed something: most of the multi-agent examples I encountered followed this same orchestrator pattern. A central coordinator, specialized workers, hub-and-spoke communication. It works, but is it the only way?
