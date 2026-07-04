@@ -176,10 +176,12 @@ Grouping the eval into clusters doubles as a free coverage check. In some cases,
 Watch this happen to a real number — the correction is larger than people expect. Suppose our 300 eval questions lean on 50 catalogue records — six to a record — and a record's data quality sets how well the agent does on everything that touches it. We plant two plain quantities. The **overall accuracy** is the agent's average pass rate across the whole eval — the single headline score, here 74%. The **concentration** says how much record quality varies: high means every record is about equally good, low means quality is all over the map — some records pristine, others stale or wrong. We set it low, so a real tail of poor records each sink the six questions that lean on them. These planted values are the *truth*, usually unobserved, set so that we can check the inference recovers them.
 
 We then estimate that overall accuracy two ways, and both give a 95% **credible interval**:
+
 -  The **naive** reading pretends all 300 questions are independent: reusing the `beta_posterior` from the single-accuracy example, run on the raw count of passes — a `Beta(2,2)` prior updated by that count. (That Beta-prior-plus-Binomial-count setup is the usual Beta-Binomial model.)
 -  The **clustered** reading writes the structure down instead: an overall accuracy, a *concentration* it *learns* from the data rather than assuming, and record-level variation folded into the likelihood for each record's passes out of six. Conceptually, this is still one accuracy per record drawn from the shared family, with that record's six questions testing it; the code uses the equivalent Beta-Binomial form, which integrates those record accuracies out. The overall accuracy we want is a parameter of this model directly, so we just read its posterior off, and it comes out honest because the model knows those 300 questions came from only 50 independent records.
 
 The code has three parts:
+
 - First, it **generates a fake eval**: from the planted truth it rolls each record's accuracy, then the pass counts an eval would actually log (`passes_per_record` — 50 numbers, each between 0 and 6).
 - Then, it **infers** the overall accuracy from those counts, and only those, two ways: the naive reading reuses `beta_posterior` from before, the clustered reading is one new function.
 - Finally, it turns the two error bars into an **effective sample size**:
@@ -258,6 +260,7 @@ Not every slice earns that assumption, and the test isn't "same model, therefore
 Let's examine this on a deliberately lopsided eval. We plant eight slices drawn from one shared population — the same overall-mean-and-concentration setup as the last section — then hand them wildly uneven sample sizes: four fat slices of 40 to 60 examples, and a thin tail of just five to twelve. The fat slices have enough data to speak for themselves; the thin ones are where the trouble lives.
 
 The code has three parts:
+
 - First, it **generates a fake eval**: from the planted slice accuracies it rolls each slice's correct count — eight numbers, each a count out of that slice's own size.
 - Then it **infers all eight slice accuracies at once** from those counts, with a single model that also learns the population mean and how tightly the slices cluster around it.
 - Finally, it **reads each slice two ways**: the raw per-slice rate (`no_pool`), which trusts each slice's own count alone, and the pooled estimate (`partial_pool`), which pulls a thin slice toward the overall picture.
@@ -318,6 +321,7 @@ You might think this one is straightforward. We have a set of eval questions; we
 - Second, **analyse the difference, not the overlap.** Eyeballing whether A's and B's error bars overlap — the natural move when a dashboard shows each with its own interval — is the wrong test: two intervals can overlap even when B is comfortably and reliably ahead, so it reports "no difference" when there really is one, quietly burying improvements you've made. Instead, put a single error bar on the *difference* (B − A) and check whether it clears zero — exactly what the analysis below does.
 
 Pairing does assume you have both versions' results on the *same* questions — and sometimes you don't:
+
 - Model A can no longer be reproduced — the model version's been retired, or its exact prompt and pipeline weren't kept — so all that survives is the score it logged.
 - The baseline is an aggregate someone handed you: a previous team's figure, a vendor's number, a result from a paper.
 - The eval set has been regenerated or relabelled since, so there are no matched items to line up.
@@ -328,6 +332,7 @@ When you're genuinely in one of these, unpaired is the honest choice. But whenev
 With the questions paired, the analysis below fits both versions jointly with a per-question difficulty term, and then hands us a single, plain-English answer a stakeholder can act on. In plain terms it says: every question has its own difficulty, both models face that same difficulty, and there is one number we care about — how much better B is than A once the shared difficulty is accounted for. The code calls that number `gap_logit` because it does its arithmetic on a log-odds scale, but the question is plain: how much of our updated belief says the gap is above zero? That fraction *is* the probability B is better.
 
 The code has three parts:
+
 - First, it **lays out the paired data**: one row per graded answer — each version's result on each question — tagged with which question it is and which version produced it.
 - Then it **does the inference** on the log-odds scale: an overall difficulty, a difficulty for each question (the same for both versions), and the one quantity we care about — the gap between B and A.
 - Finally, it **reads off the answer**: the share of its belief about that gap that sits above zero, which is P(B better than A).
@@ -502,6 +507,7 @@ Saying that protects the stakeholder from a decision the data can't support, whi
 Increasingly the grader is itself a model — an LLM judge — and an LLM judge is a fallible instrument with its own error rate. Many people have written sharply on the problem of validating the validators, and the issue is real: if our judge agrees with a human only nine times in ten, our measured accuracy is taken through a slightly warped lens.
 
 The fix is to treat the judge as an instrument with two habits we can measure:
+
 - how often it passes a truly-correct answer (**sensitivity**)
 - how often it correctly fails a wrong one (**specificity**)
 
