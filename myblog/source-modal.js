@@ -16,7 +16,6 @@
         <pre id="source-modal-code"><code></code></pre>
       </div>
       <div class="code-modal-footer">
-        <button class="code-modal-copy-btn source-modal-download-btn">Download .md</button>
         <button class="code-modal-copy-btn source-modal-copy-btn">Copy Markdown</button>
       </div>
     </div>
@@ -26,7 +25,6 @@
   const overlay = modal;
   const closeBtn = modal.querySelector('.code-modal-close');
   const copyBtn = modal.querySelector('.source-modal-copy-btn');
-  const downloadBtn = modal.querySelector('.source-modal-download-btn');
   const codeDisplay = modal.querySelector('#source-modal-code code');
 
   let currentMarkdown = '';
@@ -57,29 +55,6 @@
     } catch (err) {
       console.error('Failed to copy markdown:', err);
     }
-  });
-
-  // Derive a sensible download filename from the post's URL.
-  function postSlug() {
-    const parts = window.location.pathname.split('/').filter(Boolean);
-    let last = parts.length ? parts[parts.length - 1] : 'index';
-    if (last.endsWith('.html')) last = last.slice(0, -5);
-    if ((last === 'index' || last === '') && parts.length >= 2) {
-      last = parts[parts.length - 2];
-    }
-    return last || 'post';
-  }
-
-  downloadBtn.addEventListener('click', () => {
-    const blob = new Blob([currentMarkdown], { type: 'text/markdown;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = postSlug() + '.md';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
   });
 
   function wireButtons() {
