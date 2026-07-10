@@ -49,6 +49,8 @@ I also lean on the word itself three ways: an **eval** is the whole exercise —
 >
 > 3. The fix isn't a fancier harness. It's reporting a number *with its uncertainty*, ideally as a plain-English probability — "B is probably better, about 72% likely" — and making decisions on that, not on a bare number.
 >
+> 4. **None of this rescues an eval built on data that doesn't represent reality — synthetic sets included**. Error bars quantify precision, not validity; a credible interval on an unrepresentative metric makes it look more trustworthy without making it more true.
+>
 > The rest of this article discusses how to do that, and when it actually matters — in plain language, with runnable code throughout. If you skip every code block you'll still get the argument.
 
 
@@ -441,6 +443,8 @@ By thirty samples the posterior SD has effectively met this floor: the within-qu
 
 The lesson is the one every tired experimentalist already knows: past a handful of repeats the cheap gains are gone, so stop re-running and start adding questions — which is exactly what we look at in the next section. Contrast this with the common engineering heuristic: run each scenario a few times and pass only if every trial passes. A sensible instinct, but it answers a coarser question — *did it ever fail?* — when the data actually lets you ask *what is the success rate, and how sure am I of it?*
 
+If a case has passed two hundred consecutive runs, run two-hundred-and-one moves your belief about it almost nowhere — the posterior converged long ago. When each full run costs real money and hours, retiring cases whose pass rates are pinned near certainty isn't cutting corners; it's the value-of-information calculation coming out at zero. The measurement stance doesn't demand you measure everything forever. It tells you which measurements have stopped earning their cost — and, just as usefully, which apparent certainties (three green runs on a stochastic system, say) haven't actually converged at all.
+
 ![Uncertainty in the overall accuracy as we re-run each question more times. The posterior SD (navy) follows the analytic standard error (orange) down and then flattens against the floor (dashed) that the number of questions imposes. Beyond about ten samples each, more re-runs buy almost nothing.](repeated-sampling-floor.png)
 
 **What you say in the room.** *"We re-ran each case three times to take out the model's own randomness. Running them many more times would help only a little — past a handful of repeats, the limit is how many distinct questions we have, not how many times we ask each one. To get meaningfully tighter, we need more examples, not more repeats."*
@@ -618,6 +622,8 @@ Notice none of those contain the words "standard error," "null hypothesis," or "
 **Make the decision rule visible.** The single most useful thing I do in a readout is put the probability on a bar against the bar we'd need to act: *here's our 72%, here's the 95% we use to ship, we're not there yet.* It turns an abstract number into a picture of a decision, and it teaches — without a lecture — that 72% isn't a green light.
 
 **Mind the hedge.** "72% likely better" has a way of arriving at the third person down the chain as "it's better." Bake the qualifier into the headline phrase ("likely, not safe to ship on") so it can't be quietly dropped.
+
+**Beware the score that can't fail.** A regression-style suite — where every record encodes a past failure, no change merges if it breaks one, and successes never enter the set — reports a perfect score by construction. That discipline is valuable, but the number it produces answers exactly one question: have we regressed on failures we've already seen? Said carefully, that's honest. Two retellings down the chain, "everything we've observed go wrong no longer does" becomes "the system works" — and the set is silent on precisely the failures that never surfaced loudly enough to earn a record. 
 
 ## The harder question
 
