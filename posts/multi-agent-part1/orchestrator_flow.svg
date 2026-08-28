@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 480" font-family="system-ui, -apple-system, sans-serif">
+  <!-- Arrowhead markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22C55E"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="480" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="300" y="30" text-anchor="middle" font-size="18" font-weight="600" fill="#1a1a1a">Orchestrator Pattern Flow</text>
+
+  <!-- User Request -->
+  <rect x="240" y="50" width="120" height="40" rx="20" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+  <text x="300" y="75" text-anchor="middle" font-size="12" font-weight="500" fill="#1a1a1a">User Request</text>
+
+  <!-- Arrow to Orchestrator -->
+  <path d="M300 90 L300 120" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Orchestrator (central hub) -->
+  <rect x="150" y="125" width="300" height="90" rx="6" fill="#E8F4FD" stroke="#1DA1F2" stroke-width="3"/>
+  <text x="300" y="155" text-anchor="middle" font-size="14" font-weight="600" fill="#1a1a1a">ORCHESTRATOR</text>
+  <text x="300" y="175" text-anchor="middle" font-size="10" fill="#666666">Central coordinator with conversation memory</text>
+  <text x="300" y="192" text-anchor="middle" font-size="10" fill="#666666">Delegates to specialists, accumulates context</text>
+  <text x="440" y="205" font-size="9" fill="#1DA1F2" font-style="italic" text-anchor="end">[LLM decides workflow]</text>
+
+  <!-- Arrow to User Result (simple arrow to right) -->
+  <path d="M450 170 L490 170" stroke="#22C55E" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+
+  <!-- User Result -->
+  <rect x="495" y="150" width="90" height="40" rx="20" fill="#DCFCE7" stroke="#22C55E" stroke-width="2"/>
+  <text x="540" y="175" text-anchor="middle" font-size="11" font-weight="500" fill="#166534">User Result</text>
+
+  <!-- Arrow down from Orchestrator -->
+  <path d="M300 215 L300 250" stroke="#64748B" stroke-width="1.5"/>
+
+  <!-- Branch lines to 4 agents -->
+  <path d="M300 250 L100 250 L100 275" stroke="#64748B" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+  <path d="M300 250 L233 250 L233 275" stroke="#64748B" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+  <path d="M300 250 L366 250 L366 275" stroke="#64748B" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+  <path d="M300 250 L500 250 L500 275" stroke="#64748B" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+
+  <!-- Arrowheads on branches (pointing DOWN) -->
+  <polygon points="95,275 100,285 105,275" fill="#64748B"/>
+  <polygon points="228,275 233,285 238,275" fill="#64748B"/>
+  <polygon points="361,275 366,285 371,275" fill="#64748B"/>
+  <polygon points="495,275 500,285 505,275" fill="#64748B"/>
+
+  <!-- SearchAgent -->
+  <rect x="40" y="290" width="120" height="70" rx="6" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="100" y="315" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1a1a">SearchAgent</text>
+  <text x="100" y="333" text-anchor="middle" font-size="9" fill="#666666">Find YouTube</text>
+  <text x="100" y="347" text-anchor="middle" font-size="9" fill="#666666">videos</text>
+
+  <!-- TranscriptAgent -->
+  <rect x="173" y="290" width="120" height="70" rx="6" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="233" y="315" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1a1a">TranscriptAgent</text>
+  <text x="233" y="333" text-anchor="middle" font-size="9" fill="#666666">Fetch video</text>
+  <text x="233" y="347" text-anchor="middle" font-size="9" fill="#666666">transcripts</text>
+
+  <!-- SummarizeAgent -->
+  <rect x="306" y="290" width="120" height="70" rx="6" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="366" y="315" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1a1a">SummarizeAgent</text>
+  <text x="366" y="333" text-anchor="middle" font-size="9" fill="#666666">Extract key</text>
+  <text x="366" y="347" text-anchor="middle" font-size="9" fill="#666666">information</text>
+
+  <!-- WriterAgent -->
+  <rect x="440" y="290" width="120" height="70" rx="6" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="500" y="315" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1a1a">WriterAgent</text>
+  <text x="500" y="333" text-anchor="middle" font-size="9" fill="#666666">Write to</text>
+  <text x="500" y="347" text-anchor="middle" font-size="9" fill="#666666">markdown</text>
+
+  <!-- Return arrows: all join into one line on left, loop back up -->
+  <path d="M100 360 L100 385" stroke="#1DA1F2" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <path d="M233 360 L233 385" stroke="#1DA1F2" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <path d="M366 360 L366 385" stroke="#1DA1F2" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <path d="M500 360 L500 385" stroke="#1DA1F2" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+  <!-- Horizontal connector line -->
+  <path d="M100 385 L500 385" stroke="#1DA1F2" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+  <!-- Loop back on left side -->
+  <path d="M100 385 L25 385 L25 170 L150 170" stroke="#1DA1F2" stroke-width="2" stroke-dasharray="4,2" fill="none" stroke-linejoin="round"/>
+  <polygon points="140,165 140,175 150,170" fill="#1DA1F2"/>
+
+  <!-- Label for return flow -->
+  <text x="300" y="400" text-anchor="middle" font-size="9" fill="#1DA1F2" font-style="italic">Results return to orchestrator (context accumulates)</text>
+
+  <!-- Legend -->
+  <rect x="40" y="420" width="520" height="50" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="55" y="440" font-size="10" font-weight="600" fill="#1a1a1a">Key:</text>
+  <rect x="95" y="432" width="12" height="12" fill="#E8F4FD" stroke="#1DA1F2" stroke-width="1"/>
+  <text x="115" y="442" font-size="9" fill="#666666">Orchestrator (LLM)</text>
+  <rect x="220" y="432" width="12" height="12" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="1"/>
+  <text x="240" y="442" font-size="9" fill="#666666">Sub-Agents</text>
+  <path d="M320 438 L350 438" stroke="#64748B" stroke-width="1.5"/>
+  <text x="360" y="442" font-size="9" fill="#666666">Delegate</text>
+  <path d="M410 438 L440 438" stroke="#1DA1F2" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="450" y="442" font-size="9" fill="#666666">Return results</text>
+
+</svg>

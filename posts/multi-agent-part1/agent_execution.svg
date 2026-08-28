@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 180" font-family="system-ui, -apple-system, sans-serif">
+  <!-- Arrowhead markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="580" height="180" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="290" y="22" text-anchor="middle" font-size="14" font-weight="600" fill="#1a1a1a">Single Agent Execution (SearchAgent Example)</text>
+
+  <!-- Layer labels ABOVE boxes -->
+  <text x="70" y="48" text-anchor="middle" font-size="8" fill="#8B5CF6" font-style="italic">[agents/]</text>
+  <text x="205" y="48" text-anchor="middle" font-size="8" fill="#92400E" font-style="italic">[tools/]</text>
+  <text x="355" y="48" text-anchor="middle" font-size="8" fill="#166534" font-style="italic">[services/]</text>
+  <text x="505" y="48" text-anchor="middle" font-size="8" fill="#DC2626" font-style="italic">[infra/]</text>
+
+  <!-- SearchAgent -->
+  <rect x="20" y="55" width="100" height="60" rx="6" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="70" y="78" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1a1a">SearchAgent</text>
+  <text x="70" y="93" text-anchor="middle" font-size="8" fill="#666666">LLM decides</text>
+  <text x="70" y="105" text-anchor="middle" font-size="8" fill="#666666">to call tool</text>
+
+  <!-- Arrow Agent → Tool -->
+  <path d="M120 85 L150 85" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Tool -->
+  <rect x="155" y="55" width="100" height="60" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+  <text x="205" y="75" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1a1a">search_youtube</text>
+  <text x="205" y="87" text-anchor="middle" font-size="9" font-weight="600" fill="#1a1a1a">_formatted()</text>
+  <text x="205" y="105" text-anchor="middle" font-size="8" fill="#666666">formats for LLM</text>
+
+  <!-- Arrow Tool → Service -->
+  <path d="M255 85 L295 85" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Service -->
+  <rect x="300" y="55" width="110" height="60" rx="6" fill="#DCFCE7" stroke="#22C55E" stroke-width="2"/>
+  <text x="355" y="78" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1a1a">search_youtube()</text>
+  <text x="355" y="93" text-anchor="middle" font-size="8" fill="#666666">business logic</text>
+  <text x="355" y="105" text-anchor="middle" font-size="8" fill="#666666">returns VideoResult[]</text>
+
+  <!-- Arrow Service → External API -->
+  <path d="M410 85 L445 85" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- External API -->
+  <rect x="450" y="55" width="110" height="60" rx="6" fill="#FEE2E2" stroke="#EF4444" stroke-width="2"/>
+  <text x="505" y="78" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1a1a">YouTube API</text>
+  <text x="505" y="93" text-anchor="middle" font-size="8" fill="#666666">HTTP request</text>
+  <text x="505" y="105" text-anchor="middle" font-size="8" fill="#666666">parse HTML</text>
+
+  <!-- Return flow indicator -->
+  <path d="M505 115 L505 145 L70 145 L70 115" stroke="#64748B" stroke-width="1" stroke-dasharray="4,2" fill="none" stroke-linejoin="round"/>
+  <polygon points="65,125 70,115 75,125" fill="#64748B"/>
+  <text x="290" y="165" text-anchor="middle" font-size="9" fill="#666666" font-style="italic">Result flows back: HTML → VideoResult[] → formatted string → LLM</text>
+
+</svg>

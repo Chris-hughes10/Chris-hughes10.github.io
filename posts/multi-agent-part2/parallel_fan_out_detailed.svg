@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 620" font-family="system-ui, -apple-system, sans-serif">
+  <!-- Arrowhead markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22C55E"/>
+    </marker>
+    <marker id="arrowhead-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#EF4444"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="550" height="620" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="275" y="25" text-anchor="middle" font-size="16" font-weight="600" fill="#1a1a1a">Fan-Out / Fan-In: Detailed Flow</text>
+  <text x="275" y="42" text-anchor="middle" font-size="10" fill="#666666" font-style="italic">Zoom into parallel execution within the goal-aware system</text>
+
+  <!-- Synthesizer Detection -->
+  <rect x="125" y="55" width="300" height="45" rx="6" fill="#E8F4FD" stroke="#1DA1F2" stroke-width="2"/>
+  <text x="275" y="75" text-anchor="middle" font-size="11" font-weight="600" fill="#1a1a1a">SYNTHESIZER detects parallelism</text>
+  <text x="275" y="90" text-anchor="middle" font-size="9" fill="#666666">"Search both channels" → returns fan_out</text>
+
+  <!-- Arrow to HandoffResult -->
+  <path d="M275 100 L275 120" stroke="#EF4444" stroke-width="2" marker-end="url(#arrowhead-red)"/>
+
+  <!-- HandoffResult.fan_out box -->
+  <rect x="100" y="125" width="350" height="40" rx="4" fill="#FEE2E2" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="275" y="145" text-anchor="middle" font-size="10" font-weight="600" fill="#DC2626">HandoffResult.fan_out(intents, join_intent)</text>
+  <text x="275" y="158" text-anchor="middle" font-size="9" fill="#991B1B">intents: ["search chuds bbq", "search fork embers"]</text>
+
+  <!-- Arrow to Task Creation -->
+  <path d="M275 165 L275 185" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Task Creation - shows 2 tasks being created -->
+  <rect x="50" y="190" width="450" height="75" rx="6" fill="#F1F5F9" stroke="#64748B" stroke-width="2"/>
+  <text x="275" y="210" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">TASK CREATION</text>
+
+  <!-- Two task boxes inside -->
+  <rect x="70" y="220" width="180" height="35" rx="4" fill="#ffffff" stroke="#94A3B8" stroke-width="1"/>
+  <text x="160" y="242" text-anchor="middle" font-size="9" fill="#475569">Task(intent="search chuds bbq")</text>
+
+  <rect x="270" y="220" width="210" height="35" rx="4" fill="#ffffff" stroke="#94A3B8" stroke-width="1"/>
+  <text x="375" y="242" text-anchor="middle" font-size="9" fill="#475569">Task(intent="search fork embers")</text>
+
+  <!-- Arrow to TaskGroup -->
+  <path d="M275 265 L275 285" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- TaskGroup creation -->
+  <rect x="125" y="290" width="300" height="40" rx="4" fill="#FDE68A" stroke="#F59E0B" stroke-width="2"/>
+  <text x="275" y="310" text-anchor="middle" font-size="10" font-weight="600" fill="#92400E">TaskGroup created</text>
+  <text x="275" y="323" text-anchor="middle" font-size="9" fill="#78350F">tracks: [task_abc, task_def] • join_intent stored</text>
+
+  <!-- Arrow to Queue -->
+  <path d="M275 330 L275 350" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Task Queue -->
+  <rect x="100" y="355" width="350" height="35" rx="6" fill="#DCFCE7" stroke="#22C55E" stroke-width="3"/>
+  <text x="275" y="378" text-anchor="middle" font-size="12" font-weight="600" fill="#166534">TASK QUEUE</text>
+
+  <!-- Arrow branching to parallel tasks -->
+  <path d="M275 390 L275 405" stroke="#64748B" stroke-width="1.5"/>
+  <text x="285" y="402" font-size="8" fill="#666666" font-style="italic">dispatch</text>
+  <path d="M275 405 L160 405 L160 420" stroke="#64748B" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+  <path d="M275 405 L390 405 L390 420" stroke="#64748B" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+  <polygon points="155,420 160,430 165,420" fill="#64748B"/>
+  <polygon points="385,420 390,430 395,420" fill="#64748B"/>
+
+  <!-- Parallel Tasks Container -->
+  <rect x="50" y="435" width="450" height="70" rx="6" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="5,3"/>
+
+  <!-- Task 1 -->
+  <rect x="70" y="445" width="170" height="50" rx="6" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="155" y="467" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1a1a">SearchAgent</text>
+  <text x="155" y="483" text-anchor="middle" font-size="9" fill="#666666">"search chuds bbq"</text>
+
+  <!-- Task 2 -->
+  <rect x="310" y="445" width="170" height="50" rx="6" fill="#F3E8FF" stroke="#8B5CF6" stroke-width="2"/>
+  <text x="395" y="467" text-anchor="middle" font-size="10" font-weight="600" fill="#1a1a1a">SearchAgent</text>
+  <text x="395" y="483" text-anchor="middle" font-size="9" fill="#666666">"search fork embers"</text>
+
+  <!-- Parallel indicator -->
+  <text x="275" y="475" text-anchor="middle" font-size="11" font-weight="600" fill="#DC2626">||</text>
+
+  <!-- Arrows from tasks converging -->
+  <path d="M155 495 L155 515 L275 515" stroke="#64748B" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+  <path d="M395 495 L395 515 L275 515" stroke="#64748B" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+  <path d="M275 515 L275 530" stroke="#64748B" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="285" y="528" font-size="8" fill="#666666" font-style="italic">complete</text>
+
+  <!-- TaskGroup state change -->
+  <rect x="150" y="535" width="250" height="30" rx="4" fill="#FDE68A" stroke="#F59E0B" stroke-width="2"/>
+  <text x="275" y="555" text-anchor="middle" font-size="10" font-weight="600" fill="#92400E">TaskGroup: all complete → post join_intent</text>
+
+  <!-- Arrow to Task Creation (loop back) -->
+  <path d="M275 565 L275 585 L30 585 L30 230 L50 230" stroke="#22C55E" stroke-width="2" stroke-dasharray="4,2" fill="none" stroke-linejoin="round"/>
+  <polygon points="40,225 50,230 40,235" fill="#22C55E"/>
+  <text x="40" y="410" font-size="9" fill="#22C55E" font-style="italic" transform="rotate(-90 40 410)">join task created</text>
+
+</svg>

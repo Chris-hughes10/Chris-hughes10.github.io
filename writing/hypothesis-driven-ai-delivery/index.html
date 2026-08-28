@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-03-08">
+<meta name="description" content="The projects that failed didn’t fail because of the technology. They failed because of how the work was framed. A methodology for enterprise AI delivery, learned from getting it wrong.">
+
+<title>Hypothesis-Driven AI Delivery – Chris Hughes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../profile.jpg" rel="icon" type="image/jpeg">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-6105abc1fbcb78934dd6dfb0e21c61fe.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-bad7eb6acb78bec35b2014344c72f93c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-6105abc1fbcb78934dd6dfb0e21c61fe.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<meta name="google-site-verification" content="AGF-dapdxVAPw474kSusFtx18hRUnG14JVgfg-pqNw8">
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Hypothesis-Driven AI Delivery – Chris Hughes">
+<meta property="og:description" content="The projects that failed didn’t fail because of the technology. They failed because of how the work was framed. A methodology for enterprise AI delivery, learned from getting it wrong.">
+<meta property="og:image" content="https://chris-hughes10.github.io/writing/hypothesis-driven-ai-delivery/hdd image.png">
+<meta property="og:site_name" content="Chris Hughes">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:width" content="1536">
+<meta name="twitter:title" content="Hypothesis-Driven AI Delivery – Chris Hughes">
+<meta name="twitter:description" content="The projects that failed didn’t fail because of the technology. They failed because of how the work was framed. A methodology for enterprise AI delivery, learned from getting it wrong.">
+<meta name="twitter:image" content="https://chris-hughes10.github.io/writing/hypothesis-driven-ai-delivery/hdd image.png">
+<meta name="twitter:image-height" content="1024">
+<meta name="twitter:image-width" content="1536">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Chris Hughes</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Hypothesis-Driven AI Delivery</h1>
+<p class="subtitle lead">A practical methodology for taking enterprise AI from ambition to production</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">AI</div>
+    <div class="quarto-category">Strategy</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    The projects that failed didn’t fail because of the technology. They failed because of how the work was framed. A methodology for enterprise AI delivery, learned from getting it wrong.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 8, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><img src="hdd image.png" class="img-fluid"></p>
+<p>I’ve led numerous enterprise AI projects at Microsoft - across retail, automotive, government, healthcare, manufacturing. Some shipped and delivered real value. Some stalled, pivoted, or quietly got shelved. After a while, I started noticing a pattern.</p>
+<p>The projects that failed didn’t fail because of the technology. They failed because of how the work was framed. And I learned this by getting the framing wrong in two different directions.</p>
+<section id="the-first-failure-building-before-you-know" class="level2">
+<h2 class="anchored" data-anchor-id="the-first-failure-building-before-you-know">The first failure: building before you know</h2>
+<p>Early in my time at Microsoft, I was part of a project where the engineering team started building an MLOps platform while the data scientists were still waiting for data access. The logic seemed sound - the platform would be needed eventually, so why not get ahead? In hindsight, the work that looked most productive was happening furthest from the critical unknown.</p>
+<p>The platform was solid. Well-architected, production-ready. But when the data science work matured, the limiting factor turned out to be the model, not the infrastructure. We hadn’t yet validated whether any modelling approach could satisfy the production constraints of the use case. The explainable methods couldn’t hit the required level of performance, and the better-performing alternatives didn’t offer the consistency stakeholders needed. We’d invested months in platform engineering before proving the thing that actually determined whether the solution could ship.</p>
+<p>Both teams had been busy. Both were productive on paper. But nobody had asked the critical question: do we know enough to justify building this yet?</p>
+<p>I call this “activity theatre” - everyone is busy, but the project isn’t actually progressing towards an outcome.</p>
+</section>
+<section id="the-overcorrection-exploring-without-accountability" class="level2">
+<h2 class="anchored" data-anchor-id="the-overcorrection-exploring-without-accountability">The overcorrection: exploring without accountability</h2>
+<p>That experience left a mark. On my next project, I was determined not to repeat the mistake. We framed it as a feasibility study - de-risk before committing to build.</p>
+<p>We explored whether a particular AI approach could solve the customer’s problem. We tried several different models, including an experimental approach from a recent paper that we implemented from scratch and adapted to work in the domain.</p>
+<p>We were really happy with ourselves. The engineering was strong. The experimental approach was genuinely novel.</p>
+<p>None of the models got the results we wanted. The reason wasn’t the modelling - it was the data. The data quality wasn’t good enough for the use case.</p>
+<p>So we pivoted. We stopped focusing on models and started exploring the data - digging into why it wasn’t good enough, identifying the specific gaps. Based on what we found, we worked with the customer to collect new data that filled those gaps. Now we had a clear plan.</p>
+<p>Here’s the part that stuck with me: the model we used for all of that data validation work was the simplest one available. Well-supported, fast, consistent. We used it pretty much out of the box. It was probably a few percent worse than our experimental approach - but it was good enough. And because it was simple, when something didn’t work, we knew it was a data problem, not a bug.</p>
+<p>We’d spent weeks on modelling when the data should have been on the critical path from the start. We’d prioritised the interesting problem over the critical one.</p>
+<p>Looking back, the root cause was that we hadn’t been clear enough about the outcome we were trying to achieve. The framing was “explore whether this AI approach works” - solution-first, not outcome-first. If we’d started with a sharp objective - what does this need to deliver for the customer? - the data question would have been obvious. You can’t achieve an outcome if the data won’t support it.</p>
+<p>The project worked out. But if we’d been strictly time-bound, following the same approach, it wouldn’t have.</p>
+<p>We ran several more feasibility studies after that. They were producing useful learning. But they were getting longer and longer. Eventually, we proposed one that could take two to three months. A stakeholder pushed back: “We are not a research lab. We are in production.”</p>
+<p>I started preparing to argue. Then I forced myself to see it from his side. The feasibility studies had been working - but we hadn’t been intentional enough about keeping them focused. Without that discipline, they expanded. He didn’t care which model performed best. He wanted to know if this would solve his problem.</p>
+<p>He was right.</p>
+</section>
+<section id="the-shift-from-activity-to-outcome" class="level2">
+<h2 class="anchored" data-anchor-id="the-shift-from-activity-to-outcome">The shift: from activity to outcome</h2>
+<p>Two failures, opposite directions. Build too early and you waste engineering investment on unvalidated assumptions. Explore too long and you lose accountability, drift into research, and exhaust stakeholder patience.</p>
+<p>The underlying problem is the same: AI projects carry feasibility uncertainty, not just execution uncertainty. Agile handles execution well - priorities shift, you adapt. But it doesn’t help when you don’t yet know if the approach will work at all. Most AI projects have both kinds, and most teams only manage one.</p>
+<p>That was the moment I stopped framing early AI work as feasibility studies. The framing had two problems. Customers and leadership heard “research” and got nervous - it sounded like we weren’t confident we could deliver. And teams used it as an escape hatch. Open-ended exploration felt rigorous, but “it’s not feasible” became a way to avoid accountability for outcomes.</p>
+<p>Now I frame it as hypothesis validation. Not open-ended exploration, but bounded validation: what are the key unknowns? What’s on the critical path? What do we need to prove before we commit to build?</p>
+<p>Same work. Different framing. Completely different accountability.</p>
+<p>Over time, I adapted hypothesis-driven development into a delivery approach for enterprise AI projects. I call it Hypothesis-Driven AI Delivery.</p>
+<p>The core flow:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="hypothesis_driven_flow.svg" class="img-fluid figure-img"></p>
+<figcaption>Hypothesis-Driven AI Delivery flow: Strategic Goal → Structured Envisioning → Explicit Unknowns (Hypotheses) → Experimentation → MVP</figcaption>
+</figure>
+</div>
+<p>Let me walk through each step.</p>
+</section>
+<section id="start-with-the-goal-not-the-solution" class="level2">
+<h2 class="anchored" data-anchor-id="start-with-the-goal-not-the-solution">1. Start with the goal, not the solution</h2>
+<p>When someone says “we want to use AI,” my first question is always: “To achieve what?”</p>
+<p>Not what model do you want. Not what data do you have. What business outcome are you trying to move?</p>
+<p>This question forces clarity. Vague ambitions become specific objectives. And half the time, the conversation that follows reveals they’re not actually ready to start. That’s not a failure - it’s saving months of wasted effort.</p>
+<p>The questions I work through:</p>
+<ul>
+<li><p>What is the business problem, and why does it need to be solved?</p></li>
+<li><p>How is it handled now, and how would a solution actually be used?</p></li>
+<li><p>How should performance be measured - and is that measure aligned with the business objective?</p></li>
+<li><p>Who will ultimately own the solution?</p></li>
+</ul>
+<p>If you can’t answer these clearly, you’re not ready to build anything.</p>
+<p>I’ve learned to treat it as an amber flag when a customer is more excited about the solution than the outcome. “We need a chatbot.” “We want to build a knowledge graph.” These aren’t bad starting points - but they’re means, not ends. The outcome might be “reduce interactions that require a human” or “surface the right context at the right time to enable faster decisions.” When I hear more enthusiasm for the technology than clarity on what it needs to achieve, I slow down. That’s usually a sign we need more conversation before anyone writes code.</p>
+</section>
+<section id="establish-shared-understanding-through-envisioning" class="level2">
+<h2 class="anchored" data-anchor-id="establish-shared-understanding-through-envisioning">2. Establish shared understanding through envisioning</h2>
+<p>Before any AI project, I run a structured workshop with data scientists, engineers, stakeholders, and subject matter experts. No code. No architecture discussions. Just alignment.</p>
+<p>The goal is shared understanding: the problem domain, the business motivations, any previous work, and the hypotheses we’ll explore - with agreed success criteria. What it’s explicitly not: solutionising, technology debates, backlog creation, or code reviews.</p>
+<p>One test I use early: think about the solution as a black box, and consider how a subject matter expert would solve this problem manually. What data would they need? If the available data wouldn’t let a human expert make the judgement in any credible way, your model probably won’t either. This surfaces data problems before you’ve written any code - and often reveals that you need different data than you assumed.</p>
+<p>On one project, a manufacturing company wanted to predict when and why their production lines would fail. After a couple weeks of looking at the data and visiting one of their factories, it was clear: the data they collected was nowhere near what the use case required. The project pivoted to a BI focus, helping them understand what data they’d need to collect in future. One of my team, a new joiner, was disappointed. I helped him see it differently: we’d saved the company months of building toward something the data couldn’t support. That’s not a failure - that’s a success you can only get by asking the right questions early.</p>
+<p>Why this discipline? Because I’ve seen too many projects where the data scientists thought they were solving problem A, the engineers thought they were building for problem B, and the stakeholder actually wanted C. One focused conversation at the start prevents months of misalignment later.</p>
+<p>The output is a document simple enough that someone outside the project could read it and understand what we’re trying to achieve. If you can’t write that document, you’re not ready to start the project.</p>
+</section>
+<section id="make-unknowns-explicit" class="level2">
+<h2 class="anchored" data-anchor-id="make-unknowns-explicit">3. Make unknowns explicit</h2>
+<p>This is where vocabulary matters.</p>
+<p>Teams often blur goal, objective, assumption, and hypothesis together. That sounds harmless, but it hides risk. I use them differently:</p>
+<ul>
+<li><p><strong>Goal</strong>: the overarching outcome.</p></li>
+<li><p><strong>Objective</strong>: a specific, measurable step toward it.</p></li>
+<li><p><strong>Assumption</strong>: a constraint we are accepting for now.</p></li>
+<li><p><strong>Hypothesis</strong>: an unknown we intend to prove or disprove.</p></li>
+</ul>
+<p>The point is to separate what we know from what we’re guessing. Most project plans are full of assumptions waiting to cause problems. Making them explicit is the first step to managing risk.</p>
+<p>A good hypothesis is specific and testable. Not “we think this will work,” but something concrete enough to validate or reject with evidence. For example: “Purchase and browse behaviour contains sufficient signal to differentiate customer segments.”</p>
+<p>Most teams resist writing hypotheses this way because it forces precision. That discomfort is the point.</p>
+</section>
+<section id="experiment-before-building" class="level2">
+<h2 class="anchored" data-anchor-id="experiment-before-building">4. Experiment before building</h2>
+<p>Don’t build the full solution around an approach you haven’t validated. Enabling work - data access, evaluation infrastructure, deployment paths - can and should run in parallel. What you’re avoiding is irreversible investment in a specific approach before you know it works.</p>
+<p>Experimentation isn’t a phase you do once at the start - it’s a tool you use throughout the project lifecycle. During discovery, during build, during production, post-launch. The question isn’t “should we run experiments?” but “what do we need to validate at this stage?”</p>
+<p>The goals of experimentation:</p>
+<ul>
+<li><p>Establish solution feasibility given current constraints</p></li>
+<li><p>Focus on finding answers rather than writing production code</p></li>
+<li><p>Reduce risk by validating assumptions and other unknowns</p></li>
+<li><p>Deliver objective and interpretable results</p></li>
+</ul>
+<p>One warning from experience: the numbers these experiments produce are noisier than they look. Early experiments typically run on a few dozen examples, and at that size a few-point difference between approaches is often indistinguishable from chance — which means a hypothesis can be ‘validated’ by luck. I’ve written separately about how to read eval numbers honestly, and how big an eval needs to be before it can answer the question you’re asking: <a href="../../posts/evals-are-measurements-not-tests/">Your AI Eval Isn’t a Test. It’s a Measurement.</a></p>
+<p>The mindset shift here is crucial: invalidating a hypothesis quickly is a win. It’s not failure - it’s valuable information that prevents wasted investment. It’s far better to discover in week three that your approach doesn’t work than to discover in month four after building a production system around it.</p>
+<p>Teams are accountable for outcomes: validated learning, a clear decision, and an identified next step.</p>
+</section>
+<section id="build-the-validated-thing" class="level2">
+<h2 class="anchored" data-anchor-id="build-the-validated-thing">5. Build the validated thing</h2>
+<p>Validation earns the right to commit to MVP.</p>
+<p>Now you know:</p>
+<ul>
+<li><p>The approach works</p></li>
+<li><p>The data is sufficient</p></li>
+<li><p>The metrics correlate to business value</p></li>
+<li><p>The critical assumptions hold</p></li>
+</ul>
+<p>If you’ve run enabling work in parallel, you’re not starting from zero. You’re building the solution on a foundation you’ve already proven works.</p>
+<p>But here’s where I see teams stumble: the “minimal” in MVP gets lost. Stakeholders want everything at once. Features creep in. The MVP becomes a fully-featured product before it ever reaches users.</p>
+<p>This defeats the entire point. You want signal fast. You want to get something in front of real users and see if it actually solves their problem. If it turns out the approach isn’t useful, every additional feature you built was wasted effort.</p>
+<p>The real learning doesn’t happen in architecture reviews or stakeholder demos. It happens when real users interact with a real system. The logging, the feedback, the unexpected ways people use - or don’t use - what you built. That’s where you learn whether your hypotheses were right.</p>
+<p>Resist the urge to polish before you’ve validated. Get to users. Learn. Then iterate.</p>
+</section>
+<section id="putting-it-into-practice" class="level2">
+<h2 class="anchored" data-anchor-id="putting-it-into-practice">Putting it into practice</h2>
+<p>I capture all of this in a one-page template at the start of every project:</p>
+<ul>
+<li><p><strong>Goal</strong>: the business outcome we’re trying to achieve.</p></li>
+<li><p><strong>Assumptions</strong>: what we’re taking as given. (These are risks if they’re wrong.)</p></li>
+<li><p><strong>Objectives</strong>: specific, measurable steps toward the goal.</p></li>
+<li><p><strong>Hypotheses</strong>: the unknowns we need to validate - each with testing methodology and success criteria.</p></li>
+</ul>
+<p>If you can complete it, you’re ready to start. If you can’t, you need more conversation before anyone commits to build.</p>
+</section>
+<section id="a-concrete-example" class="level2">
+<h2 class="anchored" data-anchor-id="a-concrete-example">A concrete example</h2>
+<p>The methodology didn’t start as a methodology. It started as a set of mistakes I kept making until the pattern became obvious.</p>
+<p>In 2018, before I’d formalised any of this, I was the ML lead at Marks &amp; Spencer working on a personal styling service called Try Tuesday. The brief was to build a recommendation system that could replicate what human stylists did - suggest outfits tailored to each customer.</p>
+<p>But when we applied outcome framing, “act like a human stylist” wasn’t specific enough to build toward. The outcome the business actually cared about was this: <em>drive additional sales by presenting customers with items they would not otherwise have purchased without the recommendation</em>.</p>
+<p>That reframing shaped every decision. It changed how we measured success - not just click-through rates, but whether recommendations drove purchases that wouldn’t have happened otherwise. It changed how we thought about the data we needed. It changed the hypotheses we tested.</p>
+<p>We explored whether we could measure similarity among items from their descriptions, whether customer purchase history could predict future purchases better than random, and whether we could identify complementary items that work together. Each was a testable hypothesis with clear success criteria. The approach worked, and the architecture was later integrated into M&amp;S’s broader recommendation platform.</p>
+<p>In practice, that meant the project looked something like this:</p>
+<ul>
+<li><p><strong>Goal</strong>: Drive additional sales by recommending items customers wouldn’t have purchased otherwise.</p></li>
+<li><p><strong>Objective</strong>: Demonstrate measurable uplift from personalised outfit recommendations.</p></li>
+<li><p><strong>Assumption</strong>: Customer behaviour and outfit data contain enough signal to learn which items work well together.</p></li>
+<li><p><strong>Hypothesis</strong>: Using item and behaviour signals, we can identify complementary products that drive more incremental purchases than the current approach.</p></li>
+</ul>
+<p>That framing changed the work completely. We weren’t trying to “build a stylist.” We were trying to prove that better recommendations could change purchasing behaviour in a measurable way.</p>
+<p>I wrote about the envisioning approach in 2021 - how to frame problems and define hypotheses at the start of a project. Since then, I’ve applied the full methodology across retail, automotive, government, healthcare, and manufacturing - different domains, different technologies, same approach.</p>
+<p>What strikes me is how the pattern repeats. Recently, I worked with a major fashion retailer that wanted to improve their AI styling assistant. The initial framing was familiar: “We want it to behave more like a real stylist.” “We want to increase customer engagement.”</p>
+<p>Same ask as Try Tuesday, years later, completely different technology.</p>
+<p>When we dug in, stakeholders were conflating two different problems: the assistant didn’t <em>know</em> the customer (personalisation), and it didn’t <em>talk</em> like a fashion expert (conversational quality). These feel related, but they’re different hypotheses with different solutions. Personalisation - knowing who someone is, what they’ve bought, what they avoid - would deliver measurable improvement. Prompt-tweaking for tone, while more visible, wouldn’t move the metrics that mattered.</p>
+<p>That distinction shaped everything. We scoped the work firmly around personalisation and defined testable hypotheses for each layer: could we build a unified view of the customer from their fragmented data? Could we use that context to make recommendations genuinely personal? Could we close the loop so every conversation made the next one better?</p>
+<p>The technology has evolved dramatically - large language models, richer customer graphs, architectures that didn’t exist when I was at M&amp;S. But the approach was identical: start with the outcome, separate what you know from what you’re guessing, and validate before you build.</p>
+<p>The technology evolves fast. The failure modes don’t. Teams still build before they know. Teams still explore without accountability.</p>
+<p>Building something has never been easier. Building the right thing is as hard as it ever was.</p>
+<p>The discipline is the same one I learned from getting it wrong: start with the outcome, separate what you know from what you’re guessing, and validate before you build.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script src="../../code-modal.js"></script>
+<script src="../../source-modal.js"></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/chris-hughes10\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

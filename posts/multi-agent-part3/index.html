@@ -1,0 +1,2454 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-01-19">
+<meta name="description" content="Using a planner and DAG execution pattern for predictable, cost-effective multi-agent workflows.">
+
+<title>Planning Multi-Agent Workflows: Trading Adaptability for Predictability – Chris Hughes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../profile.jpg" rel="icon" type="image/jpeg">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-6105abc1fbcb78934dd6dfb0e21c61fe.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-bad7eb6acb78bec35b2014344c72f93c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-6105abc1fbcb78934dd6dfb0e21c61fe.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<meta name="google-site-verification" content="AGF-dapdxVAPw474kSusFtx18hRUnG14JVgfg-pqNw8">
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Planning Multi-Agent Workflows: Trading Adaptability for Predictability – Chris Hughes">
+<meta property="og:description" content="Using a planner and DAG execution pattern for predictable, cost-effective multi-agent workflows.">
+<meta property="og:image" content="https://chris-hughes10.github.io/posts/multi-agent-part3/planner_dag_flow.svg">
+<meta property="og:site_name" content="Chris Hughes">
+<meta name="twitter:title" content="Planning Multi-Agent Workflows: Trading Adaptability for Predictability – Chris Hughes">
+<meta name="twitter:description" content="Using a planner and DAG execution pattern for predictable, cost-effective multi-agent workflows.">
+<meta name="twitter:image" content="https://chris-hughes10.github.io/posts/multi-agent-part3/planner_dag_flow.svg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Chris Hughes</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Planning Multi-Agent Workflows: Trading Adaptability for Predictability</h1>
+            <p class="subtitle lead">Front-loading intelligence with the Planner + DAG pattern for cost-effective multi-agent execution</p>
+                  <div>
+        <div class="description">
+          Using a planner and DAG execution pattern for predictable, cost-effective multi-agent workflows.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Agents</div>
+                <div class="quarto-category">Architecture</div>
+                <div class="quarto-category">Domain-Driven Design</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 19, 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#in-this-article-we-shall-cover" id="toc-in-this-article-we-shall-cover" class="nav-link active" data-scroll-target="#in-this-article-we-shall-cover">In this article, we shall cover:</a></li>
+  <li><a href="#the-cost-structure-problem" id="toc-the-cost-structure-problem" class="nav-link" data-scroll-target="#the-cost-structure-problem">The Cost Structure Problem</a>
+  <ul class="collapse">
+  <li><a href="#v1-orchestrator-costs-actual-benchmark-17-34-calls" id="toc-v1-orchestrator-costs-actual-benchmark-17-34-calls" class="nav-link" data-scroll-target="#v1-orchestrator-costs-actual-benchmark-17-34-calls">V1 Orchestrator Costs (actual benchmark: 17-34 calls)</a></li>
+  <li><a href="#v2-goal-aware-costs-actual-benchmark-21-calls-low-variance" id="toc-v2-goal-aware-costs-actual-benchmark-21-calls-low-variance" class="nav-link" data-scroll-target="#v2-goal-aware-costs-actual-benchmark-21-calls-low-variance">V2 Goal-Aware Costs (actual benchmark: ~21 calls, low variance)</a></li>
+  <li><a href="#the-economic-insight" id="toc-the-economic-insight" class="nav-link" data-scroll-target="#the-economic-insight">The Economic Insight</a></li>
+  </ul></li>
+  <li><a href="#the-planner-pattern-decide-everything-upfront" id="toc-the-planner-pattern-decide-everything-upfront" class="nav-link" data-scroll-target="#the-planner-pattern-decide-everything-upfront">The Planner Pattern: Decide Everything Upfront</a>
+  <ul class="collapse">
+  <li><a href="#core-idea" id="toc-core-idea" class="nav-link" data-scroll-target="#core-idea">Core Idea</a></li>
+  <li><a href="#what-you-get" id="toc-what-you-get" class="nav-link" data-scroll-target="#what-you-get">What You Get</a></li>
+  <li><a href="#what-you-sacrifice" id="toc-what-you-sacrifice" class="nav-link" data-scroll-target="#what-you-sacrifice">What You Sacrifice</a></li>
+  </ul></li>
+  <li><a href="#implementation-the-dag-executor" id="toc-implementation-the-dag-executor" class="nav-link" data-scroll-target="#implementation-the-dag-executor">Implementation: The DAG Executor</a>
+  <ul class="collapse">
+  <li><a href="#what-changes-in-the-architecture" id="toc-what-changes-in-the-architecture" class="nav-link" data-scroll-target="#what-changes-in-the-architecture">What Changes in the Architecture</a></li>
+  <li><a href="#executiondag-structure" id="toc-executiondag-structure" class="nav-link" data-scroll-target="#executiondag-structure">ExecutionDAG Structure</a></li>
+  <li><a href="#the-execution-loop" id="toc-the-execution-loop" class="nav-link" data-scroll-target="#the-execution-loop">The Execution Loop</a></li>
+  <li><a href="#variable-resolution" id="toc-variable-resolution" class="nav-link" data-scroll-target="#variable-resolution">Variable Resolution</a></li>
+  <li><a href="#model-tier-strategy-architectural-pattern" id="toc-model-tier-strategy-architectural-pattern" class="nav-link" data-scroll-target="#model-tier-strategy-architectural-pattern">Model Tier Strategy (Architectural Pattern)</a></li>
+  </ul></li>
+  <li><a href="#seeing-it-in-action" id="toc-seeing-it-in-action" class="nav-link" data-scroll-target="#seeing-it-in-action">Seeing It in Action</a>
+  <ul class="collapse">
+  <li><a href="#execution-flow" id="toc-execution-flow" class="nav-link" data-scroll-target="#execution-flow">Execution Flow</a></li>
+  <li><a href="#what-the-output-looks-like" id="toc-what-the-output-looks-like" class="nav-link" data-scroll-target="#what-the-output-looks-like">What the Output Looks Like</a></li>
+  </ul></li>
+  <li><a href="#comparison-three-patterns" id="toc-comparison-three-patterns" class="nav-link" data-scroll-target="#comparison-three-patterns">Comparison: Three Patterns</a>
+  <ul class="collapse">
+  <li><a href="#cost-analysis" id="toc-cost-analysis" class="nav-link" data-scroll-target="#cost-analysis">Cost Analysis</a></li>
+  <li><a href="#when-to-use-each-pattern" id="toc-when-to-use-each-pattern" class="nav-link" data-scroll-target="#when-to-use-each-pattern">When to Use Each Pattern</a></li>
+  <li><a href="#quick-decision-tree" id="toc-quick-decision-tree" class="nav-link" data-scroll-target="#quick-decision-tree">Quick Decision Tree</a></li>
+  <li><a href="#design-space-summary" id="toc-design-space-summary" class="nav-link" data-scroll-target="#design-space-summary">Design Space Summary</a></li>
+  </ul></li>
+  <li><a href="#limitations-and-trade-offs" id="toc-limitations-and-trade-offs" class="nav-link" data-scroll-target="#limitations-and-trade-offs">Limitations and Trade-offs</a>
+  <ul class="collapse">
+  <li><a href="#what-plannerdag-cant-do-well" id="toc-what-plannerdag-cant-do-well" class="nav-link" data-scroll-target="#what-plannerdag-cant-do-well">What Planner+DAG Can’t Do Well</a></li>
+  <li><a href="#when-runtime-decisions-win" id="toc-when-runtime-decisions-win" class="nav-link" data-scroll-target="#when-runtime-decisions-win">When Runtime Decisions Win</a></li>
+  <li><a href="#when-upfront-planning-wins" id="toc-when-upfront-planning-wins" class="nav-link" data-scroll-target="#when-upfront-planning-wins">When Upfront Planning Wins</a></li>
+  </ul></li>
+  <li><a href="#hybrid-approaches" id="toc-hybrid-approaches" class="nav-link" data-scroll-target="#hybrid-approaches">Hybrid Approaches</a>
+  <ul class="collapse">
+  <li><a href="#adaptive-planning" id="toc-adaptive-planning" class="nav-link" data-scroll-target="#adaptive-planning">Adaptive Planning</a></li>
+  <li><a href="#tiered-model-selection" id="toc-tiered-model-selection" class="nav-link" data-scroll-target="#tiered-model-selection">Tiered Model Selection</a></li>
+  </ul></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key Takeaways</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#view-the-code" id="toc-view-the-code" class="nav-link" data-scroll-target="#view-the-code">View the Code</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+
+<div class="source-button-wrapper"><button class="source-md-button" type="button" aria-label="View raw markdown source"><span class="source-md-button-icon" aria-hidden="true">📄</span> View Markdown</button><div class="source-md-content" hidden="">---
+title: "Planning Multi-Agent Workflows: Trading Adaptability for Predictability"
+subtitle: "Front-loading intelligence with the Planner + DAG pattern for cost-effective multi-agent execution"
+date: "2026-01-19"
+categories: [Agents, Architecture, "Domain-Driven Design"]
+reading-time: 20
+description: "Using a planner and DAG execution pattern for predictable, cost-effective multi-agent workflows."
+---
+
+::: {.source-button}
+:::
+
+*This is Part 3 of a series on building multi-agent systems. [Part 1](../multi-agent-part1/) covered clean architecture for agents (tools vs services, domain-driven design). [Part 2](../multi-agent-part2/) explored goal-aware agent coordination (distributed reasoning, event-driven handoffs).*
+
+---
+
+The goal-aware pattern from Part 2 felt elegant. Agents reasoning about user goals, handing off to each other, workflows emerging from distributed intelligence rather than central control. It worked beautifully for our pork loin research task.
+
+Then I looked at the LLM call counts.
+
+Every agent in V2 needs to reason about the user's goal. In our benchmark workflow ("search → fetch transcripts → summarize → write"), this adds up:
+
+```
+V2 Goal-Aware Pattern (actual benchmark):
+  Dispatcher routing (5 handoffs):    5 LLM calls
+  Agent validation (5 agents):        5 LLM calls
+  Agent execution reasoning:          6 LLM calls
+  Goal satisfaction checks:           5 LLM calls
+
+Total: ~21 LLM calls (low variance across runs)
+```
+
+When every agent needs to think, you need capable models throughout. That gets expensive.
+
+This led us to explore a different dimension: **What if we front-load the intelligence?**
+
+## In this article, we shall cover:
+
+- Why goal-aware agents have high per-step LLM costs
+- The economic argument for upfront planning
+- How the Planner pattern *enables* strategic model selection
+- Implementing DAG-based execution with dependency tracking
+- When predictability matters more than adaptability
+- Trade-offs between the three patterns we've explored
+
+---
+
+## The Cost Structure Problem
+
+### V1 Orchestrator Costs (actual benchmark: 17-34 calls)
+
+The orchestrator pattern shows **high variance** because the LLM decides the workflow at runtime:
+
+```
+V1 Orchestrator Pattern (Run A - 17 calls, minimal approach):
+  Orchestrator: "I'll search both channels"        → 2 SearchAgent calls
+  Orchestrator: "Now fetch transcripts"            → 3 TranscriptAgent calls
+  Orchestrator: "Writer can synthesize directly"   → 1 WriterAgent call
+  Plus orchestrator decision overhead:             ~11 LLM calls
+
+V1 Orchestrator Pattern (Run B - 34 calls, thorough approach):
+  Orchestrator: "I'll do three targeted searches"  → 3 SearchAgent calls
+  Orchestrator: "Fetch all transcripts"            → 5 TranscriptAgent calls
+  Orchestrator: "Summarize each, then combine"     → 4 SummarizeAgent calls
+  Orchestrator: "Write the final document"         → 1 WriterAgent call
+  Plus orchestrator decision overhead:             ~21 LLM calls
+```
+
+Same request, different runtime decisions, 2× cost difference.
+
+**Cost characteristics:**
+
+- Orchestrator decides *scope* at runtime (how many searches? skip summarization?)
+- Each decision point is an LLM call
+- Context accumulates at orchestrator (token costs grow with chain length)
+- **Unpredictable costs** - you don't know until it runs
+
+### V2 Goal-Aware Costs (actual benchmark: ~21 calls, low variance)
+
+```
+V2 Goal-Aware Pattern (consistent across all runs):
+  Dispatcher routing (5 handoffs):    5 LLM calls
+  Agent validation (5 agents):        5 LLM calls
+  Agent execution reasoning:          6 LLM calls
+  Goal satisfaction checks:           5 LLM calls
+
+Total: ~21 LLM calls (low variance across runs)
+```
+
+**Cost characteristics:**
+
+- Centralized dispatcher routes tasks (1 LLM call per handoff)
+- Agents validate assignments (1 LLM call per agent)
+- Execution uses direct service calls where possible
+- **Predictable costs** - ~21 calls for every request
+
+### The Economic Insight
+
+The Planner pattern opens an architectural opportunity:
+
+1. Use a powerful model ONCE to create a complete plan
+2. Execute the plan mechanically (potentially with cheaper/faster models)
+3. Trade adaptability for predictable costs
+
+This is the **Planner + DAG pattern**. The core benefit is *reduced redundant reasoning* - instead of every agent re-evaluating "is the goal satisfied?", you decide the workflow once upfront.
+
+&gt; **Note on model tiers**: While the pattern *enables* using different model tiers for planning vs execution, our reference implementation uses consistent model quality throughout. The architectural benefit is immediate (inspectable plans, reduced reasoning overhead); model tier optimization is a straightforward enhancement the pattern supports.
+
+---
+
+## The Planner Pattern: Decide Everything Upfront
+
+### Core Idea
+
+```
+User Request
+    ↓
+Planner (powerful model): "What's the complete workflow?"
+    ↓
+ExecutionDAG (data structure - no LLM needed)
+    ↓
+Step 1 → Agent A (cheaper model - just execute)
+Step 2 → Agent B (cheaper model - just execute)
+Step 3 → Agent C (capable model if needed for task complexity)
+```
+
+**Cost structure (actual benchmark: 3 calls, zero variance):**
+```
+V3 Planner Pattern (consistent across all runs):
+  PlannerAgent creates DAG:           1 LLM call
+  Search execution:                   0 LLM calls (direct YouTube API call)
+  Transcript fetching:                0 LLM calls (direct service call)
+  Summarization × 2:                  2 LLM calls (requires reasoning)
+  File writing:                       0 LLM calls (direct file I/O)
+
+Total: 3 LLM calls (zero variance across runs)
+```
+
+**Why so efficient?** The key insight is that most workflow steps don't need LLM reasoning:
+
+- **Search**: Just call the YouTube API with parameters from the plan
+- **Transcript**: Just fetch from YouTube's transcript service
+- **File writing**: Just write the formatted output to disk
+
+Only **summarization** requires an LLM to reason about content. Everything else is mechanical execution of the plan. This is why V3 uses 85% fewer LLM calls than V2.
+
+![Planner + DAG Pattern Flow](planner_dag_flow.svg)
+
+**Where do the 18 eliminated calls go?**
+
+| V2 Overhead | V3 Equivalent |
+|-------------|---------------|
+| Dispatcher routes each handoff (5 LLM calls) | Plan specifies agents upfront (0 calls) |
+| Agents validate assignments (5 LLM calls) | Plan is authoritative (0 calls) |
+| Agent execution reasoning (6 LLM calls) | Steps execute mechanically (0 calls) |
+| Goal satisfaction checks (5 LLM calls) | Plan defines completion (0 calls) |
+
+The planner does more work upfront, but it's *one* call instead of twenty-one distributed calls. V2's dispatcher and validation overhead exists because agents need to dynamically figure out who should do what. V3 answers that question once, in the plan.
+
+### What You Get
+
+**1. Cost Control**
+- Know exact number of steps before starting
+- Use model tiers strategically (powerful for planning, cheaper for execution)
+- No per-step reasoning overhead
+
+**2. Inspectable Plans**
+```json
+{
+  "goal": "Find pork loin videos from Chuds BBQ, get transcript, summarize cooking temps",
+  "steps": [
+    {
+      "id": "search_pork",
+      "agent": "search",
+      "description": "Search for Chuds BBQ pork loin videos",
+      "input": {"query": "Chuds BBQ pork loin kamado"},
+      "depends_on": []
+    },
+    {
+      "id": "fetch_transcript",
+      "agent": "transcript",
+      "description": "Get transcript for top search result",
+      "input": {"video_id": "$search_pork.results[0].video_id"},
+      "depends_on": ["search_pork"]
+    },
+    {
+      "id": "summarize",
+      "agent": "summarize",
+      "description": "Extract cooking temperatures and times",
+      "input": {"text": "$fetch_transcript.text", "title": "$fetch_transcript.title"},
+      "depends_on": ["fetch_transcript"]
+    }
+  ]
+}
+```
+
+You can SEE this before anything runs. Validate it. Store it. Modify it.
+
+**3. Compliance &amp; Auditability**
+- "Show me what will happen before you do it"
+- Compare planned steps vs actual execution
+- Clear dependency chain for debugging
+
+**4. Parallel Execution**
+Independent steps (no shared dependencies) run concurrently:
+```
+Step 1a and 1b (no dependencies) → execute in parallel
+Step 2 (depends on both 1a and 1b) → waits for completion
+```
+
+### What You Sacrifice
+
+**1. Adaptability**
+- Can't change course based on findings
+- If search returns no relevant videos, plan still tries to fetch transcripts
+- **Mitigation**: Validate step outputs before proceeding; re-plan on unexpected results (see Hybrid Approaches below)
+
+**2. Upfront Planning Cost**
+- Every request pays planning cost, even simple ones
+- V1/V2 only use LLM when needed at each step
+- **Mitigation**: Use pattern selection — route simple requests through V1, reserve V3 for complex batch jobs where the planning cost is amortized
+
+**3. Plan Quality Dependency**
+- If planner generates invalid DAG, validation catches it but requires re-planning
+- Planner might hallucinate non-existent agents or capabilities
+- **Mitigation**: Validate plans against agent registry before execution; provide the planner with explicit capability lists
+
+---
+
+## Implementation: The DAG Executor
+
+With the conceptual foundation in place, let's look at how the DAG executor actually works. The implementation needs to solve three core problems: representing the workflow as a data structure, executing steps while respecting dependencies, and resolving variable references between steps. Each piece is straightforward on its own—the elegance comes from how they compose.
+
+### What Changes in the Architecture
+
+As with the goal-aware pattern in Part 2, the domain layer stays the same—YouTube search, transcript fetching, summarization. Those services don't change. The Planner pattern adds a thin coordination layer on top:
+
+```
+src/youtube_agent_planner/
+├── cli/                  # Entry points (same pattern as V1/V2)
+│   └── commands.py
+├── agents/
+│   └── planner.py        # NEW: Creates DAGs from natural language
+└── infra/
+    └── dag_executor.py   # NEW: Runs DAGs with dependency tracking
+```
+
+The planner reuses infrastructure from both previous patterns:
+
+- **From V1 (Orchestrator)**: Chat client setup, agent execution patterns
+- **From V2 (Goal-Aware)**: Session management, agent registry, result types (`PartialResult`, `Task`)
+
+What's genuinely new is minimal: the `PlannerAgent` that generates DAGs, and the `DAGExecutor` that runs them. This is the benefit of the layered architecture we established in Part 1—new coordination patterns don't require rewriting business logic.
+
+### ExecutionDAG Structure
+
+The DAG needs to capture three things: what each step does, which agent executes it, and what must complete before it can run. Here's the core data structure:
+
+```python
+@dataclass
+class DAGStep:
+    id: str                           # Unique identifier
+    agent_name: str                   # Which agent executes
+    description: str                  # Human-readable intent
+    input_template: dict[str, Any]    # Input (may have $variables)
+    depends_on: list[str]             # Steps that must complete first
+    model_tier: str                   # "powerful" | "capable" | "cheap"
+    status: StepStatus                # pending/ready/running/completed/failed
+    result: Any = None                # Output after execution
+
+@dataclass
+class ExecutionDAG:
+    goal: str                         # User's original goal
+    steps: list[DAGStep]              # Ordered workflow
+
+    def get_ready_steps(self, completed: set[str]) -&gt; list[DAGStep]:
+        """Get steps whose dependencies are satisfied."""
+        return [
+            step for step in self.steps
+            if step.status == "pending"
+            and all(dep in completed for dep in step.depends_on)
+        ]
+
+    def validate(self) -&gt; list[str]:
+        """Check for cycles, missing deps, duplicate IDs."""
+        # Topological sort to detect cycles
+        # Verify all depends_on references exist
+        # Check for duplicate step IDs
+```
+
+### The Execution Loop
+
+With the data structure in place, we need a way to run it. The execution loop repeatedly finds steps whose dependencies are satisfied and runs them in parallel:
+
+```python
+async def execute_dag(dag: ExecutionDAG, agents: dict) -&gt; dict:
+    """Execute DAG with dependency tracking and parallelism."""
+
+    completed = set()
+    results = {}
+
+    while len(completed) &lt; len(dag.steps):
+        # Get all steps whose dependencies are satisfied
+        ready_steps = dag.get_ready_steps(completed)
+
+        if not ready_steps:
+            if len(completed) == len(dag.steps):
+                break  # All done
+            else:
+                raise ExecutionError("Deadlock: no ready steps but workflow incomplete")
+
+        # Execute ready steps in parallel
+        tasks = [
+            execute_step(step, agents[step.agent_name], results)
+            for step in ready_steps
+        ]
+
+        step_results = await asyncio.gather(*tasks, return_exceptions=True)
+
+        # Process results
+        for step, result in zip(ready_steps, step_results):
+            if isinstance(result, Exception):
+                # Handle failure (could trigger re-planning)
+                step.status = "failed"
+                raise ExecutionError(f"Step {step.id} failed: {result}")
+            else:
+                step.status = "completed"
+                completed.add(step.id)
+                results[step.id] = result
+
+    return results
+```
+
+### Variable Resolution
+
+The execution loop handles *when* steps run, but there's still the question of *how* steps communicate. When the transcript step needs the video ID from the search step, how does that data flow? This is where variable resolution comes in. Steps reference outputs from previous steps using `$step_id.field` syntax:
+
+```python
+def resolve_variables(input_template: dict, results: dict) -&gt; dict:
+    """Resolve $step_id.field references to actual values."""
+
+    resolved = {}
+    for key, value in input_template.items():
+        if isinstance(value, str) and value.startswith("$"):
+            # Parse $step_id.field.nested
+            parts = value[1:].split(".")
+            step_id = parts[0]
+
+            # Navigate nested fields
+            result = results[step_id]
+            for part in parts[1:]:
+                if "[" in part:  # Array access: results[0]
+                    field, idx = part.split("[")
+                    idx = int(idx.rstrip("]"))
+                    result = result[field][idx]
+                else:
+                    result = result[part]
+
+            resolved[key] = result
+        else:
+            resolved[key] = value
+
+    return resolved
+```
+
+**Example:**
+```python
+# Step input template
+{"video_id": "$search_pork.results[0].id"}
+
+# Results from search_pork step
+results["search_pork"] = {
+    "results": [
+        {"id": "fI86yXKlnQA", "title": "Pork Loin on the Kamado Joe"},
+        {"id": "2AF1ysZ8eEA", "title": "Smoked Pork Tenderloin"}
+    ]
+}
+
+# Resolves to
+{"video_id": "fI86yXKlnQA"}
+```
+
+### Model Tier Strategy (Architectural Pattern)
+
+With the execution machinery in place—data structure, execution loop, and variable resolution—we have a working DAG executor. But the explicit plan structure opens up an optimization that's harder to achieve with runtime coordination: strategic model selection per step.
+
+The DAG structure enables a powerful optimization: assign different model tiers based on task complexity. Here's what this *could* look like:
+
+```python
+def get_model_for_tier(tier: str) -&gt; str:
+    """Map model tiers to actual model names."""
+    return {
+        "powerful": "claude-opus-4.5",  # Planning, complex reasoning
+        "capable": "gpt-5.2",       # General execution
+        "cheap": "claude-sonnet-4.5",      # Simple execution tasks
+    }[tier]
+
+async def execute_step(step: DAGStep, agent: BaseAgent, results: dict) -&gt; Any:
+    """Execute a single DAG step with appropriate model tier."""
+
+    # Resolve variable references
+    input_data = resolve_variables(step.input_template, results)
+
+    # Get model for this step's tier
+    model = get_model_for_tier(step.model_tier)
+
+    # Execute agent with resolved input (no goal reasoning needed)
+    result = await agent.execute_direct(
+        input_data=input_data,
+        model=model
+    )
+
+    return result
+```
+
+While our reference implementation doesn't implement model tier selection (all agents use the same model), the pattern makes this optimization straightforward to add. The key insight is that once you have an explicit plan, you can make informed decisions about resource allocation per step.
+
+---
+
+## Seeing It in Action
+
+Theory is useful, but let's see the planner actually work. Here's what happens when we run our standard pork loin request through the planner CLI:
+
+```bash
+$ uv run youtube-agent-planner chat -r "I want to cook a pork loin on a Kamado.
+  Find techniques from Chuds BBQ and Fork and Embers.
+  I need temperatures, timing, and grill setup.
+  Save results to pork_loin_guide.md"
+```
+
+```
+YouTube Agent Planner - Interactive Mode
+==================================================
+Creates explicit execution plans before running.
+Type 'exit' or 'quit' to stop.
+
+[Planning...] Creating execution plan ✓ (5 steps)
+[Plan] Goal: Find YouTube-based techniques for cooking a pork loin roast on a Kamado
+  grill/smoker (preferably Fork and Embers and Chuds BBQ), extract key parameters
+  (grill temp, setup, target internal temp, time), and save results to a markdown file.
+  → yt_search_trusted_channels: Search YouTube for pork loin roast Kamado/smoker
+      videos focusing on Fork and Embers and Chuds BBQ channels.
+  → fetch_transcript_video_1: Fetch transcript for the top search result.
+      (after: yt_search_trusted_channels)
+  → fetch_transcript_video_2: Fetch transcript for the second search result.
+      (after: yt_search_trusted_channels)
+  → summarize_and_extract_cook_params: From the transcripts, extract and consolidate
+      cooker temp targets, Kamado setup, target internal temps, and time guidance.
+      (after: fetch_transcript_video_1, fetch_transcript_video_2)
+  → write_markdown_report: Write a markdown file summarizing the extracted cooking
+      techniques with citations and a parameter table.
+      (after: summarize_and_extract_cook_params)
+[Executing...] Running DAG
+```
+
+Notice what's different from V1 and V2:
+
+**1. The plan is visible before execution starts.** You can see exactly what will happen—which agents, in what order, with what dependencies. No surprises.
+
+**2. Parallel steps are explicit.** `fetch_transcript_video_1` and `fetch_transcript_video_2` both depend only on the search step, so they'll run concurrently. The summarization step waits for both.
+
+**3. The LLM reasoning happened once.** That single `[Planning...]` step is the only time the planner LLM runs. Everything after is mechanical execution.
+
+### Execution Flow
+
+With verbose logging enabled (`-v`), we can watch the DAG execute:
+
+```
+[Executor] Starting DAG execution
+[Executor] Ready steps: yt_search_trusted_channels
+[search] Executing: Search YouTube for pork loin roast Kamado/smoker videos...
+[search] ✓ yt_search_trusted_channels completed (1079ms)
+[Executor] Ready steps: fetch_transcript_video_1, fetch_transcript_video_2 (parallel)
+[transcript] Executing: Fetch transcript for the top search result...
+[transcript] Executing: Fetch transcript for the second search result...
+[transcript] ✓ fetch_transcript_video_1 completed (6ms)
+[transcript] ✓ fetch_transcript_video_2 completed (9ms)
+[Executor] Ready steps: summarize_and_extract_cook_params
+[summarize] Executing: From the transcripts, extract and consolidate cooker temp...
+[summarize] ✓ summarize_and_extract_cook_params completed (37266ms)
+[Executor] Ready steps: write_markdown_report
+[writer] Executing: Write a markdown file summarizing the extracted cooking...
+[writer] ✓ write_markdown_report completed (19673ms)
+[Executor] DAG complete: 5/5 steps succeeded
+```
+
+The executor shows each step as it becomes ready, marks parallel steps explicitly, and reports timing. You can see the transcript fetches ran concurrently (both started before either completed).
+
+### What the Output Looks Like
+
+The generated `test_planner_pork_loin.md` (snippet):
+
+```markdown
+# Pork Loin Roast on a Kamado Grill/Smoker — Temps &amp; Timing
+
+## Sources (YouTube)
+- Chuds BBQ (video_id: 2AF1ysZ8eEA)
+- Chuds BBQ (video_id: fI86yXKlnQA)
+
+## Summary
+The video(s) focus on how to make a **lean boneless pork loin roast** come out
+**juicy, tender, and "holiday roast" worthy** using **brining, moderate pit temps
+(~275–300°F), and pulling at ~140–145°F internal**, then finishing with a glaze.
+
+...
+
+## Temps, timing, and doneness guidance
+- **Pit temp:** ~**275–300°F** (both approaches cluster here).
+- **Pull temp:** about **140–145°F internal**.
+- **Cook time:** ~2–4 hours depending on method and size.
+
+## Practical takeaways
+- **Brining is the unlock** for pork loin (wet or dry).
+- **Finish matters:** sear/grill + glaze or mop + butter-rest.
+- **Serve like a holiday roast:** slice thin, consider gravy/sauce.
+```
+
+The same structure we got from V1 and V2—but with predictable cost and an inspectable plan.
+
+---
+
+## Comparison: Three Patterns
+
+### Cost Analysis
+
+| Pattern | LLM Calls* | Variance | Why |
+|---------|-----------|----------|-----|
+| **V1 Orchestrator** | 17-34 | **High** | LLM decides workflow at runtime - unpredictable |
+| **V2 Goal-Aware** | ~21 | **Low** | Dispatcher routes + agents validate, then execute via direct service calls |
+| **V3 Planner+DAG** | ~3 | **None** | Single planning call, then mechanical execution via direct service calls |
+
+*Measured LLM calls for a "search → fetch transcripts → summarize → write" workflow using the reference implementation. Numbers are based on multiple benchmark runs.*
+
+The key insight here is **predictability, not just efficiency**.
+
+**V1 Orchestrator breakdown (17-34 calls):**
+The orchestrator makes LLM calls at each decision point, plus each sub-agent makes its own calls. The variance comes from runtime decisions:
+
+| Decision Point | Observed Variance |
+|----------------|-------------------|
+| Search strategy | 1-3 searches, sequential or parallel |
+| Step skipping | Summarization sometimes skipped entirely |
+| Delegation phrasing | Different wording affects sub-agent behaviour |
+
+With verbose logging enabled (`-v` flag), we can see these decisions in action:
+
+```
+# Run A (17 calls) - Minimal approach, skips summarization
+SearchAgent called with: Kamado pork loin Fork and Embers
+SearchAgent called with: Chuds BBQ pork loin kamado
+TranscriptAgent called with: Fetch transcript for video FsbwQI-EI-k...
+TranscriptAgent called with: Fetch transcript for video 2AF1ysZ8eEA...
+TranscriptAgent called with: Fetch transcript for video fI86yXKlnQA...
+WriterAgent called with: Write a markdown file...  # No SummarizeAgent!
+
+# Run B (25 calls) - Thorough approach with summarization
+SearchAgent called with: Find YouTube videos where Fork and Embers...
+SearchAgent called with: Find YouTube videos where Chuds BBQ...
+SearchAgent called with: Find top YouTube videos about cooking pork loin...
+TranscriptAgent called with: ...
+SummarizeAgent called with: From the provided transcripts, extract...
+WriterAgent called with: ...
+```
+
+Run A decided the WriterAgent could synthesize directly from transcripts. Run B added a summarization step. Both produced valid outputs, but with different costs.
+
+**V2 Goal-Aware breakdown (~21 calls, low variance):**
+The dispatcher pattern centralizes routing decisions:
+
+- Dispatcher routing: 5 calls (one per handoff in the chain)
+- Agent validation: 5 calls (each agent confirms assignment)
+- Execution reasoning: 6 calls (query extraction, goal reasoning)
+- Goal satisfaction checks: 5 calls (each agent evaluates completion)
+
+In benchmark testing, V2 produced **approximately 21 calls across runs with low variance**. Why? The dispatcher routes each task to a specific agent (1 LLM call), the agent validates the assignment (1 LLM call), then executes using direct service calls where possible. The validation overhead ensures correct routing but adds consistent cost.
+
+**V3 Planner breakdown (~3 calls):**
+- PlannerAgent: 1 call (creates the complete DAG upfront)
+- Summarization: 2 calls (only step requiring LLM reasoning)
+- All other execution: 0 LLM calls (direct service calls)
+
+Search, transcript fetching, and file writing are executed mechanically via direct service calls - no LLM reasoning needed. Only summarization requires LLM involvement during execution. This is why V3 is dramatically more efficient: it front-loads all reasoning into the planning phase.
+
+### When to Use Each Pattern
+
+| Question | Best Pattern | Rationale |
+|----------|--------------|-----------|
+| Building a conversational interface? | **V1 Orchestrator** | Back-and-forth, context maintenance |
+| Need agents to adapt to findings? | **V2 Goal-Aware** | Goal-aware reasoning, emergent workflows |
+| Running high-volume batch processing? | **V3 Planner+DAG** | Lowest per-request cost |
+| Need to approve workflows before execution? | **V3 Planner+DAG** | Inspectable plans |
+| Compliance/audit requirements? | **V3 Planner+DAG** | Full execution trace |
+| Complex dependencies between steps? | **V3 Planner+DAG** | Explicit DAG prevents mistakes |
+| Debugging complex workflows? | **V3 Planner+DAG** | Compare plan vs execution |
+| Cost is primary constraint? | **V3 Planner+DAG** | Strategic model tier usage |
+| Adaptability is primary constraint? | **V2 Goal-Aware** | Responds to what it finds |
+| Simplicity is primary constraint? | **V1 Orchestrator** | Well-understood pattern |
+
+### Quick Decision Tree
+
+```
+            Which Multi-Agent Pattern Should You Use?
+            ─────────────────────────────────────────
+                              │
+                              ▼
+               ┌──────────────────────────────┐
+               │  Need conversational         │
+               │  back-and-forth with user?   │
+               └──────────────────────────────┘
+                      │                │
+                     YES               NO
+                      │                │
+                      ▼                ▼
+              ┌──────────────┐   ┌──────────────────────────┐
+              │      V1      │   │  Do agents need to       │
+              │ Orchestrator │   │  adapt based on findings?│
+              └──────────────┘   └──────────────────────────┘
+                                       │              │
+                                      YES             NO
+                                       │              │
+                                       ▼              ▼
+                               ┌──────────────┐  ┌──────────────────────┐
+                               │      V2      │  │  Need to inspect/    │
+                               │  Goal-Aware  │  │  approve plan first? │
+                               └──────────────┘  └──────────────────────┘
+                                                       │           │
+                                                      YES          NO
+                                                       │           │
+                                                       ▼           ▼
+                                               ┌──────────────┐ ┌──────────────┐
+                                               │      V3      │ │   Start      │
+                                               │ Planner+DAG  │ │   with V1    │
+                                               └──────────────┘ └──────────────┘
+```
+
+**The short version:**
+- **V1 Orchestrator**: Start here. Simple, conversational, well-understood.
+- **V2 Goal-Aware**: When workflows should emerge from agent reasoning.
+- **V3 Planner+DAG**: When you need predictability, auditability, or cost control.
+
+### Design Space Summary
+
+We've now explored multi-agent coordination across three dimensions:
+
+**1. Architecture ([Part 1](../multi-agent-part1/)):** How to structure clean agent code
+- Tools vs Services separation
+- Domain-Driven Design for agent systems
+- Strategic testing with minimal mocking
+
+**2. Who Coordinates ([Part 2](../multi-agent-part2/)):** Central vs distributed
+- V1: Central orchestrator directs everything
+- V2: Distributed agents self-coordinate
+
+**3. When to Decide (Part 3):** Runtime vs upfront
+- V1/V2: Decide at each step (adaptive)
+- V3: Decide everything upfront (predictable)
+
+---
+
+## Limitations and Trade-offs
+
+### What Planner+DAG Can't Do Well
+
+**1. Handle Unexpected Conditions**
+```
+Plan: Search → Fetch Transcript → Summarize
+
+Reality: Search returns no relevant videos
+Problem: Plan still tries to fetch transcript for non-existent video
+
+Mitigation: Error handling + re-planning (adds cost)
+```
+
+**2. Conversational Workflows**
+- User wants to refine based on intermediate results
+- V1 orchestrator maintains conversation context naturally
+- V3 would need to re-plan for each user input
+
+**3. Exploratory Research**
+- "Find interesting videos about X" (undefined criteria)
+- V2 goal-aware agents can explore and adapt
+- V3 needs concrete plan upfront
+
+### When Runtime Decisions Win
+
+- User needs evolve during conversation
+- Workflow depends on quality of intermediate findings
+- Cost sensitivity when many requests don't need full workflow
+- Unknown complexity until you start
+
+### When Upfront Planning Wins
+
+- High-volume processing (cost matters more than adaptability per request)
+- Compliance requires pre-approval of execution plan
+- Complex dependencies easy to get wrong manually
+- Need to estimate cost/time before starting
+- Debugging is critical (plan as reference for "what should have happened")
+
+---
+
+## Hybrid Approaches
+
+### Adaptive Planning
+
+Best of both worlds: plan high-level structure, re-plan on surprises.
+
+```python
+async def adaptive_execution(user_goal: str) -&gt; Any:
+    """Execute with planning but adapt when needed."""
+
+    # Create initial plan
+    plan = await planner.create_plan(user_goal, model="powerful")
+
+    for step in plan.steps:
+        try:
+            # Execute step with cheap model
+            result = await execute_step(step, model="cheap")
+
+            # Validate result quality
+            if not is_acceptable(result, user_goal):
+                # Re-plan remainder with new context
+                remaining_plan = await planner.replan(
+                    original_goal=user_goal,
+                    completed_steps=completed,
+                    issue=f"Step {step.id} produced inadequate result",
+                    model="powerful"
+                )
+                plan = merge_plans(completed, remaining_plan)
+
+        except ExecutionError as e:
+            # Execution failed - re-plan
+            plan = await planner.replan(
+                original_goal=user_goal,
+                completed_steps=completed,
+                failure=str(e),
+                model="powerful"
+            )
+```
+
+**Cost characteristics:**
+- Start with single planning call (optimistic)
+- Add re-planning only when needed (failures, quality issues)
+- Still uses cheap models for most execution
+
+### Tiered Model Selection
+
+```python
+# Define model requirements per agent
+AGENT_MODEL_REQUIREMENTS = {
+    "search": "cheap",        # Simple YouTube search
+    "transcript": "cheap",    # Mechanical transcript fetch
+    "summarize": "capable",   # Needs understanding
+    "writer": "cheap",        # Template-based file writing
+    "synthesize": "powerful", # Complex reasoning across sources
+}
+
+# Planner respects these when assigning model tiers
+def assign_model_tier(step: DAGStep) -&gt; str:
+    """Assign model tier based on agent requirements."""
+    return AGENT_MODEL_REQUIREMENTS[step.agent_name]
+```
+
+---
+
+## Key Takeaways
+
+These principles apply regardless of which agent framework you choose:
+
+1. **Front-loading intelligence reduces per-request costs** - A single planning call can replace dozens of distributed reasoning calls. When you're processing volume, this adds up.
+
+2. **Explicit plans enable inspection and approval** - Unlike runtime orchestration, you can see, validate, and modify the workflow before it runs. This matters for compliance, debugging, and user trust.
+
+3. **DAG structures make parallelism natural** - When dependencies are explicit, the executor can automatically parallelize independent steps. No manual coordination needed.
+
+4. **Variable resolution connects steps cleanly** - The `$step_id.field` syntax lets steps reference each other's outputs without coupling. Each step remains independent.
+
+5. **The pattern enables—but doesn't require—model tier optimization** - Once you have an explicit plan, you *can* assign different models per step. The architecture supports it even if you don't use it immediately.
+
+6. **Predictability and adaptability are genuine trade-offs** - The planner can't adapt to surprises mid-execution. If your workflow needs to change course based on findings, goal-aware agents (V2) are the better choice.
+
+---
+
+## Conclusion
+
+The insight that made the Planner pattern compelling wasn't just predictability - it was **economics**.
+
+Goal-aware agents (V2) are elegant, but every agent needs to reason about the goal. That means every agent needs a capable model. When you're processing hundreds or thousands of requests, those costs add up.
+
+The Planner pattern lets you be strategic: use a powerful model once to create a complete plan, then execute the plan with reduced per-step overhead. For high-volume scenarios, this can significantly reduce costs compared to goal-aware agents.
+
+But it's a trade-off: you sacrifice the adaptability that makes goal-aware agents powerful. The workflow can't change course based on what it finds. If that adaptability matters more than cost, goal-aware agents are still the right choice.
+
+**The Three Patterns, Summarized:**
+
+- **V1 Orchestrator:** Simple, conversational, well-understood
+- **V2 Goal-Aware:** Adaptive, emergent, distributed reasoning
+- **V3 Planner+DAG:** Predictable, economical, auditable
+
+Choose based on your constraints: cost, adaptability, compliance, simplicity.
+
+---
+
+**What's Next:** This completes our exploration of multi-agent coordination patterns. All three implementations are available in the reference codebase. Try them, break them, adapt them to your needs.
+
+The patterns aren't mutually exclusive. Real systems might use:
+
+- V1 for user-facing conversational interfaces
+- V3 for backend batch processing
+- V2 for exploratory research workflows
+
+Multi-agent systems aren't mysterious. They're software systems with clear architectural choices. Choose the pattern that fits your constraints.
+
+---
+
+## View the Code
+
+All patterns described in this series are implemented in the reference codebase:
+
+- **[V1 Orchestrator Pattern](https://github.com/Chris-hughes10/multi-agent-patterns/tree/main/src/youtube_agent_orchestrator)** - Covered in Part 1
+- **[V2 Goal-Aware Pattern](https://github.com/Chris-hughes10/multi-agent-patterns/tree/main/src/youtube_goal_agents)** - Covered in Part 2
+- **[V3 Planner+DAG Pattern](https://github.com/Chris-hughes10/multi-agent-patterns/tree/main/src/youtube_agent_planner)** - This post's focus
+- **[Full Source Code](https://github.com/Chris-hughes10/multi-agent-patterns)** - Complete implementation with tests
+
+
+The code is meant to be read and learned from, not just used; hopefully you find it useful!
+</div></div>
+<p><em>This is Part 3 of a series on building multi-agent systems. <a href="../multi-agent-part1/">Part 1</a> covered clean architecture for agents (tools vs services, domain-driven design). <a href="../multi-agent-part2/">Part 2</a> explored goal-aware agent coordination (distributed reasoning, event-driven handoffs).</em></p>
+<hr>
+<p>The goal-aware pattern from Part 2 felt elegant. Agents reasoning about user goals, handing off to each other, workflows emerging from distributed intelligence rather than central control. It worked beautifully for our pork loin research task.</p>
+<p>Then I looked at the LLM call counts.</p>
+<p>Every agent in V2 needs to reason about the user’s goal. In our benchmark workflow (“search → fetch transcripts → summarize → write”), this adds up:</p>
+<pre><code>V2 Goal-Aware Pattern (actual benchmark):
+  Dispatcher routing (5 handoffs):    5 LLM calls
+  Agent validation (5 agents):        5 LLM calls
+  Agent execution reasoning:          6 LLM calls
+  Goal satisfaction checks:           5 LLM calls
+
+Total: ~21 LLM calls (low variance across runs)</code></pre>
+<p>When every agent needs to think, you need capable models throughout. That gets expensive.</p>
+<p>This led us to explore a different dimension: <strong>What if we front-load the intelligence?</strong></p>
+<section id="in-this-article-we-shall-cover" class="level2">
+<h2 class="anchored" data-anchor-id="in-this-article-we-shall-cover">In this article, we shall cover:</h2>
+<ul>
+<li>Why goal-aware agents have high per-step LLM costs</li>
+<li>The economic argument for upfront planning</li>
+<li>How the Planner pattern <em>enables</em> strategic model selection</li>
+<li>Implementing DAG-based execution with dependency tracking</li>
+<li>When predictability matters more than adaptability</li>
+<li>Trade-offs between the three patterns we’ve explored</li>
+</ul>
+<hr>
+</section>
+<section id="the-cost-structure-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-cost-structure-problem">The Cost Structure Problem</h2>
+<section id="v1-orchestrator-costs-actual-benchmark-17-34-calls" class="level3">
+<h3 class="anchored" data-anchor-id="v1-orchestrator-costs-actual-benchmark-17-34-calls">V1 Orchestrator Costs (actual benchmark: 17-34 calls)</h3>
+<p>The orchestrator pattern shows <strong>high variance</strong> because the LLM decides the workflow at runtime:</p>
+<pre><code>V1 Orchestrator Pattern (Run A - 17 calls, minimal approach):
+  Orchestrator: "I'll search both channels"        → 2 SearchAgent calls
+  Orchestrator: "Now fetch transcripts"            → 3 TranscriptAgent calls
+  Orchestrator: "Writer can synthesize directly"   → 1 WriterAgent call
+  Plus orchestrator decision overhead:             ~11 LLM calls
+
+V1 Orchestrator Pattern (Run B - 34 calls, thorough approach):
+  Orchestrator: "I'll do three targeted searches"  → 3 SearchAgent calls
+  Orchestrator: "Fetch all transcripts"            → 5 TranscriptAgent calls
+  Orchestrator: "Summarize each, then combine"     → 4 SummarizeAgent calls
+  Orchestrator: "Write the final document"         → 1 WriterAgent call
+  Plus orchestrator decision overhead:             ~21 LLM calls</code></pre>
+<p>Same request, different runtime decisions, 2× cost difference.</p>
+<p><strong>Cost characteristics:</strong></p>
+<ul>
+<li>Orchestrator decides <em>scope</em> at runtime (how many searches? skip summarization?)</li>
+<li>Each decision point is an LLM call</li>
+<li>Context accumulates at orchestrator (token costs grow with chain length)</li>
+<li><strong>Unpredictable costs</strong> - you don’t know until it runs</li>
+</ul>
+</section>
+<section id="v2-goal-aware-costs-actual-benchmark-21-calls-low-variance" class="level3">
+<h3 class="anchored" data-anchor-id="v2-goal-aware-costs-actual-benchmark-21-calls-low-variance">V2 Goal-Aware Costs (actual benchmark: ~21 calls, low variance)</h3>
+<pre><code>V2 Goal-Aware Pattern (consistent across all runs):
+  Dispatcher routing (5 handoffs):    5 LLM calls
+  Agent validation (5 agents):        5 LLM calls
+  Agent execution reasoning:          6 LLM calls
+  Goal satisfaction checks:           5 LLM calls
+
+Total: ~21 LLM calls (low variance across runs)</code></pre>
+<p><strong>Cost characteristics:</strong></p>
+<ul>
+<li>Centralized dispatcher routes tasks (1 LLM call per handoff)</li>
+<li>Agents validate assignments (1 LLM call per agent)</li>
+<li>Execution uses direct service calls where possible</li>
+<li><strong>Predictable costs</strong> - ~21 calls for every request</li>
+</ul>
+</section>
+<section id="the-economic-insight" class="level3">
+<h3 class="anchored" data-anchor-id="the-economic-insight">The Economic Insight</h3>
+<p>The Planner pattern opens an architectural opportunity:</p>
+<ol type="1">
+<li>Use a powerful model ONCE to create a complete plan</li>
+<li>Execute the plan mechanically (potentially with cheaper/faster models)</li>
+<li>Trade adaptability for predictable costs</li>
+</ol>
+<p>This is the <strong>Planner + DAG pattern</strong>. The core benefit is <em>reduced redundant reasoning</em> - instead of every agent re-evaluating “is the goal satisfied?”, you decide the workflow once upfront.</p>
+<blockquote class="blockquote">
+<p><strong>Note on model tiers</strong>: While the pattern <em>enables</em> using different model tiers for planning vs execution, our reference implementation uses consistent model quality throughout. The architectural benefit is immediate (inspectable plans, reduced reasoning overhead); model tier optimization is a straightforward enhancement the pattern supports.</p>
+</blockquote>
+<hr>
+</section>
+</section>
+<section id="the-planner-pattern-decide-everything-upfront" class="level2">
+<h2 class="anchored" data-anchor-id="the-planner-pattern-decide-everything-upfront">The Planner Pattern: Decide Everything Upfront</h2>
+<section id="core-idea" class="level3">
+<h3 class="anchored" data-anchor-id="core-idea">Core Idea</h3>
+<pre><code>User Request
+    ↓
+Planner (powerful model): "What's the complete workflow?"
+    ↓
+ExecutionDAG (data structure - no LLM needed)
+    ↓
+Step 1 → Agent A (cheaper model - just execute)
+Step 2 → Agent B (cheaper model - just execute)
+Step 3 → Agent C (capable model if needed for task complexity)</code></pre>
+<p><strong>Cost structure (actual benchmark: 3 calls, zero variance):</strong></p>
+<pre><code>V3 Planner Pattern (consistent across all runs):
+  PlannerAgent creates DAG:           1 LLM call
+  Search execution:                   0 LLM calls (direct YouTube API call)
+  Transcript fetching:                0 LLM calls (direct service call)
+  Summarization × 2:                  2 LLM calls (requires reasoning)
+  File writing:                       0 LLM calls (direct file I/O)
+
+Total: 3 LLM calls (zero variance across runs)</code></pre>
+<p><strong>Why so efficient?</strong> The key insight is that most workflow steps don’t need LLM reasoning:</p>
+<ul>
+<li><strong>Search</strong>: Just call the YouTube API with parameters from the plan</li>
+<li><strong>Transcript</strong>: Just fetch from YouTube’s transcript service</li>
+<li><strong>File writing</strong>: Just write the formatted output to disk</li>
+</ul>
+<p>Only <strong>summarization</strong> requires an LLM to reason about content. Everything else is mechanical execution of the plan. This is why V3 uses 85% fewer LLM calls than V2.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="planner_dag_flow.svg" class="img-fluid figure-img"></p>
+<figcaption>Planner + DAG Pattern Flow</figcaption>
+</figure>
+</div>
+<p><strong>Where do the 18 eliminated calls go?</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 46%">
+<col style="width: 53%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>V2 Overhead</th>
+<th>V3 Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Dispatcher routes each handoff (5 LLM calls)</td>
+<td>Plan specifies agents upfront (0 calls)</td>
+</tr>
+<tr class="even">
+<td>Agents validate assignments (5 LLM calls)</td>
+<td>Plan is authoritative (0 calls)</td>
+</tr>
+<tr class="odd">
+<td>Agent execution reasoning (6 LLM calls)</td>
+<td>Steps execute mechanically (0 calls)</td>
+</tr>
+<tr class="even">
+<td>Goal satisfaction checks (5 LLM calls)</td>
+<td>Plan defines completion (0 calls)</td>
+</tr>
+</tbody>
+</table>
+<p>The planner does more work upfront, but it’s <em>one</em> call instead of twenty-one distributed calls. V2’s dispatcher and validation overhead exists because agents need to dynamically figure out who should do what. V3 answers that question once, in the plan.</p>
+</section>
+<section id="what-you-get" class="level3">
+<h3 class="anchored" data-anchor-id="what-you-get">What You Get</h3>
+<p><strong>1. Cost Control</strong> - Know exact number of steps before starting - Use model tiers strategically (powerful for planning, cheaper for execution) - No per-step reasoning overhead</p>
+<p><strong>2. Inspectable Plans</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"goal"</span><span class="fu">:</span> <span class="st">"Find pork loin videos from Chuds BBQ, get transcript, summarize cooking temps"</span><span class="fu">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"steps"</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"id"</span><span class="fu">:</span> <span class="st">"search_pork"</span><span class="fu">,</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"agent"</span><span class="fu">:</span> <span class="st">"search"</span><span class="fu">,</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"description"</span><span class="fu">:</span> <span class="st">"Search for Chuds BBQ pork loin videos"</span><span class="fu">,</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"input"</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">"query"</span><span class="fu">:</span> <span class="st">"Chuds BBQ pork loin kamado"</span><span class="fu">},</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"depends_on"</span><span class="fu">:</span> <span class="ot">[]</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"id"</span><span class="fu">:</span> <span class="st">"fetch_transcript"</span><span class="fu">,</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"agent"</span><span class="fu">:</span> <span class="st">"transcript"</span><span class="fu">,</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"description"</span><span class="fu">:</span> <span class="st">"Get transcript for top search result"</span><span class="fu">,</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"input"</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">"video_id"</span><span class="fu">:</span> <span class="st">"$search_pork.results[0].video_id"</span><span class="fu">},</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"depends_on"</span><span class="fu">:</span> <span class="ot">[</span><span class="st">"search_pork"</span><span class="ot">]</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"id"</span><span class="fu">:</span> <span class="st">"summarize"</span><span class="fu">,</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"agent"</span><span class="fu">:</span> <span class="st">"summarize"</span><span class="fu">,</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"description"</span><span class="fu">:</span> <span class="st">"Extract cooking temperatures and times"</span><span class="fu">,</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"input"</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">"text"</span><span class="fu">:</span> <span class="st">"$fetch_transcript.text"</span><span class="fu">,</span> <span class="dt">"title"</span><span class="fu">:</span> <span class="st">"$fetch_transcript.title"</span><span class="fu">},</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>      <span class="dt">"depends_on"</span><span class="fu">:</span> <span class="ot">[</span><span class="st">"fetch_transcript"</span><span class="ot">]</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You can SEE this before anything runs. Validate it. Store it. Modify it.</p>
+<p><strong>3. Compliance &amp; Auditability</strong> - “Show me what will happen before you do it” - Compare planned steps vs actual execution - Clear dependency chain for debugging</p>
+<p><strong>4. Parallel Execution</strong> Independent steps (no shared dependencies) run concurrently:</p>
+<pre><code>Step 1a and 1b (no dependencies) → execute in parallel
+Step 2 (depends on both 1a and 1b) → waits for completion</code></pre>
+</section>
+<section id="what-you-sacrifice" class="level3">
+<h3 class="anchored" data-anchor-id="what-you-sacrifice">What You Sacrifice</h3>
+<p><strong>1. Adaptability</strong> - Can’t change course based on findings - If search returns no relevant videos, plan still tries to fetch transcripts - <strong>Mitigation</strong>: Validate step outputs before proceeding; re-plan on unexpected results (see Hybrid Approaches below)</p>
+<p><strong>2. Upfront Planning Cost</strong> - Every request pays planning cost, even simple ones - V1/V2 only use LLM when needed at each step - <strong>Mitigation</strong>: Use pattern selection — route simple requests through V1, reserve V3 for complex batch jobs where the planning cost is amortized</p>
+<p><strong>3. Plan Quality Dependency</strong> - If planner generates invalid DAG, validation catches it but requires re-planning - Planner might hallucinate non-existent agents or capabilities - <strong>Mitigation</strong>: Validate plans against agent registry before execution; provide the planner with explicit capability lists</p>
+<hr>
+</section>
+</section>
+<section id="implementation-the-dag-executor" class="level2">
+<h2 class="anchored" data-anchor-id="implementation-the-dag-executor">Implementation: The DAG Executor</h2>
+<p>With the conceptual foundation in place, let’s look at how the DAG executor actually works. The implementation needs to solve three core problems: representing the workflow as a data structure, executing steps while respecting dependencies, and resolving variable references between steps. Each piece is straightforward on its own—the elegance comes from how they compose.</p>
+<section id="what-changes-in-the-architecture" class="level3">
+<h3 class="anchored" data-anchor-id="what-changes-in-the-architecture">What Changes in the Architecture</h3>
+<p>As with the goal-aware pattern in Part 2, the domain layer stays the same—YouTube search, transcript fetching, summarization. Those services don’t change. The Planner pattern adds a thin coordination layer on top:</p>
+<pre><code>src/youtube_agent_planner/
+├── cli/                  # Entry points (same pattern as V1/V2)
+│   └── commands.py
+├── agents/
+│   └── planner.py        # NEW: Creates DAGs from natural language
+└── infra/
+    └── dag_executor.py   # NEW: Runs DAGs with dependency tracking</code></pre>
+<p>The planner reuses infrastructure from both previous patterns:</p>
+<ul>
+<li><strong>From V1 (Orchestrator)</strong>: Chat client setup, agent execution patterns</li>
+<li><strong>From V2 (Goal-Aware)</strong>: Session management, agent registry, result types (<code>PartialResult</code>, <code>Task</code>)</li>
+</ul>
+<p>What’s genuinely new is minimal: the <code>PlannerAgent</code> that generates DAGs, and the <code>DAGExecutor</code> that runs them. This is the benefit of the layered architecture we established in Part 1—new coordination patterns don’t require rewriting business logic.</p>
+</section>
+<section id="executiondag-structure" class="level3">
+<h3 class="anchored" data-anchor-id="executiondag-structure">ExecutionDAG Structure</h3>
+<p>The DAG needs to capture three things: what each step does, which agent executes it, and what must complete before it can run. Here’s the core data structure:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> DAGStep:</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">id</span>: <span class="bu">str</span>                           <span class="co"># Unique identifier</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    agent_name: <span class="bu">str</span>                   <span class="co"># Which agent executes</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    description: <span class="bu">str</span>                  <span class="co"># Human-readable intent</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    input_template: <span class="bu">dict</span>[<span class="bu">str</span>, Any]    <span class="co"># Input (may have $variables)</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    depends_on: <span class="bu">list</span>[<span class="bu">str</span>]             <span class="co"># Steps that must complete first</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    model_tier: <span class="bu">str</span>                   <span class="co"># "powerful" | "capable" | "cheap"</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    status: StepStatus                <span class="co"># pending/ready/running/completed/failed</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    result: Any <span class="op">=</span> <span class="va">None</span>                <span class="co"># Output after execution</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ExecutionDAG:</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    goal: <span class="bu">str</span>                         <span class="co"># User's original goal</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    steps: <span class="bu">list</span>[DAGStep]              <span class="co"># Ordered workflow</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> get_ready_steps(<span class="va">self</span>, completed: <span class="bu">set</span>[<span class="bu">str</span>]) <span class="op">-&gt;</span> <span class="bu">list</span>[DAGStep]:</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Get steps whose dependencies are satisfied."""</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>            step <span class="cf">for</span> step <span class="kw">in</span> <span class="va">self</span>.steps</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> step.status <span class="op">==</span> <span class="st">"pending"</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>            <span class="kw">and</span> <span class="bu">all</span>(dep <span class="kw">in</span> completed <span class="cf">for</span> dep <span class="kw">in</span> step.depends_on)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> validate(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">str</span>]:</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Check for cycles, missing deps, duplicate IDs."""</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Topological sort to detect cycles</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Verify all depends_on references exist</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Check for duplicate step IDs</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-execution-loop" class="level3">
+<h3 class="anchored" data-anchor-id="the-execution-loop">The Execution Loop</h3>
+<p>With the data structure in place, we need a way to run it. The execution loop repeatedly finds steps whose dependencies are satisfied and runs them in parallel:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> execute_dag(dag: ExecutionDAG, agents: <span class="bu">dict</span>) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Execute DAG with dependency tracking and parallelism."""</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    completed <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> {}</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="bu">len</span>(completed) <span class="op">&lt;</span> <span class="bu">len</span>(dag.steps):</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Get all steps whose dependencies are satisfied</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        ready_steps <span class="op">=</span> dag.get_ready_steps(completed)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> ready_steps:</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">len</span>(completed) <span class="op">==</span> <span class="bu">len</span>(dag.steps):</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>                <span class="cf">break</span>  <span class="co"># All done</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>                <span class="cf">raise</span> ExecutionError(<span class="st">"Deadlock: no ready steps but workflow incomplete"</span>)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Execute ready steps in parallel</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        tasks <span class="op">=</span> [</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>            execute_step(step, agents[step.agent_name], results)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> step <span class="kw">in</span> ready_steps</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>        step_results <span class="op">=</span> <span class="cf">await</span> asyncio.gather(<span class="op">*</span>tasks, return_exceptions<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Process results</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> step, result <span class="kw">in</span> <span class="bu">zip</span>(ready_steps, step_results):</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">isinstance</span>(result, <span class="pp">Exception</span>):</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Handle failure (could trigger re-planning)</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>                step.status <span class="op">=</span> <span class="st">"failed"</span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>                <span class="cf">raise</span> ExecutionError(<span class="ss">f"Step </span><span class="sc">{</span>step<span class="sc">.</span><span class="bu">id</span><span class="sc">}</span><span class="ss"> failed: </span><span class="sc">{</span>result<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>                step.status <span class="op">=</span> <span class="st">"completed"</span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>                completed.add(step.<span class="bu">id</span>)</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>                results[step.<span class="bu">id</span>] <span class="op">=</span> result</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> results</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="variable-resolution" class="level3">
+<h3 class="anchored" data-anchor-id="variable-resolution">Variable Resolution</h3>
+<p>The execution loop handles <em>when</em> steps run, but there’s still the question of <em>how</em> steps communicate. When the transcript step needs the video ID from the search step, how does that data flow? This is where variable resolution comes in. Steps reference outputs from previous steps using <code>$step_id.field</code> syntax:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> resolve_variables(input_template: <span class="bu">dict</span>, results: <span class="bu">dict</span>) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Resolve $step_id.field references to actual values."""</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    resolved <span class="op">=</span> {}</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> key, value <span class="kw">in</span> input_template.items():</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(value, <span class="bu">str</span>) <span class="kw">and</span> value.startswith(<span class="st">"$"</span>):</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Parse $step_id.field.nested</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>            parts <span class="op">=</span> value[<span class="dv">1</span>:].split(<span class="st">"."</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>            step_id <span class="op">=</span> parts[<span class="dv">0</span>]</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Navigate nested fields</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>            result <span class="op">=</span> results[step_id]</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> part <span class="kw">in</span> parts[<span class="dv">1</span>:]:</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="st">"["</span> <span class="kw">in</span> part:  <span class="co"># Array access: results[0]</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>                    field, idx <span class="op">=</span> part.split(<span class="st">"["</span>)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>                    idx <span class="op">=</span> <span class="bu">int</span>(idx.rstrip(<span class="st">"]"</span>))</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>                    result <span class="op">=</span> result[field][idx]</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>                <span class="cf">else</span>:</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>                    result <span class="op">=</span> result[part]</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>            resolved[key] <span class="op">=</span> result</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>            resolved[key] <span class="op">=</span> value</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> resolved</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Example:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step input template</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>{<span class="st">"video_id"</span>: <span class="st">"$search_pork.results[0].id"</span>}</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Results from search_pork step</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>results[<span class="st">"search_pork"</span>] <span class="op">=</span> {</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"results"</span>: [</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"id"</span>: <span class="st">"fI86yXKlnQA"</span>, <span class="st">"title"</span>: <span class="st">"Pork Loin on the Kamado Joe"</span>},</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"id"</span>: <span class="st">"2AF1ysZ8eEA"</span>, <span class="st">"title"</span>: <span class="st">"Smoked Pork Tenderloin"</span>}</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Resolves to</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>{<span class="st">"video_id"</span>: <span class="st">"fI86yXKlnQA"</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="model-tier-strategy-architectural-pattern" class="level3">
+<h3 class="anchored" data-anchor-id="model-tier-strategy-architectural-pattern">Model Tier Strategy (Architectural Pattern)</h3>
+<p>With the execution machinery in place—data structure, execution loop, and variable resolution—we have a working DAG executor. But the explicit plan structure opens up an optimization that’s harder to achieve with runtime coordination: strategic model selection per step.</p>
+<p>The DAG structure enables a powerful optimization: assign different model tiers based on task complexity. Here’s what this <em>could</em> look like:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_model_for_tier(tier: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Map model tiers to actual model names."""</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"powerful"</span>: <span class="st">"claude-opus-4.5"</span>,  <span class="co"># Planning, complex reasoning</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"capable"</span>: <span class="st">"gpt-5.2"</span>,       <span class="co"># General execution</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"cheap"</span>: <span class="st">"claude-sonnet-4.5"</span>,      <span class="co"># Simple execution tasks</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    }[tier]</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> execute_step(step: DAGStep, agent: BaseAgent, results: <span class="bu">dict</span>) <span class="op">-&gt;</span> Any:</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Execute a single DAG step with appropriate model tier."""</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Resolve variable references</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    input_data <span class="op">=</span> resolve_variables(step.input_template, results)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Get model for this step's tier</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> get_model_for_tier(step.model_tier)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Execute agent with resolved input (no goal reasoning needed)</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> <span class="cf">await</span> agent.execute_direct(</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>        input_data<span class="op">=</span>input_data,</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span>model</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>While our reference implementation doesn’t implement model tier selection (all agents use the same model), the pattern makes this optimization straightforward to add. The key insight is that once you have an explicit plan, you can make informed decisions about resource allocation per step.</p>
+<hr>
+</section>
+</section>
+<section id="seeing-it-in-action" class="level2">
+<h2 class="anchored" data-anchor-id="seeing-it-in-action">Seeing It in Action</h2>
+<p>Theory is useful, but let’s see the planner actually work. Here’s what happens when we run our standard pork loin request through the planner CLI:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> uv run youtube-agent-planner chat <span class="at">-r</span> <span class="st">"I want to cook a pork loin on a Kamado.</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="st">  Find techniques from Chuds BBQ and Fork and Embers.</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="st">  I need temperatures, timing, and grill setup.</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="st">  Save results to pork_loin_guide.md"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<pre><code>YouTube Agent Planner - Interactive Mode
+==================================================
+Creates explicit execution plans before running.
+Type 'exit' or 'quit' to stop.
+
+[Planning...] Creating execution plan ✓ (5 steps)
+[Plan] Goal: Find YouTube-based techniques for cooking a pork loin roast on a Kamado
+  grill/smoker (preferably Fork and Embers and Chuds BBQ), extract key parameters
+  (grill temp, setup, target internal temp, time), and save results to a markdown file.
+  → yt_search_trusted_channels: Search YouTube for pork loin roast Kamado/smoker
+      videos focusing on Fork and Embers and Chuds BBQ channels.
+  → fetch_transcript_video_1: Fetch transcript for the top search result.
+      (after: yt_search_trusted_channels)
+  → fetch_transcript_video_2: Fetch transcript for the second search result.
+      (after: yt_search_trusted_channels)
+  → summarize_and_extract_cook_params: From the transcripts, extract and consolidate
+      cooker temp targets, Kamado setup, target internal temps, and time guidance.
+      (after: fetch_transcript_video_1, fetch_transcript_video_2)
+  → write_markdown_report: Write a markdown file summarizing the extracted cooking
+      techniques with citations and a parameter table.
+      (after: summarize_and_extract_cook_params)
+[Executing...] Running DAG</code></pre>
+<p>Notice what’s different from V1 and V2:</p>
+<p><strong>1. The plan is visible before execution starts.</strong> You can see exactly what will happen—which agents, in what order, with what dependencies. No surprises.</p>
+<p><strong>2. Parallel steps are explicit.</strong> <code>fetch_transcript_video_1</code> and <code>fetch_transcript_video_2</code> both depend only on the search step, so they’ll run concurrently. The summarization step waits for both.</p>
+<p><strong>3. The LLM reasoning happened once.</strong> That single <code>[Planning...]</code> step is the only time the planner LLM runs. Everything after is mechanical execution.</p>
+<section id="execution-flow" class="level3">
+<h3 class="anchored" data-anchor-id="execution-flow">Execution Flow</h3>
+<p>With verbose logging enabled (<code>-v</code>), we can watch the DAG execute:</p>
+<pre><code>[Executor] Starting DAG execution
+[Executor] Ready steps: yt_search_trusted_channels
+[search] Executing: Search YouTube for pork loin roast Kamado/smoker videos...
+[search] ✓ yt_search_trusted_channels completed (1079ms)
+[Executor] Ready steps: fetch_transcript_video_1, fetch_transcript_video_2 (parallel)
+[transcript] Executing: Fetch transcript for the top search result...
+[transcript] Executing: Fetch transcript for the second search result...
+[transcript] ✓ fetch_transcript_video_1 completed (6ms)
+[transcript] ✓ fetch_transcript_video_2 completed (9ms)
+[Executor] Ready steps: summarize_and_extract_cook_params
+[summarize] Executing: From the transcripts, extract and consolidate cooker temp...
+[summarize] ✓ summarize_and_extract_cook_params completed (37266ms)
+[Executor] Ready steps: write_markdown_report
+[writer] Executing: Write a markdown file summarizing the extracted cooking...
+[writer] ✓ write_markdown_report completed (19673ms)
+[Executor] DAG complete: 5/5 steps succeeded</code></pre>
+<p>The executor shows each step as it becomes ready, marks parallel steps explicitly, and reports timing. You can see the transcript fetches ran concurrently (both started before either completed).</p>
+</section>
+<section id="what-the-output-looks-like" class="level3">
+<h3 class="anchored" data-anchor-id="what-the-output-looks-like">What the Output Looks Like</h3>
+<p>The generated <code>test_planner_pork_loin.md</code> (snippet):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Pork Loin Roast on a Kamado Grill/Smoker — Temps &amp; Timing</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## Sources (YouTube)</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Chuds BBQ (video_id: 2AF1ysZ8eEA)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Chuds BBQ (video_id: fI86yXKlnQA)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summary</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>The video(s) focus on how to make a **lean boneless pork loin roast** come out</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>**juicy, tender, and "holiday roast" worthy** using **brining, moderate pit temps</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>(~275–300°F), and pulling at ~140–145°F internal**, then finishing with a glaze.</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Temps, timing, and doneness guidance</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Pit temp:** ~**275–300°F** (both approaches cluster here).</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Pull temp:** about **140–145°F internal**.</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Cook time:** ~2–4 hours depending on method and size.</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Practical takeaways</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Brining is the unlock** for pork loin (wet or dry).</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Finish matters:** sear/grill + glaze or mop + butter-rest.</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Serve like a holiday roast:** slice thin, consider gravy/sauce.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The same structure we got from V1 and V2—but with predictable cost and an inspectable plan.</p>
+<hr>
+</section>
+</section>
+<section id="comparison-three-patterns" class="level2">
+<h2 class="anchored" data-anchor-id="comparison-three-patterns">Comparison: Three Patterns</h2>
+<section id="cost-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="cost-analysis">Cost Analysis</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 31%">
+<col style="width: 28%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pattern</th>
+<th>LLM Calls*</th>
+<th>Variance</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>V1 Orchestrator</strong></td>
+<td>17-34</td>
+<td><strong>High</strong></td>
+<td>LLM decides workflow at runtime - unpredictable</td>
+</tr>
+<tr class="even">
+<td><strong>V2 Goal-Aware</strong></td>
+<td>~21</td>
+<td><strong>Low</strong></td>
+<td>Dispatcher routes + agents validate, then execute via direct service calls</td>
+</tr>
+<tr class="odd">
+<td><strong>V3 Planner+DAG</strong></td>
+<td>~3</td>
+<td><strong>None</strong></td>
+<td>Single planning call, then mechanical execution via direct service calls</td>
+</tr>
+</tbody>
+</table>
+<p><em>Measured LLM calls for a “search → fetch transcripts → summarize → write” workflow using the reference implementation. Numbers are based on multiple benchmark runs.</em></p>
+<p>The key insight here is <strong>predictability, not just efficiency</strong>.</p>
+<p><strong>V1 Orchestrator breakdown (17-34 calls):</strong> The orchestrator makes LLM calls at each decision point, plus each sub-agent makes its own calls. The variance comes from runtime decisions:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Decision Point</th>
+<th>Observed Variance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Search strategy</td>
+<td>1-3 searches, sequential or parallel</td>
+</tr>
+<tr class="even">
+<td>Step skipping</td>
+<td>Summarization sometimes skipped entirely</td>
+</tr>
+<tr class="odd">
+<td>Delegation phrasing</td>
+<td>Different wording affects sub-agent behaviour</td>
+</tr>
+</tbody>
+</table>
+<p>With verbose logging enabled (<code>-v</code> flag), we can see these decisions in action:</p>
+<pre><code># Run A (17 calls) - Minimal approach, skips summarization
+SearchAgent called with: Kamado pork loin Fork and Embers
+SearchAgent called with: Chuds BBQ pork loin kamado
+TranscriptAgent called with: Fetch transcript for video FsbwQI-EI-k...
+TranscriptAgent called with: Fetch transcript for video 2AF1ysZ8eEA...
+TranscriptAgent called with: Fetch transcript for video fI86yXKlnQA...
+WriterAgent called with: Write a markdown file...  # No SummarizeAgent!
+
+# Run B (25 calls) - Thorough approach with summarization
+SearchAgent called with: Find YouTube videos where Fork and Embers...
+SearchAgent called with: Find YouTube videos where Chuds BBQ...
+SearchAgent called with: Find top YouTube videos about cooking pork loin...
+TranscriptAgent called with: ...
+SummarizeAgent called with: From the provided transcripts, extract...
+WriterAgent called with: ...</code></pre>
+<p>Run A decided the WriterAgent could synthesize directly from transcripts. Run B added a summarization step. Both produced valid outputs, but with different costs.</p>
+<p><strong>V2 Goal-Aware breakdown (~21 calls, low variance):</strong> The dispatcher pattern centralizes routing decisions:</p>
+<ul>
+<li>Dispatcher routing: 5 calls (one per handoff in the chain)</li>
+<li>Agent validation: 5 calls (each agent confirms assignment)</li>
+<li>Execution reasoning: 6 calls (query extraction, goal reasoning)</li>
+<li>Goal satisfaction checks: 5 calls (each agent evaluates completion)</li>
+</ul>
+<p>In benchmark testing, V2 produced <strong>approximately 21 calls across runs with low variance</strong>. Why? The dispatcher routes each task to a specific agent (1 LLM call), the agent validates the assignment (1 LLM call), then executes using direct service calls where possible. The validation overhead ensures correct routing but adds consistent cost.</p>
+<p><strong>V3 Planner breakdown (~3 calls):</strong> - PlannerAgent: 1 call (creates the complete DAG upfront) - Summarization: 2 calls (only step requiring LLM reasoning) - All other execution: 0 LLM calls (direct service calls)</p>
+<p>Search, transcript fetching, and file writing are executed mechanically via direct service calls - no LLM reasoning needed. Only summarization requires LLM involvement during execution. This is why V3 is dramatically more efficient: it front-loads all reasoning into the planning phase.</p>
+</section>
+<section id="when-to-use-each-pattern" class="level3">
+<h3 class="anchored" data-anchor-id="when-to-use-each-pattern">When to Use Each Pattern</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 40%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Best Pattern</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Building a conversational interface?</td>
+<td><strong>V1 Orchestrator</strong></td>
+<td>Back-and-forth, context maintenance</td>
+</tr>
+<tr class="even">
+<td>Need agents to adapt to findings?</td>
+<td><strong>V2 Goal-Aware</strong></td>
+<td>Goal-aware reasoning, emergent workflows</td>
+</tr>
+<tr class="odd">
+<td>Running high-volume batch processing?</td>
+<td><strong>V3 Planner+DAG</strong></td>
+<td>Lowest per-request cost</td>
+</tr>
+<tr class="even">
+<td>Need to approve workflows before execution?</td>
+<td><strong>V3 Planner+DAG</strong></td>
+<td>Inspectable plans</td>
+</tr>
+<tr class="odd">
+<td>Compliance/audit requirements?</td>
+<td><strong>V3 Planner+DAG</strong></td>
+<td>Full execution trace</td>
+</tr>
+<tr class="even">
+<td>Complex dependencies between steps?</td>
+<td><strong>V3 Planner+DAG</strong></td>
+<td>Explicit DAG prevents mistakes</td>
+</tr>
+<tr class="odd">
+<td>Debugging complex workflows?</td>
+<td><strong>V3 Planner+DAG</strong></td>
+<td>Compare plan vs execution</td>
+</tr>
+<tr class="even">
+<td>Cost is primary constraint?</td>
+<td><strong>V3 Planner+DAG</strong></td>
+<td>Strategic model tier usage</td>
+</tr>
+<tr class="odd">
+<td>Adaptability is primary constraint?</td>
+<td><strong>V2 Goal-Aware</strong></td>
+<td>Responds to what it finds</td>
+</tr>
+<tr class="even">
+<td>Simplicity is primary constraint?</td>
+<td><strong>V1 Orchestrator</strong></td>
+<td>Well-understood pattern</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="quick-decision-tree" class="level3">
+<h3 class="anchored" data-anchor-id="quick-decision-tree">Quick Decision Tree</h3>
+<pre><code>            Which Multi-Agent Pattern Should You Use?
+            ─────────────────────────────────────────
+                              │
+                              ▼
+               ┌──────────────────────────────┐
+               │  Need conversational         │
+               │  back-and-forth with user?   │
+               └──────────────────────────────┘
+                      │                │
+                     YES               NO
+                      │                │
+                      ▼                ▼
+              ┌──────────────┐   ┌──────────────────────────┐
+              │      V1      │   │  Do agents need to       │
+              │ Orchestrator │   │  adapt based on findings?│
+              └──────────────┘   └──────────────────────────┘
+                                       │              │
+                                      YES             NO
+                                       │              │
+                                       ▼              ▼
+                               ┌──────────────┐  ┌──────────────────────┐
+                               │      V2      │  │  Need to inspect/    │
+                               │  Goal-Aware  │  │  approve plan first? │
+                               └──────────────┘  └──────────────────────┘
+                                                       │           │
+                                                      YES          NO
+                                                       │           │
+                                                       ▼           ▼
+                                               ┌──────────────┐ ┌──────────────┐
+                                               │      V3      │ │   Start      │
+                                               │ Planner+DAG  │ │   with V1    │
+                                               └──────────────┘ └──────────────┘</code></pre>
+<p><strong>The short version:</strong> - <strong>V1 Orchestrator</strong>: Start here. Simple, conversational, well-understood. - <strong>V2 Goal-Aware</strong>: When workflows should emerge from agent reasoning. - <strong>V3 Planner+DAG</strong>: When you need predictability, auditability, or cost control.</p>
+</section>
+<section id="design-space-summary" class="level3">
+<h3 class="anchored" data-anchor-id="design-space-summary">Design Space Summary</h3>
+<p>We’ve now explored multi-agent coordination across three dimensions:</p>
+<p><strong>1. Architecture (<a href="../multi-agent-part1/">Part 1</a>):</strong> How to structure clean agent code - Tools vs Services separation - Domain-Driven Design for agent systems - Strategic testing with minimal mocking</p>
+<p><strong>2. Who Coordinates (<a href="../multi-agent-part2/">Part 2</a>):</strong> Central vs distributed - V1: Central orchestrator directs everything - V2: Distributed agents self-coordinate</p>
+<p><strong>3. When to Decide (Part 3):</strong> Runtime vs upfront - V1/V2: Decide at each step (adaptive) - V3: Decide everything upfront (predictable)</p>
+<hr>
+</section>
+</section>
+<section id="limitations-and-trade-offs" class="level2">
+<h2 class="anchored" data-anchor-id="limitations-and-trade-offs">Limitations and Trade-offs</h2>
+<section id="what-plannerdag-cant-do-well" class="level3">
+<h3 class="anchored" data-anchor-id="what-plannerdag-cant-do-well">What Planner+DAG Can’t Do Well</h3>
+<p><strong>1. Handle Unexpected Conditions</strong></p>
+<pre><code>Plan: Search → Fetch Transcript → Summarize
+
+Reality: Search returns no relevant videos
+Problem: Plan still tries to fetch transcript for non-existent video
+
+Mitigation: Error handling + re-planning (adds cost)</code></pre>
+<p><strong>2. Conversational Workflows</strong> - User wants to refine based on intermediate results - V1 orchestrator maintains conversation context naturally - V3 would need to re-plan for each user input</p>
+<p><strong>3. Exploratory Research</strong> - “Find interesting videos about X” (undefined criteria) - V2 goal-aware agents can explore and adapt - V3 needs concrete plan upfront</p>
+</section>
+<section id="when-runtime-decisions-win" class="level3">
+<h3 class="anchored" data-anchor-id="when-runtime-decisions-win">When Runtime Decisions Win</h3>
+<ul>
+<li>User needs evolve during conversation</li>
+<li>Workflow depends on quality of intermediate findings</li>
+<li>Cost sensitivity when many requests don’t need full workflow</li>
+<li>Unknown complexity until you start</li>
+</ul>
+</section>
+<section id="when-upfront-planning-wins" class="level3">
+<h3 class="anchored" data-anchor-id="when-upfront-planning-wins">When Upfront Planning Wins</h3>
+<ul>
+<li>High-volume processing (cost matters more than adaptability per request)</li>
+<li>Compliance requires pre-approval of execution plan</li>
+<li>Complex dependencies easy to get wrong manually</li>
+<li>Need to estimate cost/time before starting</li>
+<li>Debugging is critical (plan as reference for “what should have happened”)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="hybrid-approaches" class="level2">
+<h2 class="anchored" data-anchor-id="hybrid-approaches">Hybrid Approaches</h2>
+<section id="adaptive-planning" class="level3">
+<h3 class="anchored" data-anchor-id="adaptive-planning">Adaptive Planning</h3>
+<p>Best of both worlds: plan high-level structure, re-plan on surprises.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> adaptive_execution(user_goal: <span class="bu">str</span>) <span class="op">-&gt;</span> Any:</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Execute with planning but adapt when needed."""</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create initial plan</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    plan <span class="op">=</span> <span class="cf">await</span> planner.create_plan(user_goal, model<span class="op">=</span><span class="st">"powerful"</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> step <span class="kw">in</span> plan.steps:</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Execute step with cheap model</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>            result <span class="op">=</span> <span class="cf">await</span> execute_step(step, model<span class="op">=</span><span class="st">"cheap"</span>)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Validate result quality</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> is_acceptable(result, user_goal):</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Re-plan remainder with new context</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>                remaining_plan <span class="op">=</span> <span class="cf">await</span> planner.replan(</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>                    original_goal<span class="op">=</span>user_goal,</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>                    completed_steps<span class="op">=</span>completed,</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>                    issue<span class="op">=</span><span class="ss">f"Step </span><span class="sc">{</span>step<span class="sc">.</span><span class="bu">id</span><span class="sc">}</span><span class="ss"> produced inadequate result"</span>,</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>                    model<span class="op">=</span><span class="st">"powerful"</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>                plan <span class="op">=</span> merge_plans(completed, remaining_plan)</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> ExecutionError <span class="im">as</span> e:</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Execution failed - re-plan</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>            plan <span class="op">=</span> <span class="cf">await</span> planner.replan(</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>                original_goal<span class="op">=</span>user_goal,</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>                completed_steps<span class="op">=</span>completed,</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>                failure<span class="op">=</span><span class="bu">str</span>(e),</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>                model<span class="op">=</span><span class="st">"powerful"</span></span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>            )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Cost characteristics:</strong> - Start with single planning call (optimistic) - Add re-planning only when needed (failures, quality issues) - Still uses cheap models for most execution</p>
+</section>
+<section id="tiered-model-selection" class="level3">
+<h3 class="anchored" data-anchor-id="tiered-model-selection">Tiered Model Selection</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define model requirements per agent</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>AGENT_MODEL_REQUIREMENTS <span class="op">=</span> {</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"search"</span>: <span class="st">"cheap"</span>,        <span class="co"># Simple YouTube search</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"transcript"</span>: <span class="st">"cheap"</span>,    <span class="co"># Mechanical transcript fetch</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"summarize"</span>: <span class="st">"capable"</span>,   <span class="co"># Needs understanding</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"writer"</span>: <span class="st">"cheap"</span>,        <span class="co"># Template-based file writing</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"synthesize"</span>: <span class="st">"powerful"</span>, <span class="co"># Complex reasoning across sources</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Planner respects these when assigning model tiers</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> assign_model_tier(step: DAGStep) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Assign model tier based on agent requirements."""</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> AGENT_MODEL_REQUIREMENTS[step.agent_name]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key Takeaways</h2>
+<p>These principles apply regardless of which agent framework you choose:</p>
+<ol type="1">
+<li><p><strong>Front-loading intelligence reduces per-request costs</strong> - A single planning call can replace dozens of distributed reasoning calls. When you’re processing volume, this adds up.</p></li>
+<li><p><strong>Explicit plans enable inspection and approval</strong> - Unlike runtime orchestration, you can see, validate, and modify the workflow before it runs. This matters for compliance, debugging, and user trust.</p></li>
+<li><p><strong>DAG structures make parallelism natural</strong> - When dependencies are explicit, the executor can automatically parallelize independent steps. No manual coordination needed.</p></li>
+<li><p><strong>Variable resolution connects steps cleanly</strong> - The <code>$step_id.field</code> syntax lets steps reference each other’s outputs without coupling. Each step remains independent.</p></li>
+<li><p><strong>The pattern enables—but doesn’t require—model tier optimization</strong> - Once you have an explicit plan, you <em>can</em> assign different models per step. The architecture supports it even if you don’t use it immediately.</p></li>
+<li><p><strong>Predictability and adaptability are genuine trade-offs</strong> - The planner can’t adapt to surprises mid-execution. If your workflow needs to change course based on findings, goal-aware agents (V2) are the better choice.</p></li>
+</ol>
+<hr>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>The insight that made the Planner pattern compelling wasn’t just predictability - it was <strong>economics</strong>.</p>
+<p>Goal-aware agents (V2) are elegant, but every agent needs to reason about the goal. That means every agent needs a capable model. When you’re processing hundreds or thousands of requests, those costs add up.</p>
+<p>The Planner pattern lets you be strategic: use a powerful model once to create a complete plan, then execute the plan with reduced per-step overhead. For high-volume scenarios, this can significantly reduce costs compared to goal-aware agents.</p>
+<p>But it’s a trade-off: you sacrifice the adaptability that makes goal-aware agents powerful. The workflow can’t change course based on what it finds. If that adaptability matters more than cost, goal-aware agents are still the right choice.</p>
+<p><strong>The Three Patterns, Summarized:</strong></p>
+<ul>
+<li><strong>V1 Orchestrator:</strong> Simple, conversational, well-understood</li>
+<li><strong>V2 Goal-Aware:</strong> Adaptive, emergent, distributed reasoning</li>
+<li><strong>V3 Planner+DAG:</strong> Predictable, economical, auditable</li>
+</ul>
+<p>Choose based on your constraints: cost, adaptability, compliance, simplicity.</p>
+<hr>
+<p><strong>What’s Next:</strong> This completes our exploration of multi-agent coordination patterns. All three implementations are available in the reference codebase. Try them, break them, adapt them to your needs.</p>
+<p>The patterns aren’t mutually exclusive. Real systems might use:</p>
+<ul>
+<li>V1 for user-facing conversational interfaces</li>
+<li>V3 for backend batch processing</li>
+<li>V2 for exploratory research workflows</li>
+</ul>
+<p>Multi-agent systems aren’t mysterious. They’re software systems with clear architectural choices. Choose the pattern that fits your constraints.</p>
+<hr>
+</section>
+<section id="view-the-code" class="level2">
+<h2 class="anchored" data-anchor-id="view-the-code">View the Code</h2>
+<p>All patterns described in this series are implemented in the reference codebase:</p>
+<ul>
+<li><strong><a href="https://github.com/Chris-hughes10/multi-agent-patterns/tree/main/src/youtube_agent_orchestrator">V1 Orchestrator Pattern</a></strong> - Covered in Part 1</li>
+<li><strong><a href="https://github.com/Chris-hughes10/multi-agent-patterns/tree/main/src/youtube_goal_agents">V2 Goal-Aware Pattern</a></strong> - Covered in Part 2</li>
+<li><strong><a href="https://github.com/Chris-hughes10/multi-agent-patterns/tree/main/src/youtube_agent_planner">V3 Planner+DAG Pattern</a></strong> - This post’s focus</li>
+<li><strong><a href="https://github.com/Chris-hughes10/multi-agent-patterns">Full Source Code</a></strong> - Complete implementation with tests</li>
+</ul>
+<p>The code is meant to be read and learned from, not just used; hopefully you find it useful!</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script src="../../code-modal.js"></script>
+<script src="../../source-modal.js"></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/chris-hughes10\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

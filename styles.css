@@ -1,0 +1,323 @@
+/* css styles */
+
+/* Removes the line between posts */
+div.quarto-post {
+    border-bottom: none;
+     padding-bottom: 1rem;
+}
+
+#about-header {
+    text-align: center;
+    align-items: center;
+    padding-bottom: 3rem;
+}
+
+#about-image img {
+    width: 80px;
+    border-radius: 50%;
+}
+
+#social-links {
+    margin-top: 1rem;
+}
+
+#social-links a {
+    margin: 0 0.25rem;
+}
+
+#social-links img {
+    height: 28px;
+}
+
+.navbar-logo {
+    border-radius: 50%;
+}
+
+div.quarto-post .metadata {
+    flex-basis: 20%;
+}
+
+div.quarto-post .body {
+    flex-basis: 60%;
+}
+
+div.quarto-post .thumbnail {
+    flex-basis: 20%;
+}
+div.quarto-post .thumbnail img {
+    border-radius: 50%;
+    max-height: 150px;
+    max-width: 150px;
+    margin-top: 0;
+}
+
+div.thumbnail p {
+    margin-bottom: 0;
+    text-align: center;
+}
+
+/* Center the post listings container */
+#listing-post-listings {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+
+/* Set a reasonable max-width for posts and center them */
+#listing-post-listings .quarto-post {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.post-thumbnail {
+    text-align: center;
+    aspect-ratio: 16/9
+}
+
+.post-thumbnail img {
+    border-radius: 50%;
+    max-width: 50%;
+}
+
+.acknowledgements {
+    font-size: small;
+    font-style: italic;
+}
+
+/* Collapsible sections */
+.collapsible {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    color: inherit !important; /* Force maintain the parent's color */
+}
+
+.collapsible:hover,
+.collapsible:focus,
+.collapsible:active,
+.collapsible:visited {
+    color: inherit !important; /* Force prevent color change on interaction */
+    text-decoration: none !important; /* Remove any underline effects */
+}
+
+/* Remove the arrow from section elements */
+section.collapsible::after {
+    display: none !important;
+}
+
+/* Add arrow only to h2 headings inside collapsible sections */
+.collapsible h2::after {
+    content: '\25BC'; /* Down arrow - always use the same arrow */
+    font-size: 0.8em;
+    margin-left: 0.5em;
+    transition: transform 0.3s ease;
+    display: inline-block; /* Needed for rotation */
+    color: inherit !important; /* Ensure arrow inherits the same color */
+}
+
+.collapsible.collapsed h2::after {
+    transform: rotate(-90deg); /* Rotate the down arrow to point right */
+}
+
+.collapsible-content {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.collapsible-content.collapsed {
+    max-height: 0;
+}
+
+/* Hide ALL arrows from the listing controls - more specific selectors */
+.quarto-listing .listing-actions .sort-dropdown::after,
+.quarto-listing .listing-actions .filter-dropdown::after,
+.quarto-listing .listing-actions button::after,
+.quarto-listing .listing-actions .dropdown-toggle::after,
+.quarto-listing .listing-pagination .page-link::after,
+.quarto-listing .listing-pagination button::after {
+    display: none !important;
+}
+
+/* Also hide any caret icons that might be used instead of ::after */
+.quarto-listing .listing-actions .bi-caret-down-fill,
+.quarto-listing .listing-actions .bi-caret-up-fill,
+.quarto-listing .listing-actions .bi-chevron-down,
+.quarto-listing .listing-actions .bi-chevron-up {
+    display: none !important;
+}
+
+/* Code modal styles */
+.code-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.code-modal-overlay.active {
+    display: flex;
+}
+
+.code-modal-content {
+    background-color: white;
+    border-radius: 8px;
+    width: 95vw;
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.code-modal-header {
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.code-modal-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.code-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.code-modal-close:hover {
+    color: #000;
+}
+
+.code-modal-body {
+    flex: 1;
+    overflow: auto;
+    padding: 1rem;
+}
+
+.code-modal-body pre {
+    margin: 0;
+    background-color: #f5f5f5;
+    padding: 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre;
+    min-width: 100%;
+}
+
+.code-modal-footer {
+    padding: 1rem;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.code-modal-copy-btn {
+    padding: 0.5rem 1rem;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.code-modal-copy-btn:hover {
+    background-color: #0b5ed7;
+}
+
+.code-modal-copy-btn.copied {
+    background-color: #198754;
+}
+
+/* Position code block buttons in top right */
+.code-copy-outer-scaffold {
+    position: relative;
+    display: block;
+}
+
+.code-copy-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 10;
+}
+
+.code-expand-button {
+    position: absolute;
+    top: 5px;
+    right: 45px;
+    z-index: 10;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: #666;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+    opacity: 0;
+}
+
+.code-copy-outer-scaffold:hover .code-expand-button {
+    opacity: 1;
+}
+
+.code-expand-button:hover {
+    background-color: #f0f0f0;
+    border-color: #999;
+    color: #333;
+}
+
+/* Raw markdown source button (rendered by source-button.lua) */
+.source-button-wrapper {
+    margin: 0 0 1.5rem 0;
+}
+
+.source-md-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.85rem;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    line-height: 1.2;
+    color: #555;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.source-md-button:hover {
+    background-color: #f0f0f0;
+    border-color: #999;
+    color: #222;
+}
+
+/* Markdown prose can have very long lines, so wrap rather than scroll */
+.source-modal-overlay .code-modal-body pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+}

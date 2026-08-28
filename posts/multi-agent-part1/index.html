@@ -1,0 +1,2663 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-01-17">
+<meta name="description" content="How layered architecture and domain-driven design apply to multi-agent AI systems — with a working example.">
+
+<title>Architecting Multi-Agent Systems: Evolving Proven Patterns to Agentic Systems – Chris Hughes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../profile.jpg" rel="icon" type="image/jpeg">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-6105abc1fbcb78934dd6dfb0e21c61fe.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-bad7eb6acb78bec35b2014344c72f93c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-6105abc1fbcb78934dd6dfb0e21c61fe.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<meta name="google-site-verification" content="AGF-dapdxVAPw474kSusFtx18hRUnG14JVgfg-pqNw8">
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Architecting Multi-Agent Systems: Evolving Proven Patterns to Agentic Systems – Chris Hughes">
+<meta property="og:description" content="How layered architecture and domain-driven design apply to multi-agent AI systems — with a working example.">
+<meta property="og:image" content="https://chris-hughes10.github.io/posts/multi-agent-part1/image.png">
+<meta property="og:site_name" content="Chris Hughes">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:width" content="1536">
+<meta name="twitter:title" content="Architecting Multi-Agent Systems: Evolving Proven Patterns to Agentic Systems – Chris Hughes">
+<meta name="twitter:description" content="How layered architecture and domain-driven design apply to multi-agent AI systems — with a working example.">
+<meta name="twitter:image" content="https://chris-hughes10.github.io/posts/multi-agent-part1/image.png">
+<meta name="twitter:image-height" content="1024">
+<meta name="twitter:image-width" content="1536">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Chris Hughes</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Architecting Multi-Agent Systems: Evolving Proven Patterns to Agentic Systems</h1>
+            <p class="subtitle lead">Why agentic systems benefit from the same layered architecture as any complex application</p>
+                  <div>
+        <div class="description">
+          How layered architecture and domain-driven design apply to multi-agent AI systems — with a working example.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Agents</div>
+                <div class="quarto-category">Architecture</div>
+                <div class="quarto-category">Domain-Driven Design</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 17, 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#choosing-a-problem-domain" id="toc-choosing-a-problem-domain" class="nav-link active" data-scroll-target="#choosing-a-problem-domain">Choosing a problem domain</a></li>
+  <li><a href="#in-this-article-we-shall-cover" id="toc-in-this-article-we-shall-cover" class="nav-link" data-scroll-target="#in-this-article-we-shall-cover">In this article, we shall cover:</a></li>
+  <li><a href="#the-architecture-challenge" id="toc-the-architecture-challenge" class="nav-link" data-scroll-target="#the-architecture-challenge">The Architecture Challenge</a>
+  <ul class="collapse">
+  <li><a href="#what-makes-this-an-architectural-problem" id="toc-what-makes-this-an-architectural-problem" class="nav-link" data-scroll-target="#what-makes-this-an-architectural-problem">What Makes This an Architectural Problem</a></li>
+  </ul></li>
+  <li><a href="#so-what-does-separation-look-like" id="toc-so-what-does-separation-look-like" class="nav-link" data-scroll-target="#so-what-does-separation-look-like">So, What Does Separation Look Like?</a>
+  <ul class="collapse">
+  <li><a href="#tools-llm-interface" id="toc-tools-llm-interface" class="nav-link" data-scroll-target="#tools-llm-interface">Tools = LLM Interface</a></li>
+  <li><a href="#services-business-logic" id="toc-services-business-logic" class="nav-link" data-scroll-target="#services-business-logic">Services = Business Logic</a></li>
+  <li><a href="#the-flow" id="toc-the-flow" class="nav-link" data-scroll-target="#the-flow">The Flow</a></li>
+  <li><a href="#why-this-matters" id="toc-why-this-matters" class="nav-link" data-scroll-target="#why-this-matters">Why This Matters</a></li>
+  </ul></li>
+  <li><a href="#the-layered-architecture" id="toc-the-layered-architecture" class="nav-link" data-scroll-target="#the-layered-architecture">The Layered Architecture</a>
+  <ul class="collapse">
+  <li><a href="#when-this-architecture-matters" id="toc-when-this-architecture-matters" class="nav-link" data-scroll-target="#when-this-architecture-matters">When This Architecture Matters</a></li>
+  <li><a href="#architecture-in-the-age-of-ai-coding-assistants" id="toc-architecture-in-the-age-of-ai-coding-assistants" class="nav-link" data-scroll-target="#architecture-in-the-age-of-ai-coding-assistants">Architecture in the Age of AI Coding Assistants</a></li>
+  <li><a href="#a-note-on-testing" id="toc-a-note-on-testing" class="nav-link" data-scroll-target="#a-note-on-testing">A Note on Testing</a></li>
+  </ul></li>
+  <li><a href="#domain-driven-organisation" id="toc-domain-driven-organisation" class="nav-link" data-scroll-target="#domain-driven-organisation">Domain-Driven Organisation</a>
+  <ul class="collapse">
+  <li><a href="#bounded-contexts" id="toc-bounded-contexts" class="nav-link" data-scroll-target="#bounded-contexts">Bounded Contexts</a></li>
+  <li><a href="#the-litmus-test" id="toc-the-litmus-test" class="nav-link" data-scroll-target="#the-litmus-test">The Litmus Test</a></li>
+  </ul></li>
+  <li><a href="#agent-design-single-responsibility" id="toc-agent-design-single-responsibility" class="nav-link" data-scroll-target="#agent-design-single-responsibility">Agent Design: Single Responsibility</a>
+  <ul class="collapse">
+  <li><a href="#why-not-a-youtubeagent" id="toc-why-not-a-youtubeagent" class="nav-link" data-scroll-target="#why-not-a-youtubeagent">Why Not a YouTubeAgent?</a></li>
+  <li><a href="#the-orchestrator-pattern" id="toc-the-orchestrator-pattern" class="nav-link" data-scroll-target="#the-orchestrator-pattern">The Orchestrator Pattern</a></li>
+  <li><a href="#what-an-agent-looks-like" id="toc-what-an-agent-looks-like" class="nav-link" data-scroll-target="#what-an-agent-looks-like">What an Agent Looks Like</a></li>
+  <li><a href="#what-the-orchestrator-looks-like" id="toc-what-the-orchestrator-looks-like" class="nav-link" data-scroll-target="#what-the-orchestrator-looks-like">What the Orchestrator Looks Like</a></li>
+  <li><a href="#context-injection" id="toc-context-injection" class="nav-link" data-scroll-target="#context-injection">Context Injection</a></li>
+  </ul></li>
+  <li><a href="#seeing-it-in-action" id="toc-seeing-it-in-action" class="nav-link" data-scroll-target="#seeing-it-in-action">Seeing It in Action</a>
+  <ul class="collapse">
+  <li><a href="#whats-happening-here" id="toc-whats-happening-here" class="nav-link" data-scroll-target="#whats-happening-here">What’s Happening Here</a></li>
+  <li><a href="#the-output" id="toc-the-output" class="nav-link" data-scroll-target="#the-output">The Output</a></li>
+  <li><a href="#iterative-refinement" id="toc-iterative-refinement" class="nav-link" data-scroll-target="#iterative-refinement">Iterative Refinement</a></li>
+  <li><a href="#what-we-dont-see-and-why-that-matters" id="toc-what-we-dont-see-and-why-that-matters" class="nav-link" data-scroll-target="#what-we-dont-see-and-why-that-matters">What We Don’t See (And Why That Matters)</a></li>
+  <li><a href="#the-cost-of-flexibility" id="toc-the-cost-of-flexibility" class="nav-link" data-scroll-target="#the-cost-of-flexibility">The Cost of Flexibility</a></li>
+  </ul></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key Takeaways</a></li>
+  <li><a href="#view-the-code" id="toc-view-the-code" class="nav-link" data-scroll-target="#view-the-code">View the Code</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+
+<div class="source-button-wrapper"><button class="source-md-button" type="button" aria-label="View raw markdown source"><span class="source-md-button-icon" aria-hidden="true">📄</span> View Markdown</button><div class="source-md-content" hidden="">---
+title: "Architecting Multi-Agent Systems: Evolving Proven Patterns to Agentic Systems"
+subtitle: "Why agentic systems benefit from the same layered architecture as any complex application"
+date: "2026-01-17"
+categories: [Agents, Architecture, "Domain-Driven Design"]
+reading-time: 25
+description: "How layered architecture and domain-driven design apply to multi-agent AI systems — with a working example."
+---
+
+::: {.source-button}
+:::
+
+![Image generated with M365 Copilot](image.png)
+
+Since the release of ChatGPT, AI agents have captured everyone's imagination. The promise is compelling: give an AI system a goal, let it break down the problem, use tools to gather information, and synthesize a result.
+
+The AI agent landscape is crowded. LangChain, CrewAI, AutoGen, Semantic Kernel, Microsoft's Agent Framework - new frameworks appear constantly, each promising to simplify building intelligent applications. Yet most tutorials focus on "hello world" demos: a single agent answering questions, maybe calling a tool or two.
+
+
+I wanted to build something more ambitious than this; to explore different architectural patterns, understand their complexity, and learn their trade-offs. My ambition was to start with the well-understood orchestrator pattern, then explore more advanced ideas such as planning-based approaches and autonomous agents that can self-assign and delegate to each other; demonstrating that agentic systems can be architected with the same discipline we apply to any serious software project.
+
+## Choosing a problem domain
+
+I'm a cooking enthusiast, and one of my favourite cuisines is barbecue. Unlike other culinary domains where high-quality cookbooks are abundant, it's scattered across YouTube channels like *Chuds BBQ*, *Fork and Embers*, and *Mad Scientist BBQ*. These channels offer content that rivals any cookbook, but the knowledge is locked in video format, which makes it difficult to quickly find and reference specific techniques or information. When planning a cook, I often find myself:
+
+1. Searching across multiple channels for a specific technique
+2. Watching (or skipping through) several videos
+3. Cross-referencing temperatures, times, and methods
+4. Manually aggregating notes into something I can reference at the grill
+
+This felt like a good candidate for automation. Search YouTube, fetch transcripts, extract the relevant information, synthesise it into a reference document. Four distinct capabilities, potentially handled by specialized agents.
+
+But more importantly, it felt like a good test case as it is non-trivial but straightforward; complex enough to require multiple agents and tools, but simple enough to focus on architecture rather than domain complexity.
+
+
+## In this article, we shall cover:
+
+- Why agentic systems benefit from the same layered architecture as any complex application
+- The critical distinction between **tools** (LLM interface) and **services** (business logic) - the key insight that unlocks clean agent design
+- How Domain-Driven Design concepts map naturally to agentic architectures
+- A practical example: an orchestrator coordinating four specialized agents
+
+For this project, I'm using the [Microsoft Agent Framework](https://github.com/microsoft/agents) - an open-source SDK for building AI agents in Python. It's the successor to both Semantic Kernel and AutoGen, combining AutoGen's simple abstractions for single- and multi-agent patterns with Semantic Kernel's enterprise features like thread-based state management and type safety. It also adds explicit workflow control for multi-agent execution paths.
+
+That said, the specific framework matters less than the principles. What follows applies whether you're using the Microsoft Agent Framework, LangChain, or building your own orchestration.
+
+
+---
+
+## The Architecture Challenge
+
+Whilst researching how to get started, I noticed a common theme: most frameworks make it easy to build demos, but they don't guide you towards creating an architecture that is maintainable and extensible.
+
+In a lot of the code I encountered, the lines between LLM calls, tool integrations, business logic, and orchestration were blurred. In software engineering—we've known about separation of concerns for decades. But in the agent space, the frameworks prioritize "getting started quickly" over architectural guidance. The tutorials optimize for "look how easy!" rather than "look how maintainable!"
+
+Understanding where to draw these boundaries is the difference between a system that scales and one that collapses under its own complexity.
+
+As an example, here's a simplified version of a monolithic approach that mixes everything together:
+
+```python
+# orchestrator.py - agents, tools, prompts, and business logic all in one
+
+def run_research(query: str) -&gt; str:
+
+    # Search agent with tool defined inline
+    def search_youtube(q: str) -&gt; str:
+        response = requests.get(f"https://youtube.com/results?q={q}")
+        return parse_html_for_videos(response.text)
+
+    search_agent = ChatAgent(
+        name="SearchAgent",
+        instructions="""You search YouTube. Use search_youtube to find videos.
+        Return video IDs and titles as JSON.""",
+        tools=[search_youtube]
+    )
+
+    # Transcript agent with its own inline tool
+    def get_transcript(video_id: str) -&gt; str:
+        transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        return " ".join([t["text"] for t in transcript])
+
+    transcript_agent = ChatAgent(
+        name="TranscriptAgent",
+        instructions="Fetch transcripts using get_transcript tool.",
+        tools=[get_transcript]
+    )
+
+    # Summarize agent with prompt engineering embedded
+    summarize_agent = ChatAgent(
+        name="SummarizeAgent",
+        instructions=f"""Summarize cooking content. Focus on:
+        - Temperatures and timing
+        - Key techniques
+        - Pro tips
+        Format as markdown."""
+    )
+
+    # Orchestration logic interleaved with agent calls
+    client = AzureOpenAI(api_key=os.environ["KEY"], ...)
+
+    videos = search_agent.run(query, client=client)
+    transcripts = []
+    for vid in parse_json(videos)[:3]:
+        text = transcript_agent.run(f"Get transcript for {vid['id']}", client=client)
+        transcripts.append(text)
+
+    summary = summarize_agent.run(f"Summarize:\n{transcripts}", client=client)
+
+    Path(f"./outputs/{query}.md").write_text(summary)
+    return summary
+```
+
+This works for a demo, and can be absolutely the right approach for validating ideas quickly. But it has serious problems:
+
+- **Difficult to test** agents without hitting real APIs
+- **Not reusable** - Tools are trapped inside this function
+- **Hard to extend** - Adding a new agent means modifying this monolith
+- **Impossible to modify in isolation** - Changing one agent risks breaking others
+- **Prompts scattered everywhere** - No single place to tune agent behaviour
+
+With this as our starting point, let's explore how we can improve things.
+
+### What Makes This an Architectural Problem
+When an LLM "calls a tool", it's doing two distinct things:
+
+1. Invoking a function with simple parameters (strings, numbers)
+2. Interpreting a string result
+
+But the actual work - searching YouTube, parsing HTML, handling errors - is complex. It involves configuration, error handling, retries, and returns rich objects with multiple fields.
+
+These are different concerns. The LLM needs simple strings. Your application needs proper abstractions. Conflating them is like putting SQL queries directly in your view layer—it works, but it's architecturally wrong.
+
+These are two separate responsibilities that we've been mixing together. Separating them unlocks testability, reusability, and clarity.
+
+## So, What Does Separation Look Like?
+
+I settled on splitting these concerns in the following way:
+
+### Tools = LLM Interface
+
+Tools are thin wrappers that translate between LLM and application. They:
+
+- Accept simple parameters (strings, numbers, booleans)
+- Call the appropriate service
+- Format the result as a string the LLM can understand
+- Are stateless
+
+```python
+# tools/youtube.py
+
+async def fetch_video_transcript(
+    video_id: Annotated[str, Field(description="YouTube video ID")]
+) -&gt; str:
+    """Fetch the transcript for a YouTube video.
+
+    Returns the full transcript text with video metadata.
+    """
+    result = await fetch_transcript(video_id)  # calls service
+
+    ## Format for LLM
+    return f"Transcript for '{result.metadata.title}':\n\n{result.transcript.full_text}"
+```
+
+Notice what the tool does NOT do:
+
+- No configuration management
+- No complex return types
+- No business logic
+
+This tool does one thing: call the service and format the result. Just adaptation.
+
+### Services = Business Logic
+
+Services contain the real implementation. They:
+
+- Are reusable classes with configuration
+- Return rich domain objects (models)
+- Can be called from anywhere (CLI, tests, other services)
+- May maintain state or connections
+
+```python
+# services/youtube.py
+
+class YouTubeTranscriptFetcher:
+    """Fetches transcripts from YouTube videos."""
+
+    def __init__(self, proxy_url: str | None = None):
+        self.proxy_url = proxy_url
+
+    async def fetch(
+        self,
+        video_id: str,
+        languages: list[str] | None = None
+    ) -&gt; TranscriptResult:
+        """Fetch transcript with full metadata.
+
+        Returns a TranscriptResult containing the transcript text,
+        video metadata, and language information.
+        """
+        # Real implementation with error handling, retries, etc.
+        raw_transcript = await self._fetch_from_api(video_id, languages)
+        metadata = await self._fetch_metadata(video_id)
+
+        return TranscriptResult(
+            metadata=metadata,
+            transcript=Transcript(
+                full_text=self._format_transcript(raw_transcript),
+                segments=raw_transcript,
+                language=self._detect_language(raw_transcript),
+            ),
+        )
+```
+
+This is where complexity lives. Configuration, caching, error handling, retries, typed returns. And crucially: it's reusable without the LLM.
+
+### The Flow
+
+When the LLM decides to fetch a transcript:
+
+```
+LLM decides to call "fetch_video_transcript"
+    ↓
+tools/youtube.py::fetch_video_transcript(video_id)
+    ↓
+services/youtube.py::YouTubeTranscriptFetcher.fetch(video_id)
+    ↓
+Returns TranscriptResult object
+    ↓
+Tool formats as string for LLM
+```
+
+![Single Agent Execution Flow](agent_execution.svg)
+
+### Why This Matters
+
+**1. Reusability** - Services can be called from the CLI directly, from tests, or from scripts, without going through the LLM:
+
+```python
+# Use from CLI, bypassing agents entirely
+@click.command()
+def download_transcript(video_id: str, output: str):
+    fetcher = YouTubeTranscriptFetcher()
+    result = fetcher.fetch(video_id)
+    Path(output).write_text(result.transcript.full_text)
+
+# Use in tests without mocking LLM
+def test_fetcher_handles_unavailable_videos():
+    fetcher = YouTubeTranscriptFetcher()
+    with pytest.raises(TranscriptDisabledError):
+        fetcher.fetch("video_with_disabled_transcript")
+
+# Use in batch processing
+async def process_videos(video_ids: list[str]):
+    fetcher = YouTubeTranscriptFetcher()
+    results = await asyncio.gather(*[fetcher.fetch(id) for id in video_ids])
+    return results
+```
+
+**2. Testability** - Services return typed objects that are easy to assert against. Tools return formatted strings which are harder to validate:
+
+```python
+# Testing a service - clear assertions
+def test_fetcher_returns_transcript():
+    result = fetcher.fetch("abc123")
+    assert result.transcript.full_text
+    assert result.metadata.video_id == "abc123"
+    assert result.transcript.language in ["en", "en-US"]
+
+# Testing a tool - string parsing required
+def test_tool_formats_correctly():
+    output = fetch_video_transcript("abc123")
+    assert "## " in output  # Has title?
+    assert "Transcript" in output  # Has section header?
+    # Much harder to validate structure
+```
+
+**3. Separation of Concerns** - Tool code handles "how to present to LLM", service code handles "how to actually do it". When YouTube's API changes, only `services/youtube.py` needs updating. When we want different output formatting, only the tool changes.
+
+This isn't theoretical—I've refactored the YouTube service twice without touching tool definitions or agent logic. That's only possible with clear boundaries.
+
+## The Layered Architecture
+
+The tools/services split is one boundary. But a complete agent system needs more structure. After some experimentation, I settled on a layered architecture that cleanly separates concerns; six layers, each with a single, well-defined responsibility. If you're familiar with Domain-Driven Design, you'll recognise the structure:
+
+![Layered Architecture for Agentic Systems](layered_architecture_detailed.svg)
+
+Here's what this looks like in practice:
+
+```python
+# presentation/cli.py - Presentation layer
+@click.command()
+def search(query: str):
+    """Search for videos on YouTube."""
+    agent = create_search_agent()
+    result = agent.run(query)
+    click.echo(result)
+
+
+# agents/search.py - Agent layer (configuration only)
+def create_search_agent() -&gt; ChatAgent:
+    """Factory function that creates a Search Agent."""
+    return ChatAgent(
+        chat_client=get_chat_client(),
+        name="SearchAgent",
+        instructions=SEARCH_AGENT_INSTRUCTIONS,
+        tools=[search_youtube_formatted],
+    )
+
+
+# tools/youtube.py - Tool layer (thin LLM adapter)
+async def search_youtube_formatted(query: str) -&gt; str:
+    """Search YouTube for videos matching the query."""
+    results = await search_youtube(query)  # Calls service
+    return format_for_llm(results)         # Formats for LLM
+
+
+# services/youtube.py - Service layer (business logic)
+async def search_youtube(query: str) -&gt; list[VideoResult]:
+    """Search YouTube - returns rich domain objects."""
+    url = build_search_url(query)
+    html = await fetch_html(url)  # calls infra
+    return parse_video_results(html)
+
+
+# models/youtube.py - Model layer (domain objects)
+@dataclass
+class VideoResult:
+    video_id: str
+    title: str
+    channel: str
+
+
+# infra/http_client.py - Infrastructure layer (HTTP transport)
+async def fetch_html(url: str, timeout: float = 10.0) -&gt; str:
+    """Fetch HTML content with browser-like headers."""
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url, headers=DEFAULT_HEADERS, timeout=timeout)
+        response.raise_for_status()
+        return response.text
+```
+
+Each layer has a single responsibility: agents configure behaviour, tools adapt for LLMs, services implement logic, models define structure. Testing is straightforward - mock at the layer boundary, not deep inside.
+
+The DDD mapping isn't forced - it emerges naturally because agentic systems have the same concerns as any complex application:
+
+| Layer | DDD Concept | Agent System Role |
+|-------|-------------|-------------------|
+| `presentation/` | Presentation | User interaction, output formatting |
+| `agents/` | Application | Orchestrates workflows, coordinates domain operations |
+| `tools/` | Anti-Corruption Layer | Translates between LLM interface and domain language |
+| `services/` | Domain | Core business logic, domain rules, the "what" |
+| `models/` | Domain Model | Entities, value objects, domain concepts |
+| `infra/` | Infrastructure | External APIs, persistence, framework plumbing |
+
+The `tools/` layer as an Anti-Corruption Layer is particularly interesting. In DDD, an ACL protects your domain model from external system concepts. Here, it protects your domain from the LLM's interface requirements - translating between "strings the LLM can reason about" and "rich domain objects your code works with".
+
+The flow is strictly downward. Agents use tools. Tools call services. Services work with models. This constraint forces clear thinking about where code belongs.
+
+### When This Architecture Matters
+Is this overkill for simple projects? Maybe. But consider when you need it:
+
+- You're building more than a demo - If this will run in production, maintainability matters from day one.
+- You're using AI coding assistants - Tools like GitHub Copilot and Claude Code work significantly better with well-structured code. Clear boundaries and consistent patterns make AI-assisted development more effective.
+- Multiple people will work on it - Clear boundaries make collaboration possible. Different developers can own different services.
+- You need to test it properly - Without the tools/services split, testing requires mocking LLMs or running expensive agent calls.
+- The domain is complex - Multiple external APIs, complex business logic, rich data models. The architecture scales with complexity.
+- You'll extend it - Adding new capabilities shouldn't require refactoring existing code. The layered architecture supports extension.
+
+I've found that the "mess" in agentic systems happens gradually. You start with inline tools because it's faster. Then you need to reuse one. Then you need to test something. Then you need error handling. Each change makes the code more tangled.
+
+By the time you realize you need better architecture, refactoring is painful. I've learned this the hard way—I once asked an AI assistant to help refactor a tangled codebase and spent hours in debugging hell. The AI confidently propagated the existing confusion into new, subtly broken code. Starting with clear layers costs more upfront but saves significant pain later.
+
+### Architecture in the Age of AI Coding Assistants
+There's another dimension to this that's become increasingly relevant: well-architected code works better with AI coding assistants.
+
+As tools like GitHub Copilot, Cursor, and Claude Code become standard parts of development workflows, I've noticed something interesting: they're much more effective when working with clearly structured code than with greenfield or tangled codebases; especially when paired with a documentation to provide context.
+
+When I ask Claude Code to "implement a feature to filter search results by minimum duration," it knows exactly where to look: `services/youtube.py`. The service has clear boundaries, typed interfaces, and follows consistent patterns. The AI can reason about the change without needing to understand the entire system.
+
+Compare this to asking it to modify inline tools scattered across orchestration code. The AI needs to:
+
+- Figure out where the tool is defined
+- Understand how it's coupled to the agent
+- Determine if changes will break other parts
+- Navigate tangled dependencies
+
+The same architectural principles that make code maintainable for humans make it navigable for AI assistants:
+
+- Clear boundaries - The AI can focus on one layer without understanding the entire stack. "Modify the tool" vs "modify the service" are distinct, scoped tasks.
+- Consistent patterns - Once the AI understands the pattern (tools call services, services return typed objects), it can apply that pattern consistently across changes.
+- Explicit types - Type hints aren't just documentation - they're constraints the AI can use to generate correct code. When TranscriptResult has a defined structure, the AI knows what fields are available.
+- Single responsibility - Each component does one thing. The AI doesn't need to reason about multiple concerns when modifying a service.
+
+This isn't about making code "AI-friendly" at the expense of good design. It's that good design principles—the same ones we've refined over decades—happen to be exactly what makes code comprehensible to AI systems.
+
+As AI coding assistants become more prevalent, architectural discipline becomes even more valuable. The codebases that benefit most from AI assistance are the ones that are already well-structured. The messy codebases stay messy, because the AI amplifies the existing patterns—good or bad.
+
+### A Note on Testing
+
+A natural benefit of the layered architecture is testability. With clear boundaries between layers, testing strategy becomes straightforward.
+
+The principle we follow: **mock at the system boundary, not internally**.
+
+```
+┌─────────────────────────────────────────────┐
+│  agents/  →  tools/  →  services/           │  ← Test with REAL code
+└─────────────────────────────────────────────┘
+                              ↓
+                    ┌─────────────────┐
+                    │ External APIs   │  ← MOCK here
+                    │ - YouTube API   │
+                    │ - Azure OpenAI  │
+                    └─────────────────┘
+```
+
+Don't mock your own services. If you're testing `TranscriptSummarizer`, inject a mock OpenAI client - but let the real service logic execute. If you're testing storage, use a temp directory - but exercise the real file I/O.
+
+This gives higher confidence (real code paths), less brittle tests (fewer mocks to maintain), and catches the integration bugs that slip through pure unit tests.
+
+---
+
+## Domain-Driven Organisation
+
+With our layer structure established, the next question is: how should we organise code *within* each layer? Let's look at the `services/` package as an example—the same thinking process applies throughout, though different layers may arrive at different answers.
+
+This is where a DDD concept becomes directly applicable: **Bounded Contexts**.
+
+I considered the following options:
+
+**Option A: By Function**
+```
+services/
+├── search.py           # YouTube search
+├── transcript.py       # Transcript fetching
+├── summarizer.py       # AI summarization
+└── storage.py          # Persistence
+```
+
+**Option B: By Bounded Context**
+```
+services/
+├── youtube.py          # Search + transcripts (same context)
+├── summarizer.py       # AI summarization
+└── storage.py          # Persistence
+```
+
+I chose Option B. Here's why.
+
+### Bounded Contexts
+
+In Domain-Driven Design, a bounded context is a boundary within which a term has consistent meaning. "YouTube" is a bounded context:
+
+- "video_id" means a YouTube video ID
+- "channel" means a YouTube channel
+- "transcript" means a YouTube transcript
+
+Both search and transcript fetching operate within this context. They share:
+
+- The same API surface (YouTube)
+- The same domain concepts (videos, channels)
+- The same error conditions (rate limits, unavailable videos)
+
+Grouping them together provides:
+
+- **Cohesion** - Related code stays together. When debugging transcript issues, you don't need to check multiple files.
+
+- **Replaceability** - Want to add Vimeo support? Create `services/vimeo.py` with the same interface. The rest of the system doesn't change.
+
+- **Discoverability** - "Where's YouTube logic?" → `services/youtube.py`. Simple.
+- **AI Comprehension** - Consistent domain language means AI assistants share your vocabulary. When everything YouTube-related uses "video_id" and "channel", the AI can reason about changes without confusion.
+
+### The Litmus Test
+
+When deciding where code belongs, ask: "If I replaced this external system, what would change?"
+
+| Change | Files Affected |
+|--------|----------------|
+| Replace YouTube with Vimeo | `services/youtube.py` → `services/vimeo.py` |
+| Replace JSON storage with SQLite | `services/storage.py` |
+| Replace Azure OpenAI with Anthropic | `services/summarizer.py` |
+
+Each domain boundary represents a potential replacement point. If multiple files would need to change for a single external system swap, your boundaries might be wrong.
+
+We apply this bounded context principle to our domain and anti-corruption layers. The `services/`, `tools/`, and `models/` packages each have a `youtube.py` file that groups YouTube-related functionality. This consistency makes navigation predictable: "Where's YouTube logic?" → check `youtube.py` in any of these layers.
+
+This has a secondary benefit for AI-assisted development: **discoverability**. When an LLM needs to understand or modify YouTube-related code, consistent naming means it can find the right files without guessing. And larger, cohesive modules aren't a bad thing—the model can read one file and have full context, rather than piecing together information scattered across many small files.
+
+---
+
+## Agent Design: Single Responsibility
+
+With our layer structure and domain organisation in place, let's look at the agents themselves.
+
+Each agent has exactly one job:
+
+| Agent | Responsibility | Does NOT |
+|-------|---------------|----------|
+| **SearchAgent** | Find videos on YouTube | Fetch transcripts, summarize |
+| **TranscriptAgent** | Fetch and store transcripts | Summarize, search |
+| **SummarizeAgent** | Generate summaries | Fetch from YouTube |
+| **WriterAgent** | Write files to disk | Any YouTube operations |
+
+This might seem overly restrictive. Why not let the TranscriptAgent also summarize, since it already has the transcript text?
+
+The answer is predictability and debuggability. When something goes wrong:
+
+- If summaries are bad, check SummarizeAgent
+- If transcripts are missing, check TranscriptAgent
+- If search results are irrelevant, check SearchAgent
+
+Mixed responsibilities make debugging harder. "Is it a search problem or a transcript problem?" becomes a common question when agents do multiple things.
+
+### Why Not a YouTubeAgent?
+
+You might notice an apparent inconsistency. We just argued for organizing `services/`, `tools/`, and `models/` by bounded context—each has a `youtube.py` file. So why don't we have a YouTubeAgent that handles both search and transcripts?
+
+The answer lies in what each layer does:
+
+- **Domain layers** (services, models) and the **anti-corruption layer** (tools) are organized by *external system*. These layers contain domain concepts like "video_id" and "channel", and grouping by bounded context makes the system easier to understand and replace.
+
+- **Agents** are an *orchestration layer*—they define jobs and coordinate work. An agent is more like a role than a system boundary. SearchAgent's job is finding videos. TranscriptAgent's job is fetching transcripts. These are different jobs that happen to use the same external system.
+
+We don't call SummarizeAgent "AzureOpenAIAgent" even though it uses Azure OpenAI. The agent's identity comes from what it *does*, not what system it *uses*. This keeps debugging simple: one job, one agent, one place to look when things go wrong.
+
+### The Orchestrator Pattern
+
+With four single-responsibility agents, we need coordination. The OrchestratorAgent handles this:
+
+```
+User Request
+    ↓
+Orchestrator (decides what to do)
+    ↓
+    ├── "Need to search" → SearchAgent
+    ├── "Need transcript" → TranscriptAgent
+    ├── "Need summary" → SummarizeAgent
+    └── "Need to save" → WriterAgent
+```
+
+The orchestrator:
+
+- Maintains conversation memory
+- Knows what's been cached (via context injection)
+- Delegates work to specialists
+- Never calls YouTube or OpenAI directly
+
+This separation means we can test each specialist agent independently, with clear inputs and outputs.
+
+### What an Agent Looks Like
+
+An agent definition is surprisingly simple. Here's the SearchAgent:
+
+```python
+#agents/search_agent.py
+
+SEARCH_AGENT_INSTRUCTIONS = """You are a YouTube Search Agent. Your job is to find relevant YouTube videos based on user queries.
+
+When asked to search:
+1. Use the search_youtube tool to find videos
+2. Return the results clearly formatted
+3. Highlight which videos seem most relevant to the query
+
+You only search - you do not fetch transcripts or summarize. Other agents handle those tasks."""
+
+def create_search_agent() -&gt; ChatAgent:
+    """Factory function that creates a Search Agent."""
+    return ChatAgent(
+        chat_client=get_chat_client(),
+        name="SearchAgent",
+        instructions=SEARCH_AGENT_INSTRUCTIONS,
+        tools=[search_youtube_formatted],
+    )
+```
+
+Notice the pattern:
+
+- **Instructions** are extracted as module-level constants for clarity. Alternatively, you could load prompts from external files (e.g., `prompts/search_agent.txt`), which makes iterating on prompts easier without touching Python code
+- **Tools** are functions from the `tools/` layer (which call services)
+- The agent doesn't know about YouTube APIs - it just calls tools
+
+### What the Orchestrator Looks Like
+
+The orchestrator follows the same pattern, but its tools delegate to other agents:
+
+```python
+class OrchestratorAgent:
+    """Coordinates sub-agents for YouTube research tasks."""
+
+    def __init__(self) -&gt; None:
+        self._agents: dict[str, ChatAgent] = {}
+        # Agent factory registry for lazy initialization
+        self._agent_factories = {
+            "search": create_search_agent,
+            "transcript": create_transcript_agent,
+            "summarize": create_summarize_agent,
+            "writer": create_writer_agent,
+        }
+
+    def _get_agent(self, name: str) -&gt; ChatAgent:
+        """Get or create an agent by name (lazy initialization)."""
+        if name not in self._agents:
+            self._agents[name] = self._agent_factories[name]()
+        return self._agents[name]
+
+    async def _delegate(self, agent_name: str, request: str) -&gt; str:
+        """Delegate a request to a sub-agent."""
+        agent = self._get_agent(agent_name)
+        result = await agent.run(request)
+        return result.text
+
+    async def ask_search_agent(self, request: str) -&gt; str:
+        """Delegate a search request to the Search Agent."""
+        return await self._delegate("search", request)
+
+    # ... similar for transcript, summarize, writer
+
+    def get_orchestrator(self) -&gt; ChatAgent:
+        return ChatAgent(
+            chat_client=get_chat_client(),
+            name="Orchestrator",
+            instructions=ORCHESTRATOR_INSTRUCTIONS,
+            tools=[
+                self.ask_search_agent,
+                self.ask_transcript_agent,
+                self.ask_summarize_agent,
+                self.ask_writer_agent,
+            ],
+        )
+```
+
+Notice we use a class here instead of a simple factory function. This is intentional: the orchestrator needs to maintain state—specifically, a cache of lazily-initialized sub-agents. This avoids recreating agents on every delegation while keeping initialization costs deferred until first use.
+
+The orchestrator's "tools" are delegation functions. When the LLM decides to search, it calls `ask_search_agent`, which runs the SearchAgent and returns its result. The orchestrator sees the result and decides what to do next.
+
+This is the hub-and-spoke pattern:
+&lt;!-- 
+```
+                   ┌─────────────┐
+                   │ Orchestrator│
+                   │   (LLM)     │
+                   └──────┬──────┘
+                          │
+       ┌────────────┬─────┴─────┬───────────┐
+       │            │           │           │
+       ▼            ▼           ▼           ▼
+  ┌─────────┐ ┌──────────┐ ┌─────────┐ ┌─────────┐
+  │ Search  │ │Transcript│ │Summarize│ │  Writer │
+  │  Agent  │ │  Agent   │ │  Agent  │ │  Agent  │
+  └─────────┘ └──────────┘ └─────────┘ └─────────┘
+``` --&gt;
+
+![Orchestrator Pattern Flow](orchestrator_flow.svg)
+
+Every interaction flows through the centre. The orchestrator accumulates context from each step, maintaining the full conversation history.
+
+### Context Injection
+
+One subtle but important pattern: the orchestrator needs to know what transcripts are already cached to make smart decisions. The Microsoft Agent Framework provides a `ContextProvider` base class for this—we implement `invoking()` to inject context before each LLM call:
+
+```python
+from agent_framework._memory import Context, ContextProvider
+
+class TranscriptContextProvider(ContextProvider):
+    """Provides context about stored transcripts to the orchestrator."""
+
+    async def invoking(self, messages, **kwargs) -&gt; Context:
+        """Called before each LLM invocation."""
+        video_ids = self._storage.list_videos()
+
+        if not video_ids:
+            return Context(instructions="No transcripts currently stored.")
+
+        lines = ["You have these transcripts available:"]
+        for vid in video_ids:
+            stored = self._storage.load(vid)
+            if stored:
+                status = "summarized" if stored.summary else "not summarized"
+                lines.append(f"- {stored.metadata.title} ({vid}): {status}")
+
+        return Context(instructions="\n".join(lines))
+```
+
+The framework calls `invoking()` before each LLM request, and the returned `Context` is merged into the agent's instructions.
+
+It's worth noting that this is separate from *conversation memory*—the back-and-forth dialogue history between user and agent. The framework handles conversation memory automatically, typically through a thread or session mechanism. The `messages` parameter passed to `invoking()` already contains this history.
+
+The `ContextProvider` pattern addresses a different need: injecting *domain state* that exists outside the conversation. Our storage layer persists transcripts to disk, but the LLM has no way of knowing what's there unless we tell it. By querying storage and formatting the results as instructions, we bridge the gap between our application's state and the LLM's context window.
+
+This separation is intentional. Conversation memory answers "what have we discussed?", while domain context answers "what resources exist?". The framework manages the former; we're responsible for the latter.
+
+Now the orchestrator can reason: "The user wants a summary, and I already have the transcript cached, so I'll skip fetching and go straight to SummarizeAgent."
+
+---
+
+## Seeing It in Action
+
+Theory is useful, but there's nothing like seeing the system actually run. Let's walk through what happens when we make a real request to the orchestrator.
+
+Here's our test request:
+
+```
+I want to cook a pork loin roast on a Kamado grill/smoker.
+I would like some info on how to do this based on techniques on YouTube.
+Some channels I trust are fork and embers and chuds bbq.
+Ideally, I need to know the temperature, the grill setup, the internal
+temperature and the time.
+Save the results to pork_loin_guide.md
+```
+
+This request exercises the full pipeline: search, transcript fetching, summarization, and file writing. It's specific enough to be reproducible but open-ended enough to allow the orchestrator flexibility in execution strategy.
+
+When we run this through the orchestrator with logging enabled, we can observe the full decision-making flow. The logs below are cleaned up for clarity—the actual debug output includes framework internals and full response payloads—but the core flow is preserved:
+
+```
+10:42:15 [INFO] orchestrator: Received request: I want to cook a pork loin...
+10:42:15 [DEBUG] orchestrator: Checking transcript context...
+10:42:15 [DEBUG] context: No transcripts currently stored
+10:42:15 [DEBUG] orchestrator: Calling Azure OpenAI...
+
+10:42:17 [INFO] orchestrator: Delegating to SearchAgent
+10:42:17 [DEBUG] search_agent: Searching YouTube for: pork loin kamado fork embers chuds bbq
+10:42:18 [INFO] youtube_service: Found 5 videos matching query
+10:42:18 [DEBUG] search_agent: Returning formatted results
+
+10:42:19 [INFO] orchestrator: Delegating to TranscriptAgent
+10:42:19 [DEBUG] transcript_agent: Fetching transcript for video fI86yXKlnQA
+10:42:20 [INFO] youtube_service: Fetched transcript (4,521 words)
+10:42:20 [DEBUG] storage_service: Saved transcript to data/transcripts/fI86yXKlnQA.json
+10:42:20 [DEBUG] transcript_agent: Transcript cached and returned
+
+10:42:21 [INFO] orchestrator: Delegating to TranscriptAgent
+10:42:21 [DEBUG] transcript_agent: Fetching transcript for video FsbwQI-EI-k
+10:42:22 [INFO] youtube_service: Fetched transcript (3,892 words)
+10:42:22 [DEBUG] storage_service: Saved transcript to data/transcripts/FsbwQI-EI-k.json
+
+10:42:23 [INFO] orchestrator: Delegating to SummarizeAgent
+10:42:23 [DEBUG] summarize_agent: Summarizing 2 transcripts (8,413 total words)
+10:42:26 [INFO] summarize_service: Generated summary (847 words)
+
+10:42:27 [INFO] orchestrator: Delegating to WriterAgent
+10:42:27 [DEBUG] writer_agent: Writing to output/pork_loin_guide.md
+10:42:27 [INFO] storage_service: File written successfully
+
+10:42:27 [INFO] orchestrator: Request completed (12.4s)
+```
+
+### What's Happening Here
+
+The logs reveal the orchestrator pattern in motion:
+
+1. **Context Check**: The orchestrator first checks for cached transcripts. Finding none, it knows it needs to search and fetch.
+
+2. **SearchAgent Delegation**: The orchestrator decides it needs videos, so it delegates to SearchAgent. Notice the clean boundary—the orchestrator says "find videos about X", not "call the YouTube API with these parameters."
+
+3. **TranscriptAgent Delegation** (×2): For each relevant video, the orchestrator delegates to TranscriptAgent. The agent handles fetching, caching, and formatting—the orchestrator just sees results.
+
+4. **SummarizeAgent Delegation**: With transcripts in hand, the orchestrator passes the text to SummarizeAgent. The summarizer doesn't know about YouTube—it just receives text and produces a summary.
+
+5. **WriterAgent Delegation**: Finally, the orchestrator asks WriterAgent to save the result. Again, clean delegation—the orchestrator provides content and a filename, the agent handles the rest.
+
+### The Output
+
+The final markdown file demonstrates what we get from this orchestration:
+
+```markdown
+# Pork Loin Roast on a Kamado (YouTube-Technique Guide)
+
+**Date:** 2025-01-11
+**Source:** YouTube technique summaries (videos linked below)
+
+## Key targets (temps &amp; doneness)
+
+- **Pit / dome temp (indirect smoking):** **250–275°F** (121–135°C)
+- **Internal temp targets (pork loin):**
+  - **Pull at 140–145°F** (60–63°C) for juicy slices
+  - If you prefer more done: **150°F** (66°C)
+- **Rest:** **10–20 minutes** (loosely tented)
+
+## Recommended kamado setups
+
+### Setup A — Indirect "smoke-then-finish" (most consistent)
+1. **Charcoal:** quality lump; add 1–3 chunks of mild fruit wood
+2. **Heat deflectors:** installed for indirect cooking
+3. **Target pit temp:** stabilize at **250–275°F**
+
+...
+
+## Video references
+- **Fork &amp; Embers** — Pork loin roast method
+- **Chuds BBQ** — Temp-control + finishing approach
+```
+
+The orchestrator synthesised information from multiple YouTube videos into a coherent, actionable reference document. Each agent contributed its specialty: SearchAgent found the right videos, TranscriptAgent retrieved the content, SummarizeAgent extracted the key information, and WriterAgent saved the result.
+
+### Iterative Refinement
+
+Because the orchestrator maintains conversation history, we can continue the dialogue to refine results:
+
+```
+User: Can you add a section comparing direct vs indirect cooking methods?
+User: The temperatures seem low - can you check if Chuds mentions a hotter approach?
+User: Save a version without the glaze instructions for my friend who doesn't like sweet.
+```
+
+Each follow-up leverages the cached transcripts—no need to re-fetch from YouTube. The orchestrator remembers what it has, reasons about what's needed, and delegates accordingly. This conversational loop is where the agent pattern really shines: the system adapts to feedback without starting from scratch.
+
+### What We Don't See (And Why That Matters)
+
+Just as important as what appears in the logs is what *doesn't*:
+
+- **No YouTube API details** in the orchestrator logs—that's encapsulated in the service layer
+- **No OpenAI prompt engineering** visible at the orchestration level—that's in the agent instructions
+- **No file I/O logic** leaking up—WriterAgent handles it internally
+
+Each layer handles its own concerns. The orchestrator reasons about *what* needs to happen; the agents and services handle *how*.
+
+### The Cost of Flexibility
+
+There's an important trade-off with the orchestrator pattern that only becomes visible when you run it multiple times: **variance**.
+
+The clean sequential flow shown above represents one possible execution. But run the same request again, and you might see a different pattern entirely.
+
+When benchmarking the same request across multiple runs, I observed LLM call counts ranging from **17 to 34 calls** for identical inputs. Why such variance? The orchestrator LLM makes different tactical decisions each time:
+
+| Decision Point | Observed Variance |
+|----------------|-------------------|
+| **Search strategy** | 1-3 searches, sequential or parallel |
+| **Summarization** | Sometimes skipped entirely, sometimes per-video |
+| **Delegation phrasing** | Different wording can cause downstream failures |
+
+With verbose logging enabled, we can see these decisions in action:
+
+```
+# Run A (17 calls) - Minimal approach
+SearchAgent called with: Kamado pork loin Fork and Embers
+SearchAgent called with: Chuds BBQ pork loin kamado
+TranscriptAgent called with: Fetch transcript for video FsbwQI-EI-k...
+TranscriptAgent called with: Fetch transcript for video 2AF1ysZ8eEA...
+TranscriptAgent called with: Fetch transcript for video fI86yXKlnQA...
+WriterAgent called with: Write a markdown file...  # Skipped summarization!
+
+# Run B (25 calls) - Thorough approach
+SearchAgent called with: Find YouTube videos where Fork and Embers...
+SearchAgent called with: Find YouTube videos where Chuds BBQ...
+SearchAgent called with: Find top YouTube videos about cooking pork loin...
+TranscriptAgent called with: ...
+SummarizeAgent called with: From the provided transcripts, extract...
+WriterAgent called with: ...
+```
+
+Run A decided the WriterAgent could synthesize directly from transcripts. Run B added a summarization step. Both produced valid outputs, but with different costs and potentially different quality.
+
+
+#### "Just Set Temperature to Zero?"
+
+A natural reaction to this variance is to reduce LLM temperature for more deterministic behaviour. I tested this:
+
+| Temperature | Range | Std Dev |
+|-------------|-------|---------|
+| 0.7 (default) | 17-34 | ~5.6 |
+| 0.0 (deterministic) | 25-35 | 5.29 |
+
+*Note: A fixed seed (42) was set for all runs.*
+
+Even with temperature=0 and a fixed seed, we observed **10 calls of variance** (25 to 35 calls). The unpredictability isn't primarily from sampling randomness—it's from the LLM making different *valid* strategic choices each run:
+
+- How many parallel searches to issue (1, 2, or 3)
+- Whether to summarize per-video or combined
+- Whether to skip summarization entirely and let the writer synthesize
+
+This variance is architectural. To reduce this, we either need to constrain each agent's scope so tightly that decisions become more consistent, or remove runtime decision-making entirely by planning upfront; alternatives will be explored in future posts.
+
+This isn't a bug—it's the inherent nature of letting an LLM decide the workflow at runtime. The orchestrator has flexibility to adapt its approach, but that flexibility comes with unpredictability. For conversational interfaces where adaptability matters, this trade-off is often worthwhile. For batch processing where predictability matters, other approaches may be better suited.
+
+---
+
+## Key Takeaways
+
+These principles apply regardless of which agent framework you choose:
+
+1. **Layer your architecture** - CLI, Agents, Services, Infrastructure. Agent systems have the same concerns as any complex application.
+
+2. **Separate tools from services** - Tools are the Anti-Corruption Layer between LLMs and your domain. Keep them thin. Let services do the real work.
+
+3. **Organise by bounded context** - Group code by the external system or domain concept, not by function. When you need to replace YouTube with Vimeo, one file changes.
+
+4. **Single responsibility for agents** - Each agent does one thing well. Coordination happens in a dedicated orchestrator (for now - we'll revisit this in [Part 2](../multi-agent-part2/)).
+
+5. **Expect variance with runtime orchestration** - When an LLM decides the workflow at runtime, identical inputs can produce different execution paths. Setting temperature to zero or using a seed won't necessarily fix this - the variance is architectural, not sampling randomness.
+
+---
+
+## View the Code
+
+All patterns described here are implemented in the reference codebase:
+
+- **[Orchestrator Pattern](https://github.com/Chris-hughes10/multi-agent-patterns/tree/main/src/youtube_agent_orchestrator)** - The architecture explored in this post
+- **[Full Source Code](https://github.com/Chris-hughes10/multi-agent-patterns)** - Complete implementation with tests
+
+
+---
+
+## Conclusion
+
+The ambition I started with was to demonstrate that agentic systems can be architected with the same discipline we apply to any serious software project. The orchestrator pattern we've explored here shows that's achievable.
+
+The approach isn't novel—layered architecture, separation of concerns, Domain-Driven Design. What's interesting is how naturally these patterns map to agent systems. The Anti-Corruption Layer concept perfectly describes the tools/services split. Bounded contexts explain why YouTube search and transcript fetching belong together.
+
+The key insight specific to agents: **tools and services have fundamentally different responsibilities**. Tools translate between the LLM's world (simple parameters, string outputs) and your domain's world (rich objects, business logic). Separating them unlocks clean, testable systems.
+
+Agentic systems aren't magic. They're software systems with a natural language interface and an LLM component. The engineering discipline we've refined over decades still applies—you just need to think about where the boundaries are.
+
+---
+
+**What's Next**: This architecture works well for an orchestrator pattern, where a central agent coordinates specialists. But what happens when workflows get complex and the orchestrator becomes a bottleneck? In [Part 2](../multi-agent-part2/), we'll explore what happens when you remove the central coordinator entirely - when every agent understands the goal and decides for itself what should happen next.
+
+---
+
+*The code for this project is available on GitHub. All patterns described here are implemented in the reference codebase.*
+</div></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="image.png" class="img-fluid figure-img"></p>
+<figcaption>Image generated with M365 Copilot</figcaption>
+</figure>
+</div>
+<p>Since the release of ChatGPT, AI agents have captured everyone’s imagination. The promise is compelling: give an AI system a goal, let it break down the problem, use tools to gather information, and synthesize a result.</p>
+<p>The AI agent landscape is crowded. LangChain, CrewAI, AutoGen, Semantic Kernel, Microsoft’s Agent Framework - new frameworks appear constantly, each promising to simplify building intelligent applications. Yet most tutorials focus on “hello world” demos: a single agent answering questions, maybe calling a tool or two.</p>
+<p>I wanted to build something more ambitious than this; to explore different architectural patterns, understand their complexity, and learn their trade-offs. My ambition was to start with the well-understood orchestrator pattern, then explore more advanced ideas such as planning-based approaches and autonomous agents that can self-assign and delegate to each other; demonstrating that agentic systems can be architected with the same discipline we apply to any serious software project.</p>
+<section id="choosing-a-problem-domain" class="level2">
+<h2 class="anchored" data-anchor-id="choosing-a-problem-domain">Choosing a problem domain</h2>
+<p>I’m a cooking enthusiast, and one of my favourite cuisines is barbecue. Unlike other culinary domains where high-quality cookbooks are abundant, it’s scattered across YouTube channels like <em>Chuds BBQ</em>, <em>Fork and Embers</em>, and <em>Mad Scientist BBQ</em>. These channels offer content that rivals any cookbook, but the knowledge is locked in video format, which makes it difficult to quickly find and reference specific techniques or information. When planning a cook, I often find myself:</p>
+<ol type="1">
+<li>Searching across multiple channels for a specific technique</li>
+<li>Watching (or skipping through) several videos</li>
+<li>Cross-referencing temperatures, times, and methods</li>
+<li>Manually aggregating notes into something I can reference at the grill</li>
+</ol>
+<p>This felt like a good candidate for automation. Search YouTube, fetch transcripts, extract the relevant information, synthesise it into a reference document. Four distinct capabilities, potentially handled by specialized agents.</p>
+<p>But more importantly, it felt like a good test case as it is non-trivial but straightforward; complex enough to require multiple agents and tools, but simple enough to focus on architecture rather than domain complexity.</p>
+</section>
+<section id="in-this-article-we-shall-cover" class="level2">
+<h2 class="anchored" data-anchor-id="in-this-article-we-shall-cover">In this article, we shall cover:</h2>
+<ul>
+<li>Why agentic systems benefit from the same layered architecture as any complex application</li>
+<li>The critical distinction between <strong>tools</strong> (LLM interface) and <strong>services</strong> (business logic) - the key insight that unlocks clean agent design</li>
+<li>How Domain-Driven Design concepts map naturally to agentic architectures</li>
+<li>A practical example: an orchestrator coordinating four specialized agents</li>
+</ul>
+<p>For this project, I’m using the <a href="https://github.com/microsoft/agents">Microsoft Agent Framework</a> - an open-source SDK for building AI agents in Python. It’s the successor to both Semantic Kernel and AutoGen, combining AutoGen’s simple abstractions for single- and multi-agent patterns with Semantic Kernel’s enterprise features like thread-based state management and type safety. It also adds explicit workflow control for multi-agent execution paths.</p>
+<p>That said, the specific framework matters less than the principles. What follows applies whether you’re using the Microsoft Agent Framework, LangChain, or building your own orchestration.</p>
+<hr>
+</section>
+<section id="the-architecture-challenge" class="level2">
+<h2 class="anchored" data-anchor-id="the-architecture-challenge">The Architecture Challenge</h2>
+<p>Whilst researching how to get started, I noticed a common theme: most frameworks make it easy to build demos, but they don’t guide you towards creating an architecture that is maintainable and extensible.</p>
+<p>In a lot of the code I encountered, the lines between LLM calls, tool integrations, business logic, and orchestration were blurred. In software engineering—we’ve known about separation of concerns for decades. But in the agent space, the frameworks prioritize “getting started quickly” over architectural guidance. The tutorials optimize for “look how easy!” rather than “look how maintainable!”</p>
+<p>Understanding where to draw these boundaries is the difference between a system that scales and one that collapses under its own complexity.</p>
+<p>As an example, here’s a simplified version of a monolithic approach that mixes everything together:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># orchestrator.py - agents, tools, prompts, and business logic all in one</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> run_research(query: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Search agent with tool defined inline</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> search_youtube(q: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> requests.get(<span class="ss">f"https://youtube.com/results?q=</span><span class="sc">{</span>q<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> parse_html_for_videos(response.text)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    search_agent <span class="op">=</span> ChatAgent(</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">"SearchAgent"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        instructions<span class="op">=</span><span class="st">"""You search YouTube. Use search_youtube to find videos.</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="st">        Return video IDs and titles as JSON."""</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        tools<span class="op">=</span>[search_youtube]</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Transcript agent with its own inline tool</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> get_transcript(video_id: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        transcript <span class="op">=</span> YouTubeTranscriptApi.get_transcript(video_id)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">" "</span>.join([t[<span class="st">"text"</span>] <span class="cf">for</span> t <span class="kw">in</span> transcript])</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    transcript_agent <span class="op">=</span> ChatAgent(</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">"TranscriptAgent"</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        instructions<span class="op">=</span><span class="st">"Fetch transcripts using get_transcript tool."</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        tools<span class="op">=</span>[get_transcript]</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Summarize agent with prompt engineering embedded</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    summarize_agent <span class="op">=</span> ChatAgent(</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">"SummarizeAgent"</span>,</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        instructions<span class="op">=</span><span class="ss">f"""Summarize cooking content. Focus on:</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">        - Temperatures and timing</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">        - Key techniques</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="ss">        - Pro tips</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="ss">        Format as markdown."""</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Orchestration logic interleaved with agent calls</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    client <span class="op">=</span> AzureOpenAI(api_key<span class="op">=</span>os.environ[<span class="st">"KEY"</span>], ...)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    videos <span class="op">=</span> search_agent.run(query, client<span class="op">=</span>client)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    transcripts <span class="op">=</span> []</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> vid <span class="kw">in</span> parse_json(videos)[:<span class="dv">3</span>]:</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>        text <span class="op">=</span> transcript_agent.run(<span class="ss">f"Get transcript for </span><span class="sc">{</span>vid[<span class="st">'id'</span>]<span class="sc">}</span><span class="ss">"</span>, client<span class="op">=</span>client)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>        transcripts.append(text)</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    summary <span class="op">=</span> summarize_agent.run(<span class="ss">f"Summarize:</span><span class="ch">\n</span><span class="sc">{</span>transcripts<span class="sc">}</span><span class="ss">"</span>, client<span class="op">=</span>client)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    Path(<span class="ss">f"./outputs/</span><span class="sc">{</span>query<span class="sc">}</span><span class="ss">.md"</span>).write_text(summary)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This works for a demo, and can be absolutely the right approach for validating ideas quickly. But it has serious problems:</p>
+<ul>
+<li><strong>Difficult to test</strong> agents without hitting real APIs</li>
+<li><strong>Not reusable</strong> - Tools are trapped inside this function</li>
+<li><strong>Hard to extend</strong> - Adding a new agent means modifying this monolith</li>
+<li><strong>Impossible to modify in isolation</strong> - Changing one agent risks breaking others</li>
+<li><strong>Prompts scattered everywhere</strong> - No single place to tune agent behaviour</li>
+</ul>
+<p>With this as our starting point, let’s explore how we can improve things.</p>
+<section id="what-makes-this-an-architectural-problem" class="level3">
+<h3 class="anchored" data-anchor-id="what-makes-this-an-architectural-problem">What Makes This an Architectural Problem</h3>
+<p>When an LLM “calls a tool”, it’s doing two distinct things:</p>
+<ol type="1">
+<li>Invoking a function with simple parameters (strings, numbers)</li>
+<li>Interpreting a string result</li>
+</ol>
+<p>But the actual work - searching YouTube, parsing HTML, handling errors - is complex. It involves configuration, error handling, retries, and returns rich objects with multiple fields.</p>
+<p>These are different concerns. The LLM needs simple strings. Your application needs proper abstractions. Conflating them is like putting SQL queries directly in your view layer—it works, but it’s architecturally wrong.</p>
+<p>These are two separate responsibilities that we’ve been mixing together. Separating them unlocks testability, reusability, and clarity.</p>
+</section>
+</section>
+<section id="so-what-does-separation-look-like" class="level2">
+<h2 class="anchored" data-anchor-id="so-what-does-separation-look-like">So, What Does Separation Look Like?</h2>
+<p>I settled on splitting these concerns in the following way:</p>
+<section id="tools-llm-interface" class="level3">
+<h3 class="anchored" data-anchor-id="tools-llm-interface">Tools = LLM Interface</h3>
+<p>Tools are thin wrappers that translate between LLM and application. They:</p>
+<ul>
+<li>Accept simple parameters (strings, numbers, booleans)</li>
+<li>Call the appropriate service</li>
+<li>Format the result as a string the LLM can understand</li>
+<li>Are stateless</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tools/youtube.py</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> fetch_video_transcript(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    video_id: Annotated[<span class="bu">str</span>, Field(description<span class="op">=</span><span class="st">"YouTube video ID"</span>)]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Fetch the transcript for a YouTube video.</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns the full transcript text with video metadata.</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> <span class="cf">await</span> fetch_transcript(video_id)  <span class="co"># calls service</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">## Format for LLM</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="ss">f"Transcript for '</span><span class="sc">{</span>result<span class="sc">.</span>metadata<span class="sc">.</span>title<span class="sc">}</span><span class="ss">':</span><span class="ch">\n\n</span><span class="sc">{</span>result<span class="sc">.</span>transcript<span class="sc">.</span>full_text<span class="sc">}</span><span class="ss">"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Notice what the tool does NOT do:</p>
+<ul>
+<li>No configuration management</li>
+<li>No complex return types</li>
+<li>No business logic</li>
+</ul>
+<p>This tool does one thing: call the service and format the result. Just adaptation.</p>
+</section>
+<section id="services-business-logic" class="level3">
+<h3 class="anchored" data-anchor-id="services-business-logic">Services = Business Logic</h3>
+<p>Services contain the real implementation. They:</p>
+<ul>
+<li>Are reusable classes with configuration</li>
+<li>Return rich domain objects (models)</li>
+<li>Can be called from anywhere (CLI, tests, other services)</li>
+<li>May maintain state or connections</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># services/youtube.py</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> YouTubeTranscriptFetcher:</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Fetches transcripts from YouTube videos."""</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, proxy_url: <span class="bu">str</span> <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span>):</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.proxy_url <span class="op">=</span> proxy_url</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="kw">def</span> fetch(</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        video_id: <span class="bu">str</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        languages: <span class="bu">list</span>[<span class="bu">str</span>] <span class="op">|</span> <span class="va">None</span> <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">-&gt;</span> TranscriptResult:</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Fetch transcript with full metadata.</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">        Returns a TranscriptResult containing the transcript text,</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">        video metadata, and language information.</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Real implementation with error handling, retries, etc.</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        raw_transcript <span class="op">=</span> <span class="cf">await</span> <span class="va">self</span>._fetch_from_api(video_id, languages)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        metadata <span class="op">=</span> <span class="cf">await</span> <span class="va">self</span>._fetch_metadata(video_id)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> TranscriptResult(</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>            metadata<span class="op">=</span>metadata,</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>            transcript<span class="op">=</span>Transcript(</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>                full_text<span class="op">=</span><span class="va">self</span>._format_transcript(raw_transcript),</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>                segments<span class="op">=</span>raw_transcript,</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>                language<span class="op">=</span><span class="va">self</span>._detect_language(raw_transcript),</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This is where complexity lives. Configuration, caching, error handling, retries, typed returns. And crucially: it’s reusable without the LLM.</p>
+</section>
+<section id="the-flow" class="level3">
+<h3 class="anchored" data-anchor-id="the-flow">The Flow</h3>
+<p>When the LLM decides to fetch a transcript:</p>
+<pre><code>LLM decides to call "fetch_video_transcript"
+    ↓
+tools/youtube.py::fetch_video_transcript(video_id)
+    ↓
+services/youtube.py::YouTubeTranscriptFetcher.fetch(video_id)
+    ↓
+Returns TranscriptResult object
+    ↓
+Tool formats as string for LLM</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="agent_execution.svg" class="img-fluid figure-img"></p>
+<figcaption>Single Agent Execution Flow</figcaption>
+</figure>
+</div>
+</section>
+<section id="why-this-matters" class="level3">
+<h3 class="anchored" data-anchor-id="why-this-matters">Why This Matters</h3>
+<p><strong>1. Reusability</strong> - Services can be called from the CLI directly, from tests, or from scripts, without going through the LLM:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use from CLI, bypassing agents entirely</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">@click.command</span>()</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> download_transcript(video_id: <span class="bu">str</span>, output: <span class="bu">str</span>):</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    fetcher <span class="op">=</span> YouTubeTranscriptFetcher()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> fetcher.fetch(video_id)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    Path(output).write_text(result.transcript.full_text)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Use in tests without mocking LLM</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_fetcher_handles_unavailable_videos():</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    fetcher <span class="op">=</span> YouTubeTranscriptFetcher()</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> pytest.raises(TranscriptDisabledError):</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        fetcher.fetch(<span class="st">"video_with_disabled_transcript"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Use in batch processing</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> process_videos(video_ids: <span class="bu">list</span>[<span class="bu">str</span>]):</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    fetcher <span class="op">=</span> YouTubeTranscriptFetcher()</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> <span class="cf">await</span> asyncio.gather(<span class="op">*</span>[fetcher.fetch(<span class="bu">id</span>) <span class="cf">for</span> <span class="bu">id</span> <span class="kw">in</span> video_ids])</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> results</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>2. Testability</strong> - Services return typed objects that are easy to assert against. Tools return formatted strings which are harder to validate:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Testing a service - clear assertions</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_fetcher_returns_transcript():</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> fetcher.fetch(<span class="st">"abc123"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result.transcript.full_text</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result.metadata.video_id <span class="op">==</span> <span class="st">"abc123"</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result.transcript.language <span class="kw">in</span> [<span class="st">"en"</span>, <span class="st">"en-US"</span>]</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Testing a tool - string parsing required</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_tool_formats_correctly():</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> fetch_video_transcript(<span class="st">"abc123"</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="st">"## "</span> <span class="kw">in</span> output  <span class="co"># Has title?</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="st">"Transcript"</span> <span class="kw">in</span> output  <span class="co"># Has section header?</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Much harder to validate structure</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>3. Separation of Concerns</strong> - Tool code handles “how to present to LLM”, service code handles “how to actually do it”. When YouTube’s API changes, only <code>services/youtube.py</code> needs updating. When we want different output formatting, only the tool changes.</p>
+<p>This isn’t theoretical—I’ve refactored the YouTube service twice without touching tool definitions or agent logic. That’s only possible with clear boundaries.</p>
+</section>
+</section>
+<section id="the-layered-architecture" class="level2">
+<h2 class="anchored" data-anchor-id="the-layered-architecture">The Layered Architecture</h2>
+<p>The tools/services split is one boundary. But a complete agent system needs more structure. After some experimentation, I settled on a layered architecture that cleanly separates concerns; six layers, each with a single, well-defined responsibility. If you’re familiar with Domain-Driven Design, you’ll recognise the structure:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="layered_architecture_detailed.svg" class="img-fluid figure-img"></p>
+<figcaption>Layered Architecture for Agentic Systems</figcaption>
+</figure>
+</div>
+<p>Here’s what this looks like in practice:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># presentation/cli.py - Presentation layer</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">@click.command</span>()</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search(query: <span class="bu">str</span>):</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Search for videos on YouTube."""</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    agent <span class="op">=</span> create_search_agent()</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> agent.run(query)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    click.echo(result)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># agents/search.py - Agent layer (configuration only)</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_search_agent() <span class="op">-&gt;</span> ChatAgent:</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Factory function that creates a Search Agent."""</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ChatAgent(</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        chat_client<span class="op">=</span>get_chat_client(),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">"SearchAgent"</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        instructions<span class="op">=</span>SEARCH_AGENT_INSTRUCTIONS,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        tools<span class="op">=</span>[search_youtube_formatted],</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co"># tools/youtube.py - Tool layer (thin LLM adapter)</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> search_youtube_formatted(query: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Search YouTube for videos matching the query."""</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> <span class="cf">await</span> search_youtube(query)  <span class="co"># Calls service</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> format_for_llm(results)         <span class="co"># Formats for LLM</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co"># services/youtube.py - Service layer (business logic)</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> search_youtube(query: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[VideoResult]:</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Search YouTube - returns rich domain objects."""</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> build_search_url(query)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    html <span class="op">=</span> <span class="cf">await</span> fetch_html(url)  <span class="co"># calls infra</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> parse_video_results(html)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="co"># models/youtube.py - Model layer (domain objects)</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="at">@dataclass</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> VideoResult:</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    video_id: <span class="bu">str</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>    title: <span class="bu">str</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>    channel: <span class="bu">str</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="co"># infra/http_client.py - Infrastructure layer (HTTP transport)</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> fetch_html(url: <span class="bu">str</span>, timeout: <span class="bu">float</span> <span class="op">=</span> <span class="fl">10.0</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Fetch HTML content with browser-like headers."""</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="cf">with</span> httpx.AsyncClient() <span class="im">as</span> client:</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> <span class="cf">await</span> client.get(url, headers<span class="op">=</span>DEFAULT_HEADERS, timeout<span class="op">=</span>timeout)</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>        response.raise_for_status()</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> response.text</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Each layer has a single responsibility: agents configure behaviour, tools adapt for LLMs, services implement logic, models define structure. Testing is straightforward - mock at the layer boundary, not deep inside.</p>
+<p>The DDD mapping isn’t forced - it emerges naturally because agentic systems have the same concerns as any complex application:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 33%">
+<col style="width: 48%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Layer</th>
+<th>DDD Concept</th>
+<th>Agent System Role</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>presentation/</code></td>
+<td>Presentation</td>
+<td>User interaction, output formatting</td>
+</tr>
+<tr class="even">
+<td><code>agents/</code></td>
+<td>Application</td>
+<td>Orchestrates workflows, coordinates domain operations</td>
+</tr>
+<tr class="odd">
+<td><code>tools/</code></td>
+<td>Anti-Corruption Layer</td>
+<td>Translates between LLM interface and domain language</td>
+</tr>
+<tr class="even">
+<td><code>services/</code></td>
+<td>Domain</td>
+<td>Core business logic, domain rules, the “what”</td>
+</tr>
+<tr class="odd">
+<td><code>models/</code></td>
+<td>Domain Model</td>
+<td>Entities, value objects, domain concepts</td>
+</tr>
+<tr class="even">
+<td><code>infra/</code></td>
+<td>Infrastructure</td>
+<td>External APIs, persistence, framework plumbing</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>tools/</code> layer as an Anti-Corruption Layer is particularly interesting. In DDD, an ACL protects your domain model from external system concepts. Here, it protects your domain from the LLM’s interface requirements - translating between “strings the LLM can reason about” and “rich domain objects your code works with”.</p>
+<p>The flow is strictly downward. Agents use tools. Tools call services. Services work with models. This constraint forces clear thinking about where code belongs.</p>
+<section id="when-this-architecture-matters" class="level3">
+<h3 class="anchored" data-anchor-id="when-this-architecture-matters">When This Architecture Matters</h3>
+<p>Is this overkill for simple projects? Maybe. But consider when you need it:</p>
+<ul>
+<li>You’re building more than a demo - If this will run in production, maintainability matters from day one.</li>
+<li>You’re using AI coding assistants - Tools like GitHub Copilot and Claude Code work significantly better with well-structured code. Clear boundaries and consistent patterns make AI-assisted development more effective.</li>
+<li>Multiple people will work on it - Clear boundaries make collaboration possible. Different developers can own different services.</li>
+<li>You need to test it properly - Without the tools/services split, testing requires mocking LLMs or running expensive agent calls.</li>
+<li>The domain is complex - Multiple external APIs, complex business logic, rich data models. The architecture scales with complexity.</li>
+<li>You’ll extend it - Adding new capabilities shouldn’t require refactoring existing code. The layered architecture supports extension.</li>
+</ul>
+<p>I’ve found that the “mess” in agentic systems happens gradually. You start with inline tools because it’s faster. Then you need to reuse one. Then you need to test something. Then you need error handling. Each change makes the code more tangled.</p>
+<p>By the time you realize you need better architecture, refactoring is painful. I’ve learned this the hard way—I once asked an AI assistant to help refactor a tangled codebase and spent hours in debugging hell. The AI confidently propagated the existing confusion into new, subtly broken code. Starting with clear layers costs more upfront but saves significant pain later.</p>
+</section>
+<section id="architecture-in-the-age-of-ai-coding-assistants" class="level3">
+<h3 class="anchored" data-anchor-id="architecture-in-the-age-of-ai-coding-assistants">Architecture in the Age of AI Coding Assistants</h3>
+<p>There’s another dimension to this that’s become increasingly relevant: well-architected code works better with AI coding assistants.</p>
+<p>As tools like GitHub Copilot, Cursor, and Claude Code become standard parts of development workflows, I’ve noticed something interesting: they’re much more effective when working with clearly structured code than with greenfield or tangled codebases; especially when paired with a documentation to provide context.</p>
+<p>When I ask Claude Code to “implement a feature to filter search results by minimum duration,” it knows exactly where to look: <code>services/youtube.py</code>. The service has clear boundaries, typed interfaces, and follows consistent patterns. The AI can reason about the change without needing to understand the entire system.</p>
+<p>Compare this to asking it to modify inline tools scattered across orchestration code. The AI needs to:</p>
+<ul>
+<li>Figure out where the tool is defined</li>
+<li>Understand how it’s coupled to the agent</li>
+<li>Determine if changes will break other parts</li>
+<li>Navigate tangled dependencies</li>
+</ul>
+<p>The same architectural principles that make code maintainable for humans make it navigable for AI assistants:</p>
+<ul>
+<li>Clear boundaries - The AI can focus on one layer without understanding the entire stack. “Modify the tool” vs “modify the service” are distinct, scoped tasks.</li>
+<li>Consistent patterns - Once the AI understands the pattern (tools call services, services return typed objects), it can apply that pattern consistently across changes.</li>
+<li>Explicit types - Type hints aren’t just documentation - they’re constraints the AI can use to generate correct code. When TranscriptResult has a defined structure, the AI knows what fields are available.</li>
+<li>Single responsibility - Each component does one thing. The AI doesn’t need to reason about multiple concerns when modifying a service.</li>
+</ul>
+<p>This isn’t about making code “AI-friendly” at the expense of good design. It’s that good design principles—the same ones we’ve refined over decades—happen to be exactly what makes code comprehensible to AI systems.</p>
+<p>As AI coding assistants become more prevalent, architectural discipline becomes even more valuable. The codebases that benefit most from AI assistance are the ones that are already well-structured. The messy codebases stay messy, because the AI amplifies the existing patterns—good or bad.</p>
+</section>
+<section id="a-note-on-testing" class="level3">
+<h3 class="anchored" data-anchor-id="a-note-on-testing">A Note on Testing</h3>
+<p>A natural benefit of the layered architecture is testability. With clear boundaries between layers, testing strategy becomes straightforward.</p>
+<p>The principle we follow: <strong>mock at the system boundary, not internally</strong>.</p>
+<pre><code>┌─────────────────────────────────────────────┐
+│  agents/  →  tools/  →  services/           │  ← Test with REAL code
+└─────────────────────────────────────────────┘
+                              ↓
+                    ┌─────────────────┐
+                    │ External APIs   │  ← MOCK here
+                    │ - YouTube API   │
+                    │ - Azure OpenAI  │
+                    └─────────────────┘</code></pre>
+<p>Don’t mock your own services. If you’re testing <code>TranscriptSummarizer</code>, inject a mock OpenAI client - but let the real service logic execute. If you’re testing storage, use a temp directory - but exercise the real file I/O.</p>
+<p>This gives higher confidence (real code paths), less brittle tests (fewer mocks to maintain), and catches the integration bugs that slip through pure unit tests.</p>
+<hr>
+</section>
+</section>
+<section id="domain-driven-organisation" class="level2">
+<h2 class="anchored" data-anchor-id="domain-driven-organisation">Domain-Driven Organisation</h2>
+<p>With our layer structure established, the next question is: how should we organise code <em>within</em> each layer? Let’s look at the <code>services/</code> package as an example—the same thinking process applies throughout, though different layers may arrive at different answers.</p>
+<p>This is where a DDD concept becomes directly applicable: <strong>Bounded Contexts</strong>.</p>
+<p>I considered the following options:</p>
+<p><strong>Option A: By Function</strong></p>
+<pre><code>services/
+├── search.py           # YouTube search
+├── transcript.py       # Transcript fetching
+├── summarizer.py       # AI summarization
+└── storage.py          # Persistence</code></pre>
+<p><strong>Option B: By Bounded Context</strong></p>
+<pre><code>services/
+├── youtube.py          # Search + transcripts (same context)
+├── summarizer.py       # AI summarization
+└── storage.py          # Persistence</code></pre>
+<p>I chose Option B. Here’s why.</p>
+<section id="bounded-contexts" class="level3">
+<h3 class="anchored" data-anchor-id="bounded-contexts">Bounded Contexts</h3>
+<p>In Domain-Driven Design, a bounded context is a boundary within which a term has consistent meaning. “YouTube” is a bounded context:</p>
+<ul>
+<li>“video_id” means a YouTube video ID</li>
+<li>“channel” means a YouTube channel</li>
+<li>“transcript” means a YouTube transcript</li>
+</ul>
+<p>Both search and transcript fetching operate within this context. They share:</p>
+<ul>
+<li>The same API surface (YouTube)</li>
+<li>The same domain concepts (videos, channels)</li>
+<li>The same error conditions (rate limits, unavailable videos)</li>
+</ul>
+<p>Grouping them together provides:</p>
+<ul>
+<li><p><strong>Cohesion</strong> - Related code stays together. When debugging transcript issues, you don’t need to check multiple files.</p></li>
+<li><p><strong>Replaceability</strong> - Want to add Vimeo support? Create <code>services/vimeo.py</code> with the same interface. The rest of the system doesn’t change.</p></li>
+<li><p><strong>Discoverability</strong> - “Where’s YouTube logic?” → <code>services/youtube.py</code>. Simple.</p></li>
+<li><p><strong>AI Comprehension</strong> - Consistent domain language means AI assistants share your vocabulary. When everything YouTube-related uses “video_id” and “channel”, the AI can reason about changes without confusion.</p></li>
+</ul>
+</section>
+<section id="the-litmus-test" class="level3">
+<h3 class="anchored" data-anchor-id="the-litmus-test">The Litmus Test</h3>
+<p>When deciding where code belongs, ask: “If I replaced this external system, what would change?”</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 66%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Change</th>
+<th>Files Affected</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Replace YouTube with Vimeo</td>
+<td><code>services/youtube.py</code> → <code>services/vimeo.py</code></td>
+</tr>
+<tr class="even">
+<td>Replace JSON storage with SQLite</td>
+<td><code>services/storage.py</code></td>
+</tr>
+<tr class="odd">
+<td>Replace Azure OpenAI with Anthropic</td>
+<td><code>services/summarizer.py</code></td>
+</tr>
+</tbody>
+</table>
+<p>Each domain boundary represents a potential replacement point. If multiple files would need to change for a single external system swap, your boundaries might be wrong.</p>
+<p>We apply this bounded context principle to our domain and anti-corruption layers. The <code>services/</code>, <code>tools/</code>, and <code>models/</code> packages each have a <code>youtube.py</code> file that groups YouTube-related functionality. This consistency makes navigation predictable: “Where’s YouTube logic?” → check <code>youtube.py</code> in any of these layers.</p>
+<p>This has a secondary benefit for AI-assisted development: <strong>discoverability</strong>. When an LLM needs to understand or modify YouTube-related code, consistent naming means it can find the right files without guessing. And larger, cohesive modules aren’t a bad thing—the model can read one file and have full context, rather than piecing together information scattered across many small files.</p>
+<hr>
+</section>
+</section>
+<section id="agent-design-single-responsibility" class="level2">
+<h2 class="anchored" data-anchor-id="agent-design-single-responsibility">Agent Design: Single Responsibility</h2>
+<p>With our layer structure and domain organisation in place, let’s look at the agents themselves.</p>
+<p>Each agent has exactly one job:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 46%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Agent</th>
+<th>Responsibility</th>
+<th>Does NOT</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>SearchAgent</strong></td>
+<td>Find videos on YouTube</td>
+<td>Fetch transcripts, summarize</td>
+</tr>
+<tr class="even">
+<td><strong>TranscriptAgent</strong></td>
+<td>Fetch and store transcripts</td>
+<td>Summarize, search</td>
+</tr>
+<tr class="odd">
+<td><strong>SummarizeAgent</strong></td>
+<td>Generate summaries</td>
+<td>Fetch from YouTube</td>
+</tr>
+<tr class="even">
+<td><strong>WriterAgent</strong></td>
+<td>Write files to disk</td>
+<td>Any YouTube operations</td>
+</tr>
+</tbody>
+</table>
+<p>This might seem overly restrictive. Why not let the TranscriptAgent also summarize, since it already has the transcript text?</p>
+<p>The answer is predictability and debuggability. When something goes wrong:</p>
+<ul>
+<li>If summaries are bad, check SummarizeAgent</li>
+<li>If transcripts are missing, check TranscriptAgent</li>
+<li>If search results are irrelevant, check SearchAgent</li>
+</ul>
+<p>Mixed responsibilities make debugging harder. “Is it a search problem or a transcript problem?” becomes a common question when agents do multiple things.</p>
+<section id="why-not-a-youtubeagent" class="level3">
+<h3 class="anchored" data-anchor-id="why-not-a-youtubeagent">Why Not a YouTubeAgent?</h3>
+<p>You might notice an apparent inconsistency. We just argued for organizing <code>services/</code>, <code>tools/</code>, and <code>models/</code> by bounded context—each has a <code>youtube.py</code> file. So why don’t we have a YouTubeAgent that handles both search and transcripts?</p>
+<p>The answer lies in what each layer does:</p>
+<ul>
+<li><p><strong>Domain layers</strong> (services, models) and the <strong>anti-corruption layer</strong> (tools) are organized by <em>external system</em>. These layers contain domain concepts like “video_id” and “channel”, and grouping by bounded context makes the system easier to understand and replace.</p></li>
+<li><p><strong>Agents</strong> are an <em>orchestration layer</em>—they define jobs and coordinate work. An agent is more like a role than a system boundary. SearchAgent’s job is finding videos. TranscriptAgent’s job is fetching transcripts. These are different jobs that happen to use the same external system.</p></li>
+</ul>
+<p>We don’t call SummarizeAgent “AzureOpenAIAgent” even though it uses Azure OpenAI. The agent’s identity comes from what it <em>does</em>, not what system it <em>uses</em>. This keeps debugging simple: one job, one agent, one place to look when things go wrong.</p>
+</section>
+<section id="the-orchestrator-pattern" class="level3">
+<h3 class="anchored" data-anchor-id="the-orchestrator-pattern">The Orchestrator Pattern</h3>
+<p>With four single-responsibility agents, we need coordination. The OrchestratorAgent handles this:</p>
+<pre><code>User Request
+    ↓
+Orchestrator (decides what to do)
+    ↓
+    ├── "Need to search" → SearchAgent
+    ├── "Need transcript" → TranscriptAgent
+    ├── "Need summary" → SummarizeAgent
+    └── "Need to save" → WriterAgent</code></pre>
+<p>The orchestrator:</p>
+<ul>
+<li>Maintains conversation memory</li>
+<li>Knows what’s been cached (via context injection)</li>
+<li>Delegates work to specialists</li>
+<li>Never calls YouTube or OpenAI directly</li>
+</ul>
+<p>This separation means we can test each specialist agent independently, with clear inputs and outputs.</p>
+</section>
+<section id="what-an-agent-looks-like" class="level3">
+<h3 class="anchored" data-anchor-id="what-an-agent-looks-like">What an Agent Looks Like</h3>
+<p>An agent definition is surprisingly simple. Here’s the SearchAgent:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#agents/search_agent.py</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>SEARCH_AGENT_INSTRUCTIONS <span class="op">=</span> <span class="st">"""You are a YouTube Search Agent. Your job is to find relevant YouTube videos based on user queries.</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">When asked to search:</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">1. Use the search_youtube tool to find videos</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="st">2. Return the results clearly formatted</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="st">3. Highlight which videos seem most relevant to the query</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="st">You only search - you do not fetch transcripts or summarize. Other agents handle those tasks."""</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_search_agent() <span class="op">-&gt;</span> ChatAgent:</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Factory function that creates a Search Agent."""</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ChatAgent(</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>        chat_client<span class="op">=</span>get_chat_client(),</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">"SearchAgent"</span>,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>        instructions<span class="op">=</span>SEARCH_AGENT_INSTRUCTIONS,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>        tools<span class="op">=</span>[search_youtube_formatted],</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Notice the pattern:</p>
+<ul>
+<li><strong>Instructions</strong> are extracted as module-level constants for clarity. Alternatively, you could load prompts from external files (e.g., <code>prompts/search_agent.txt</code>), which makes iterating on prompts easier without touching Python code</li>
+<li><strong>Tools</strong> are functions from the <code>tools/</code> layer (which call services)</li>
+<li>The agent doesn’t know about YouTube APIs - it just calls tools</li>
+</ul>
+</section>
+<section id="what-the-orchestrator-looks-like" class="level3">
+<h3 class="anchored" data-anchor-id="what-the-orchestrator-looks-like">What the Orchestrator Looks Like</h3>
+<p>The orchestrator follows the same pattern, but its tools delegate to other agents:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> OrchestratorAgent:</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Coordinates sub-agents for YouTube research tasks."""</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._agents: <span class="bu">dict</span>[<span class="bu">str</span>, ChatAgent] <span class="op">=</span> {}</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Agent factory registry for lazy initialization</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._agent_factories <span class="op">=</span> {</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"search"</span>: create_search_agent,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"transcript"</span>: create_transcript_agent,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"summarize"</span>: create_summarize_agent,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"writer"</span>: create_writer_agent,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _get_agent(<span class="va">self</span>, name: <span class="bu">str</span>) <span class="op">-&gt;</span> ChatAgent:</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Get or create an agent by name (lazy initialization)."""</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> name <span class="kw">not</span> <span class="kw">in</span> <span class="va">self</span>._agents:</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>._agents[name] <span class="op">=</span> <span class="va">self</span>._agent_factories[name]()</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>._agents[name]</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="kw">def</span> _delegate(<span class="va">self</span>, agent_name: <span class="bu">str</span>, request: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Delegate a request to a sub-agent."""</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        agent <span class="op">=</span> <span class="va">self</span>._get_agent(agent_name)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> <span class="cf">await</span> agent.run(request)</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> result.text</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="kw">def</span> ask_search_agent(<span class="va">self</span>, request: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Delegate a search request to the Search Agent."""</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="cf">await</span> <span class="va">self</span>._delegate(<span class="st">"search"</span>, request)</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ... similar for transcript, summarize, writer</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> get_orchestrator(<span class="va">self</span>) <span class="op">-&gt;</span> ChatAgent:</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> ChatAgent(</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>            chat_client<span class="op">=</span>get_chat_client(),</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>            name<span class="op">=</span><span class="st">"Orchestrator"</span>,</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>            instructions<span class="op">=</span>ORCHESTRATOR_INSTRUCTIONS,</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>            tools<span class="op">=</span>[</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.ask_search_agent,</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.ask_transcript_agent,</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.ask_summarize_agent,</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.ask_writer_agent,</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>            ],</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>        )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Notice we use a class here instead of a simple factory function. This is intentional: the orchestrator needs to maintain state—specifically, a cache of lazily-initialized sub-agents. This avoids recreating agents on every delegation while keeping initialization costs deferred until first use.</p>
+<p>The orchestrator’s “tools” are delegation functions. When the LLM decides to search, it calls <code>ask_search_agent</code>, which runs the SearchAgent and returns its result. The orchestrator sees the result and decides what to do next.</p>
+<p>This is the hub-and-spoke pattern: <!-- 
+```
+                   ┌─────────────┐
+                   │ Orchestrator│
+                   │   (LLM)     │
+                   └──────┬──────┘
+                          │
+       ┌────────────┬─────┴─────┬───────────┐
+       │            │           │           │
+       ▼            ▼           ▼           ▼
+  ┌─────────┐ ┌──────────┐ ┌─────────┐ ┌─────────┐
+  │ Search  │ │Transcript│ │Summarize│ │  Writer │
+  │  Agent  │ │  Agent   │ │  Agent  │ │  Agent  │
+  └─────────┘ └──────────┘ └─────────┘ └─────────┘
+``` --></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="orchestrator_flow.svg" class="img-fluid figure-img"></p>
+<figcaption>Orchestrator Pattern Flow</figcaption>
+</figure>
+</div>
+<p>Every interaction flows through the centre. The orchestrator accumulates context from each step, maintaining the full conversation history.</p>
+</section>
+<section id="context-injection" class="level3">
+<h3 class="anchored" data-anchor-id="context-injection">Context Injection</h3>
+<p>One subtle but important pattern: the orchestrator needs to know what transcripts are already cached to make smart decisions. The Microsoft Agent Framework provides a <code>ContextProvider</code> base class for this—we implement <code>invoking()</code> to inject context before each LLM call:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> agent_framework._memory <span class="im">import</span> Context, ContextProvider</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TranscriptContextProvider(ContextProvider):</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Provides context about stored transcripts to the orchestrator."""</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="kw">def</span> invoking(<span class="va">self</span>, messages, <span class="op">**</span>kwargs) <span class="op">-&gt;</span> Context:</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Called before each LLM invocation."""</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        video_ids <span class="op">=</span> <span class="va">self</span>._storage.list_videos()</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> video_ids:</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> Context(instructions<span class="op">=</span><span class="st">"No transcripts currently stored."</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        lines <span class="op">=</span> [<span class="st">"You have these transcripts available:"</span>]</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> vid <span class="kw">in</span> video_ids:</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>            stored <span class="op">=</span> <span class="va">self</span>._storage.load(vid)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> stored:</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>                status <span class="op">=</span> <span class="st">"summarized"</span> <span class="cf">if</span> stored.summary <span class="cf">else</span> <span class="st">"not summarized"</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>                lines.append(<span class="ss">f"- </span><span class="sc">{</span>stored<span class="sc">.</span>metadata<span class="sc">.</span>title<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>vid<span class="sc">}</span><span class="ss">): </span><span class="sc">{</span>status<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Context(instructions<span class="op">=</span><span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(lines))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The framework calls <code>invoking()</code> before each LLM request, and the returned <code>Context</code> is merged into the agent’s instructions.</p>
+<p>It’s worth noting that this is separate from <em>conversation memory</em>—the back-and-forth dialogue history between user and agent. The framework handles conversation memory automatically, typically through a thread or session mechanism. The <code>messages</code> parameter passed to <code>invoking()</code> already contains this history.</p>
+<p>The <code>ContextProvider</code> pattern addresses a different need: injecting <em>domain state</em> that exists outside the conversation. Our storage layer persists transcripts to disk, but the LLM has no way of knowing what’s there unless we tell it. By querying storage and formatting the results as instructions, we bridge the gap between our application’s state and the LLM’s context window.</p>
+<p>This separation is intentional. Conversation memory answers “what have we discussed?”, while domain context answers “what resources exist?”. The framework manages the former; we’re responsible for the latter.</p>
+<p>Now the orchestrator can reason: “The user wants a summary, and I already have the transcript cached, so I’ll skip fetching and go straight to SummarizeAgent.”</p>
+<hr>
+</section>
+</section>
+<section id="seeing-it-in-action" class="level2">
+<h2 class="anchored" data-anchor-id="seeing-it-in-action">Seeing It in Action</h2>
+<p>Theory is useful, but there’s nothing like seeing the system actually run. Let’s walk through what happens when we make a real request to the orchestrator.</p>
+<p>Here’s our test request:</p>
+<pre><code>I want to cook a pork loin roast on a Kamado grill/smoker.
+I would like some info on how to do this based on techniques on YouTube.
+Some channels I trust are fork and embers and chuds bbq.
+Ideally, I need to know the temperature, the grill setup, the internal
+temperature and the time.
+Save the results to pork_loin_guide.md</code></pre>
+<p>This request exercises the full pipeline: search, transcript fetching, summarization, and file writing. It’s specific enough to be reproducible but open-ended enough to allow the orchestrator flexibility in execution strategy.</p>
+<p>When we run this through the orchestrator with logging enabled, we can observe the full decision-making flow. The logs below are cleaned up for clarity—the actual debug output includes framework internals and full response payloads—but the core flow is preserved:</p>
+<pre><code>10:42:15 [INFO] orchestrator: Received request: I want to cook a pork loin...
+10:42:15 [DEBUG] orchestrator: Checking transcript context...
+10:42:15 [DEBUG] context: No transcripts currently stored
+10:42:15 [DEBUG] orchestrator: Calling Azure OpenAI...
+
+10:42:17 [INFO] orchestrator: Delegating to SearchAgent
+10:42:17 [DEBUG] search_agent: Searching YouTube for: pork loin kamado fork embers chuds bbq
+10:42:18 [INFO] youtube_service: Found 5 videos matching query
+10:42:18 [DEBUG] search_agent: Returning formatted results
+
+10:42:19 [INFO] orchestrator: Delegating to TranscriptAgent
+10:42:19 [DEBUG] transcript_agent: Fetching transcript for video fI86yXKlnQA
+10:42:20 [INFO] youtube_service: Fetched transcript (4,521 words)
+10:42:20 [DEBUG] storage_service: Saved transcript to data/transcripts/fI86yXKlnQA.json
+10:42:20 [DEBUG] transcript_agent: Transcript cached and returned
+
+10:42:21 [INFO] orchestrator: Delegating to TranscriptAgent
+10:42:21 [DEBUG] transcript_agent: Fetching transcript for video FsbwQI-EI-k
+10:42:22 [INFO] youtube_service: Fetched transcript (3,892 words)
+10:42:22 [DEBUG] storage_service: Saved transcript to data/transcripts/FsbwQI-EI-k.json
+
+10:42:23 [INFO] orchestrator: Delegating to SummarizeAgent
+10:42:23 [DEBUG] summarize_agent: Summarizing 2 transcripts (8,413 total words)
+10:42:26 [INFO] summarize_service: Generated summary (847 words)
+
+10:42:27 [INFO] orchestrator: Delegating to WriterAgent
+10:42:27 [DEBUG] writer_agent: Writing to output/pork_loin_guide.md
+10:42:27 [INFO] storage_service: File written successfully
+
+10:42:27 [INFO] orchestrator: Request completed (12.4s)</code></pre>
+<section id="whats-happening-here" class="level3">
+<h3 class="anchored" data-anchor-id="whats-happening-here">What’s Happening Here</h3>
+<p>The logs reveal the orchestrator pattern in motion:</p>
+<ol type="1">
+<li><p><strong>Context Check</strong>: The orchestrator first checks for cached transcripts. Finding none, it knows it needs to search and fetch.</p></li>
+<li><p><strong>SearchAgent Delegation</strong>: The orchestrator decides it needs videos, so it delegates to SearchAgent. Notice the clean boundary—the orchestrator says “find videos about X”, not “call the YouTube API with these parameters.”</p></li>
+<li><p><strong>TranscriptAgent Delegation</strong> (×2): For each relevant video, the orchestrator delegates to TranscriptAgent. The agent handles fetching, caching, and formatting—the orchestrator just sees results.</p></li>
+<li><p><strong>SummarizeAgent Delegation</strong>: With transcripts in hand, the orchestrator passes the text to SummarizeAgent. The summarizer doesn’t know about YouTube—it just receives text and produces a summary.</p></li>
+<li><p><strong>WriterAgent Delegation</strong>: Finally, the orchestrator asks WriterAgent to save the result. Again, clean delegation—the orchestrator provides content and a filename, the agent handles the rest.</p></li>
+</ol>
+</section>
+<section id="the-output" class="level3">
+<h3 class="anchored" data-anchor-id="the-output">The Output</h3>
+<p>The final markdown file demonstrates what we get from this orchestration:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Pork Loin Roast on a Kamado (YouTube-Technique Guide)</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>**Date:** 2025-01-11</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>**Source:** YouTube technique summaries (videos linked below)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">## Key targets (temps &amp; doneness)</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Pit / dome temp (indirect smoking):** **250–275°F** (121–135°C)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Internal temp targets (pork loin):**</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>**Pull at 140–145°F** (60–63°C) for juicy slices</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>If you prefer more done: **150°F** (66°C)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Rest:** **10–20 minutes** (loosely tented)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Recommended kamado setups</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="fu">### Setup A — Indirect "smoke-then-finish" (most consistent)</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Charcoal:** quality lump; add 1–3 chunks of mild fruit wood</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Heat deflectors:** installed for indirect cooking</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Target pit temp:** stabilize at **250–275°F**</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Video references</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Fork &amp; Embers** — Pork loin roast method</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Chuds BBQ** — Temp-control + finishing approach</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The orchestrator synthesised information from multiple YouTube videos into a coherent, actionable reference document. Each agent contributed its specialty: SearchAgent found the right videos, TranscriptAgent retrieved the content, SummarizeAgent extracted the key information, and WriterAgent saved the result.</p>
+</section>
+<section id="iterative-refinement" class="level3">
+<h3 class="anchored" data-anchor-id="iterative-refinement">Iterative Refinement</h3>
+<p>Because the orchestrator maintains conversation history, we can continue the dialogue to refine results:</p>
+<pre><code>User: Can you add a section comparing direct vs indirect cooking methods?
+User: The temperatures seem low - can you check if Chuds mentions a hotter approach?
+User: Save a version without the glaze instructions for my friend who doesn't like sweet.</code></pre>
+<p>Each follow-up leverages the cached transcripts—no need to re-fetch from YouTube. The orchestrator remembers what it has, reasons about what’s needed, and delegates accordingly. This conversational loop is where the agent pattern really shines: the system adapts to feedback without starting from scratch.</p>
+</section>
+<section id="what-we-dont-see-and-why-that-matters" class="level3">
+<h3 class="anchored" data-anchor-id="what-we-dont-see-and-why-that-matters">What We Don’t See (And Why That Matters)</h3>
+<p>Just as important as what appears in the logs is what <em>doesn’t</em>:</p>
+<ul>
+<li><strong>No YouTube API details</strong> in the orchestrator logs—that’s encapsulated in the service layer</li>
+<li><strong>No OpenAI prompt engineering</strong> visible at the orchestration level—that’s in the agent instructions</li>
+<li><strong>No file I/O logic</strong> leaking up—WriterAgent handles it internally</li>
+</ul>
+<p>Each layer handles its own concerns. The orchestrator reasons about <em>what</em> needs to happen; the agents and services handle <em>how</em>.</p>
+</section>
+<section id="the-cost-of-flexibility" class="level3">
+<h3 class="anchored" data-anchor-id="the-cost-of-flexibility">The Cost of Flexibility</h3>
+<p>There’s an important trade-off with the orchestrator pattern that only becomes visible when you run it multiple times: <strong>variance</strong>.</p>
+<p>The clean sequential flow shown above represents one possible execution. But run the same request again, and you might see a different pattern entirely.</p>
+<p>When benchmarking the same request across multiple runs, I observed LLM call counts ranging from <strong>17 to 34 calls</strong> for identical inputs. Why such variance? The orchestrator LLM makes different tactical decisions each time:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 45%">
+<col style="width: 54%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Decision Point</th>
+<th>Observed Variance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Search strategy</strong></td>
+<td>1-3 searches, sequential or parallel</td>
+</tr>
+<tr class="even">
+<td><strong>Summarization</strong></td>
+<td>Sometimes skipped entirely, sometimes per-video</td>
+</tr>
+<tr class="odd">
+<td><strong>Delegation phrasing</strong></td>
+<td>Different wording can cause downstream failures</td>
+</tr>
+</tbody>
+</table>
+<p>With verbose logging enabled, we can see these decisions in action:</p>
+<pre><code># Run A (17 calls) - Minimal approach
+SearchAgent called with: Kamado pork loin Fork and Embers
+SearchAgent called with: Chuds BBQ pork loin kamado
+TranscriptAgent called with: Fetch transcript for video FsbwQI-EI-k...
+TranscriptAgent called with: Fetch transcript for video 2AF1ysZ8eEA...
+TranscriptAgent called with: Fetch transcript for video fI86yXKlnQA...
+WriterAgent called with: Write a markdown file...  # Skipped summarization!
+
+# Run B (25 calls) - Thorough approach
+SearchAgent called with: Find YouTube videos where Fork and Embers...
+SearchAgent called with: Find YouTube videos where Chuds BBQ...
+SearchAgent called with: Find top YouTube videos about cooking pork loin...
+TranscriptAgent called with: ...
+SummarizeAgent called with: From the provided transcripts, extract...
+WriterAgent called with: ...</code></pre>
+<p>Run A decided the WriterAgent could synthesize directly from transcripts. Run B added a summarization step. Both produced valid outputs, but with different costs and potentially different quality.</p>
+<section id="just-set-temperature-to-zero" class="level4">
+<h4 class="anchored" data-anchor-id="just-set-temperature-to-zero">“Just Set Temperature to Zero?”</h4>
+<p>A natural reaction to this variance is to reduce LLM temperature for more deterministic behaviour. I tested this:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Temperature</th>
+<th>Range</th>
+<th>Std Dev</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.7 (default)</td>
+<td>17-34</td>
+<td>~5.6</td>
+</tr>
+<tr class="even">
+<td>0.0 (deterministic)</td>
+<td>25-35</td>
+<td>5.29</td>
+</tr>
+</tbody>
+</table>
+<p><em>Note: A fixed seed (42) was set for all runs.</em></p>
+<p>Even with temperature=0 and a fixed seed, we observed <strong>10 calls of variance</strong> (25 to 35 calls). The unpredictability isn’t primarily from sampling randomness—it’s from the LLM making different <em>valid</em> strategic choices each run:</p>
+<ul>
+<li>How many parallel searches to issue (1, 2, or 3)</li>
+<li>Whether to summarize per-video or combined</li>
+<li>Whether to skip summarization entirely and let the writer synthesize</li>
+</ul>
+<p>This variance is architectural. To reduce this, we either need to constrain each agent’s scope so tightly that decisions become more consistent, or remove runtime decision-making entirely by planning upfront; alternatives will be explored in future posts.</p>
+<p>This isn’t a bug—it’s the inherent nature of letting an LLM decide the workflow at runtime. The orchestrator has flexibility to adapt its approach, but that flexibility comes with unpredictability. For conversational interfaces where adaptability matters, this trade-off is often worthwhile. For batch processing where predictability matters, other approaches may be better suited.</p>
+<hr>
+</section>
+</section>
+</section>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key Takeaways</h2>
+<p>These principles apply regardless of which agent framework you choose:</p>
+<ol type="1">
+<li><p><strong>Layer your architecture</strong> - CLI, Agents, Services, Infrastructure. Agent systems have the same concerns as any complex application.</p></li>
+<li><p><strong>Separate tools from services</strong> - Tools are the Anti-Corruption Layer between LLMs and your domain. Keep them thin. Let services do the real work.</p></li>
+<li><p><strong>Organise by bounded context</strong> - Group code by the external system or domain concept, not by function. When you need to replace YouTube with Vimeo, one file changes.</p></li>
+<li><p><strong>Single responsibility for agents</strong> - Each agent does one thing well. Coordination happens in a dedicated orchestrator (for now - we’ll revisit this in <a href="../multi-agent-part2/">Part 2</a>).</p></li>
+<li><p><strong>Expect variance with runtime orchestration</strong> - When an LLM decides the workflow at runtime, identical inputs can produce different execution paths. Setting temperature to zero or using a seed won’t necessarily fix this - the variance is architectural, not sampling randomness.</p></li>
+</ol>
+<hr>
+</section>
+<section id="view-the-code" class="level2">
+<h2 class="anchored" data-anchor-id="view-the-code">View the Code</h2>
+<p>All patterns described here are implemented in the reference codebase:</p>
+<ul>
+<li><strong><a href="https://github.com/Chris-hughes10/multi-agent-patterns/tree/main/src/youtube_agent_orchestrator">Orchestrator Pattern</a></strong> - The architecture explored in this post</li>
+<li><strong><a href="https://github.com/Chris-hughes10/multi-agent-patterns">Full Source Code</a></strong> - Complete implementation with tests</li>
+</ul>
+<hr>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>The ambition I started with was to demonstrate that agentic systems can be architected with the same discipline we apply to any serious software project. The orchestrator pattern we’ve explored here shows that’s achievable.</p>
+<p>The approach isn’t novel—layered architecture, separation of concerns, Domain-Driven Design. What’s interesting is how naturally these patterns map to agent systems. The Anti-Corruption Layer concept perfectly describes the tools/services split. Bounded contexts explain why YouTube search and transcript fetching belong together.</p>
+<p>The key insight specific to agents: <strong>tools and services have fundamentally different responsibilities</strong>. Tools translate between the LLM’s world (simple parameters, string outputs) and your domain’s world (rich objects, business logic). Separating them unlocks clean, testable systems.</p>
+<p>Agentic systems aren’t magic. They’re software systems with a natural language interface and an LLM component. The engineering discipline we’ve refined over decades still applies—you just need to think about where the boundaries are.</p>
+<hr>
+<p><strong>What’s Next</strong>: This architecture works well for an orchestrator pattern, where a central agent coordinates specialists. But what happens when workflows get complex and the orchestrator becomes a bottleneck? In <a href="../multi-agent-part2/">Part 2</a>, we’ll explore what happens when you remove the central coordinator entirely - when every agent understands the goal and decides for itself what should happen next.</p>
+<hr>
+<p><em>The code for this project is available on GitHub. All patterns described here are implemented in the reference codebase.</em></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script src="../../code-modal.js"></script>
+<script src="../../source-modal.js"></script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/chris-hughes10\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
