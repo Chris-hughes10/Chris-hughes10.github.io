@@ -8,6 +8,7 @@ website:
   title: "Chris Hughes"
   site-url: "https://chris-hughes10.github.io"
   description: "Applied AI, software architecture, and the discipline of building things that work"
+  draft-mode: unlinked
   favicon: profile.jpg
   open-graph: true
   twitter-card: true

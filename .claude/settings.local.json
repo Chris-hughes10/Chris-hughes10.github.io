@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(curl -s https://raw.githubusercontent.com/Chris-hughes10/eval-blog/refs/heads/main/post/evals-are-measurements-not-tests.md)",
+      "Bash(quarto render *)",
+      "Bash(mv \"Designer \\(2\\).png\" measuring-insight.png)",
+      "Bash(mv \"Designer \\(3\\).png\" measurement-scales.png)",
+      "Bash(mv \"Designer \\(4\\).png\" power-analysis.png)",
+      "Bash(mv \"Designer \\(5\\).png\" conclusion-measure.png)",
+      "Bash(mkdir -p /workspaces/Chris-hughes10.github.io/myblog/writing/your-ai-score-is-a-measurement-not-a-verdict)",
+      "Bash(grep '\\\\.qmd$')",
+      "Bash(git -C /workspaces/Chris-hughes10.github.io branch -a)",
+      "Bash(git -C /workspaces/Chris-hughes10.github.io show add-writing-section:myblog/posts/_metadata.yml)",
+      "Bash(git -C /workspaces/Chris-hughes10.github.io ls-tree -r --name-only add-writing-section myblog/posts/)",
+      "Bash(grep -E \"index\\\\.qmd|qmd$\")",
+      "Bash(git -C /workspaces/Chris-hughes10.github.io show 7e54e2e --stat)",
+      "Bash(git -C /workspaces/Chris-hughes10.github.io show 7e54e2e:myblog/posts/externals/metadata.yml)",
+      "Bash(git -C /workspaces/Chris-hughes10.github.io log --all --oneline --grep=\"Beyond Vanilla\\\\|Mixture\\\\|MoE\")"
+    ],
+    "additionalDirectories": [
+      "/workspaces/Chris-hughes10.github.io/myblog/writing"
+    ]
+  }
+}
