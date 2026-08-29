@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 500" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" role="img" aria-label="The four questions of forward deployed engineering: preconditions, the window, the joint call, the handover. Two judgements feed back from the handover: who the intended catcher is, which changes what you build during the window, and whether that team can carry it, which changes what the joint team hands back.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 500" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" role="img" aria-label="The four questions of forward deployed engineering: preconditions, the fixed window, the joint call, the handover. Two judgements feed back from the handover: who the intended catcher is, which changes what you build during the window, and whether that team can carry it, which changes what the joint team hands back.">
   <defs>
     <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
       <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
@@ -13,9 +13,9 @@
   <line x1="300" y1="100" x2="300" y2="140" stroke="#555" stroke-width="2"/>
   <polygon points="292,134 300,146 308,134" fill="#555"/>
 
-  <!-- 02 The Window -->
+  <!-- 02 The Fixed Window -->
   <rect x="100" y="146" width="400" height="80" rx="8" fill="#16213e" filter="url(#shadow)"/>
-  <text x="300" y="178" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="600">02 · The Window</text>
+  <text x="300" y="178" text-anchor="middle" fill="#ffffff" font-size="15" font-weight="600">02 · The Fixed Window</text>
   <text x="300" y="202" text-anchor="middle" fill="#a0a0b8" font-size="12">What we build, and in what order</text>
 
   <line x1="300" y1="226" x2="300" y2="266" stroke="#555" stroke-width="2"/>

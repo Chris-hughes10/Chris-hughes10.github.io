@@ -2,8 +2,8 @@
 title: "Forward Deployed Engineering"
 subtitle: "How to choose the right work, build under a fixed deadline, and leave behind something that survives you"
 description: "A practical account of how forward deployed engineering works: qualifying the work, building under a fixed window, prioritising jointly, and designing for ownership."
-date: "2026-08-26"
 draft: true
+date: "2026-08-26"
 categories: [Delivery, AI, Leadership]
 reading-time: 35
 toc: true
@@ -85,11 +85,11 @@ What we commit is capacity and duration. What we steer by is the outcome. Those 
 
 If you tell a customer that the engagement will be judged on whether a business metric moves, it is entirely reasonable for them to hear a commitment that the metric *will* move. What's actually on offer is a fixed team for a fixed period, pointed at that outcome, with the scope adjusted along the way and an honest account at the end of how far it got and what it would take to finish. Those are different promises, and the gap between them is where expectations go wrong.
 
-Even when variable scope is stated explicitly at the beginning, it still gets misheard. What an engagement commits to and what a sponsor promises internally can become two different narratives.
+There is a stronger answer than repeating the caveat, and it sits between the two promises. The outcome is lagging: it often lands after we've gone and depends on more than us, which is why it can't be the commitment. But its leading indicators can be. The things the joint team controls and produces inside the window — the baseline measured, the evaluation gate operating, the system carrying real traffic at an agreed stage, their engineers shipping changes without us — are chosen because they are the best available drivers of the outcome, and each one should have a defensible line to it. These don't need to be contractual to matter. Especially with customers who haven't worked with us before, naming them with targets is how we put skin in the game, and like everything else they're revisited with the customer as the engagement teaches us more. The lagging outcome's job is to keep the leading measures honest, not to become a penalty on a team for results it doesn't control.
 
-It can show up most sharply when our engagement is one slice of a larger product or programme. We are accountable for the slice; the outcome that actually matters depends on the whole. Those two get conflated easily, and almost never on purpose — which is why being explicit about where the boundary sits, early and repeatedly, is a real part of the job rather than an administrative chore.
+Even with all of that stated at the beginning, it can still be misheard: what an engagement commits to and what a sponsor promises internally can become two different narratives. It shows up most sharply when our engagement is one slice of a larger product or programme. We are accountable for the slice; the outcome that actually matters depends on the whole. Those two get conflated easily, and almost never on purpose — which is why being explicit about where the boundary sits, early and repeatedly, is a real part of the job rather than an administrative chore.
 
-So the fix isn't a clever form of words. It's to keep saying it: the outcome is what we're aiming at and what we'll measure against, the capacity and the window are what we're actually committing, and we'll be straight about the distance travelled. Most of the trouble I've seen comes from saying it once, at the start, and treating that as done.
+So the fix isn't a clever form of words. It's to keep saying it: the outcome is what we're aiming at and what we'll measure against, the leading measures are what we're driving while we're in the room, the capacity and the window are what we're actually committing, and we'll be straight about the distance travelled. Most of the trouble I've seen comes from saying it once, at the start, and treating that as done.
 
 ### Somebody has to own the outcome
 
