@@ -4,11 +4,14 @@ subtitle: "How to choose the right work, build under a fixed deadline, and leave
 description: "A practical account of how forward deployed engineering works: qualifying the work, building under a fixed window, prioritising jointly, and designing for ownership."
 draft: true
 date: "2026-08-26"
+image: "fde_main.png"
 categories: [Delivery, AI, Leadership]
 reading-time: 35
 toc: true
 toc-depth: 2
 ---
+
+![](fde_main.png){fig-alt="An engineer arriving through a doorway into a busy workplace, with a clock above the entrance."}
 
 Most of what's written about forward deployed engineering is about the job title — whether it means anything, what skills are needed, or if it's consulting with better branding. My aim is to describe forward deployed engineering from the inside: what the work actually involves, rather than who deserves the title.
 
@@ -46,6 +49,8 @@ The four questions form one narrative, in roughly the order they arise during an
 ## 01 · Preconditions
 
 *When outcome-led delivery works, when it doesn't, and why most of the argument about it is beside the point*
+
+![](fde1.png){fig-alt="A figure at a crossroads of several lit paths, consulting a checklist before taking the one marked out ahead."}
 
 I look for three conditions: a requirement framed around an outcome rather than a prescribed solution, a named owner inside the organisation, and enough existing platform and tooling to make the bespoke work affordable.
 
@@ -135,6 +140,8 @@ Now what do you actually do with it?
 
 *You have a fixed window inside someone else's organisation. Everything else follows from that.*
 
+![](fde2.png){fig-alt="Two engineers working side by side on a factory floor beneath a large countdown clock."}
+
 The clock creates one strong instinct: start building immediately. Time is short, the sponsor is watching, and code — now cheap to generate — is the easiest output to mistake for progress. I've followed that instinct and watched other people follow it, and I now believe it is usually wrong. Inside a fixed window, the highest-leverage early work is often understanding how the customer's work is done today, and instrumenting what the existing process fails to record, rather than building the proposed solution.
 
 ### Capture the work before you change it
@@ -223,6 +230,8 @@ why you are there — and against a window that will not stretch to everything o
 ## 03 · The Joint Call
 
 *How two teams with one deadline decide what to build together — and what happens to everything else*
+
+![](fde3.png){fig-alt="A joint team gathered around a shared board of backlog columns, one person moving an item."}
 
 What separates forward deployed engineering from scoped implementation is that the work cannot be fully specified or directed by either side alone. The customer owns the outcome and the business priorities; the joint team works out how to pursue them as evidence emerges.
 
@@ -351,6 +360,8 @@ harder than they sound, and getting them wrong is expensive in ways that become 
 ## 04 · The Handover
 
 *Delivery capacity gets the plan. Ownership capacity decides whether it lasts.*
+
+![](fde4.png){fig-alt="A departing engineer handing a glowing, intricate object into another person's open hands."}
 
 The project was an executive priority. The customer's team had built a proof of concept that wasn't performing, and we were brought in to fix it. We looked at it, concluded the foundations wouldn't carry what they wanted, and rebuilt from the ground up.
 
