@@ -26,7 +26,7 @@ Everything that follows derives from this context.
 I've written before, in [Hypothesis-Driven AI Delivery](../hypothesis-driven-ai-delivery/), about how I frame this type of work before it starts: getting clear on the
 outcome, making the unknowns explicit, validating the critical ones before committing to build. That covers how to frame and validate the solution. This is about what happens once an engagement begins. It comes down to four questions.
 
-**Should the work be done this way at all?** Forward deployed engineering has preconditions, and where they are absent, the critics who label it expensive consulting are right. Naming those conditions lets us decide when this model fits and when something else would serve better.
+**Should the work be done this way at all?** Forward deployed engineering has preconditions, and where they are absent, the critics who label it expensive consulting are right. Naming those conditions lets us decide when this model fits and when something else would serve better — and what, if it does fit, the customer actually gets.
 
 **What do we build, and in what order?** The time pressure creates a strong instinct to start coding
 immediately. In my experience, that instinct is usually wrong. The highest-leverage early work is often understanding and instrumenting the existing process rather than building the proposed solution.
@@ -42,7 +42,7 @@ I started doing this kind of work.
 This is written for people building, leading, or commissioning embedded engineering work, whether or
 not they use the forward deployed title for it.
 
-The four questions form one narrative, in roughly the order they arise during an engagement.
+They are numbered, but they don't queue up neatly. The handover question has to be answered before the building starts, and the prioritisation question gets asked every week. What they share is the constraint above, and each section is a position I've arrived at by getting it wrong at least once.
 
 ![The four questions of forward deployed engineering, and the two judgements that feed back from the handover](fde_four_questions.svg)
 
@@ -82,19 +82,23 @@ There's another version of this argument worth discussing that reaches a differe
 
 Where I disagree is the conclusion, because the person deciding what is worth building has to be accountable for what happens when it meets production: the data that turns out not to be what anyone said it was, the constraint nobody mentioned, the evaluation that comes back and says the approach doesn't work. Separate those two roles and you get the thing the industry already has far too much of — confident scoping, an impressive prototype, and nothing that survives contact with a real system.
 
-### What we actually commit to
+### What the customer actually gets
 
-Here's where I have to be honest about a tension in my own position.
+What we commit is capacity and duration. What we steer by is the outcome. Those are not the same thing, and customers hear the second one louder; especially when FDE is positioned as outcome-led. If you tell a customer that the engagement will be judged on whether a business metric moves, it is reasonable for them to hear a commitment that the metric *will* move. What's on offer is a fixed team for a fixed period, pointed at that outcome. Most of the challenges I've seen relating to setting expectations start from this misalignment between perceived commitments and actual commitments.
 
-What we commit is capacity and duration. What we steer by is the outcome. Those are not the same thing, and customers hear the second one louder, especially when FDE is positioned as outcome-led.
+I can completely understand this from the customer's perspective, if you are paying for an expensive team to come in and help you deliver an outcome, it takes a lot of trust to proceed if all that team commits to is an honest account at the end of how far it got and what it would take to finish. However, the outcome is lagging: it often lands after we've gone and depends on more than us, which is why it can't be the commitment.
 
-If you tell a customer that the engagement will be judged on whether a business metric moves, it is entirely reasonable for them to hear a commitment that the metric *will* move. What's actually on offer is a fixed team for a fixed period, pointed at that outcome, with the scope adjusted along the way and an honest account at the end of how far it got and what it would take to finish. Those are different promises, and the gap between them is where expectations go wrong.
+The distinction I now make is between measures that tell you the outcome landed and measures that drive it. Inventory down, churn down, a forecasting capability the customer runs themselves — those are lagging, and they go in as shared direction. What the team is held to are the leading measures: things the joint team produces and controls inside the window, chosen as the best available drivers of the lagging ones. The lagging outcome's job is to keep the leading measures honest, not to become a penalty on a team for results it doesn't control.
 
-There is a stronger answer than repeating the caveat, and it sits between the two promises. The outcome is lagging: it often lands after we've gone and depends on more than us, which is why it can't be the commitment. But its leading indicators can be. The things the joint team controls and produces inside the window — the baseline measured, the evaluation gate operating, the system carrying real traffic at an agreed stage, their engineers shipping changes without us — are chosen because they are the best available drivers of the outcome, and each one should have a defensible line to it. These don't need to be contractual to matter. Especially with customers who haven't worked with us before, naming them with targets is how we put skin in the game, and like everything else they're revisited with the customer as the engagement teaches us more. The lagging outcome's job is to keep the leading measures honest, not to become a penalty on a team for results it doesn't control.
+On a demand-forecasting engagement, the leading measures might be: a baseline for the current process, measured by week four; an evaluation gate the customer's own experts have calibrated, and that can stop a release; a model in production by week twelve, serving every SKU in the pilot stores; three of the customer's engineers shipping changes through that gate without us; monitoring and a runbook live. Each of those should have a reason it moves inventory. If you can't give one, you're measuring activity, or you've missed a driver.
+
+The targets have to be realistic. We're timeboxed, and we should only put a number down if we're confident it's reachable inside the window. We won't always hit them, and being slightly off is an easy conversation. Hitting a third of them isn't, and that's ours to answer for. Naming them is how we put skin in the game, especially with customers who haven't worked with us before. They can be contractual — milestones, acceptance, payment — and, like everything else, they're revisited as the engagement teaches us more.
+
+Most of that list is capability rather than software. A baseline the customer owns, a gate their experts calibrated, a runbook they operate, three engineers shipping without us — those are things the organisation can do at the end that it couldn't at the start. That's what co-engineering buys and scoped implementation doesn't. The leading measures are the transfer, and the outcome is what the customer goes on to do with it once we've gone. A customer who only wanted the model has cheaper ways to get one.
 
 Even with all of that stated at the beginning, it can still be misheard: what an engagement commits to and what a sponsor promises internally can become two different narratives. It shows up most sharply when our engagement is one slice of a larger product or programme. We are accountable for the slice; the outcome that actually matters depends on the whole. Those two get conflated easily, and almost never on purpose — which is why being explicit about where the boundary sits, early and repeatedly, is a real part of the job rather than an administrative chore.
 
-So the fix isn't a clever form of words. It's to keep saying it: the outcome is what we're aiming at and what we'll measure against, the leading measures are what we're driving while we're in the room, the capacity and the window are what we're actually committing, and we'll be straight about the distance travelled. Most of the trouble I've seen comes from saying it once, at the start, and treating that as done.
+So the fix isn't a clever form of words. It's to keep saying it: the outcome is what we're aiming at and what we'll measure against, the leading measures are what we're delivering and what we'll be judged on, and the capacity and the window are what bound both. Most of the trouble I've seen comes from saying it once, at the start, and treating that as done.
 
 ### Somebody has to own the outcome
 
@@ -196,7 +200,7 @@ This is the same distinction I make in evaluation more broadly: a score is evide
 
 Before the team leaves, the readiness bar has to become a release rule the receiving organisation can operate. The traces captured earlier become the evaluation set, and the outcome owner and subject-matter experts identify which scenarios matter most. A regression in one of those scenarios blocks the release even if the overall score improves. The same evaluation should run before release and against production traffic, so "ready" means the same thing before and after deployment.
 
-My standard is blunt: if it can't stop a release, it's a dashboard, not a gate.
+My standard is blunt: if it can't stop a release, it's a dashboard, not a gate. It is also one of the leading measures I'd put a target on at the start. Whether that gate exists and can stop a release is ours to deliver inside the window, whatever happens to the outcome afterwards.
 
 ### Let autonomy follow the evidence
 
@@ -220,12 +224,10 @@ In a forward deployed engagement, making the work legible, establishing the comp
 
 AI agents make this more important, not less. As code becomes cheaper to produce, more of the value moves into deciding what to build, capturing the knowledge it depends on, and establishing whether it is ready to be relied on.
 
-That gap is the job. Not the title — the constraint: a fixed window, someone else's organisation, and a system that has to outlive the team that built it.
+That is the job. Not the title but the constraint: a fixed window, someone else's organisation, and a system that has to outlive the team that built it.
 
 All of that is about the system: what to capture, what to measure it against, and how to let autonomy
-follow the evidence. It is also, deliberately, half the picture. None of it happens in a
-vacuum. It happens inside an organisation with its own people, its own politics and its own view of
-why you are there — and against a window that will not stretch to everything on the list.
+follow the evidence. That is deliberately half the story. The other half is the organisation it happens inside — its people, its politics, its own view of why you are there — and a window that will not stretch to everything on the list.
 
 ## 03 · The Joint Call
 
@@ -263,7 +265,7 @@ None of this is in the job description, but it takes a meaningful share of a sho
 
 I have seen customer engineers treated as a proxy for commitment: if the customer cannot assign engineers, the organisation must not be serious. I don't think that follows. Sometimes they simply do not have the specialist profiles the work requires; this matters when deciding who will maintain the system after we leave, but it is a different question from whether they are committed to the engagement.
 
-During the work, the most valuable customer contribution is often deep knowledge of the business and domain: how the process really operates, what has already been attempted, where decisions become blocked, which constraints are fixed, and who can move the ones that are not. Customer engineers are valuable when they bring that knowledge or will eventually own the system. They are not the only evidence of commitment.
+During the work, the most valuable customer contribution is often deep knowledge of the business and domain: how the process really operates, what has already been attempted, where decisions become blocked, which constraints are fixed, and who can move the ones that are not. Customer engineers are valuable when they bring that knowledge or will eventually own the system — and where they will, working alongside them is how the capability transfers, which is why "their engineers shipping without us" belongs on the list of leading measures. They are not, though, the only evidence of commitment.
 
 Some of the hardest engagements I've seen had customer engineers assigned but lacked alignment between the executive sponsor and the engineering lead. The sponsor was working towards a longer-term strategic vision, while the engineering team was accountable for immediate operational priorities. Neither perspective was wrong, but without an explicit decision about how to balance them, the forward deployed team was left trying to resolve a trade-off it did not own.
 
@@ -285,7 +287,7 @@ The backlog makes those choices and their reasoning visible; the sponsor keeps t
 
 The shared backlog handles day-to-day prioritisation. But the stronger indicator of long-term success is an engaged executive sponsor: someone invested in the outcome, able to unblock the team, and senior enough to make things happen across the organisation.
 
-The steering committee is where that sponsorship becomes active. It shouldn't be a status report, but a working session: what the team is doing now, what is blocked, what's next, and where the sponsor needs to change the order or break a tie.
+The steering committee is where that sponsorship becomes active. It shouldn't be a status report, but a working session: what the team is doing now, what is blocked, what's next, and where the sponsor needs to change the order or break a tie. It is also where the leading measures agreed at the start are reviewed against their targets — the honest account of distance travelled, given while there is still time to change course rather than at the end.
 
 As evidence emerges, the work competing for the fixed timeline changes. New priorities appear, some items take longer than expected, and others stop mattering. If the team and sponsor share the same view, they can decide what to continue, add, defer, hand back or drop.
 
@@ -309,7 +311,7 @@ Partway in, it became clear that actually productionising that first journey was
 
 The customer's first response was to ask whether we could extend. We'd have liked to, but we couldn't — my team was already committed elsewhere. The fixed window constrained us too, so we had to decide where our remaining time was uniquely valuable, which required a conversation about what the customer team could carry on their own.
 
-The uncertain question was whether the system could support multiple journeys. If it couldn't, there was little value in productionising the first one. The customer team already knew how to navigate their own governance, even if it was slow, and it was something that team had done many times.
+The uncertain question was whether the system could support multiple journeys. If it couldn't, there was little value in productionising the first one. That was the leading measure. The outcome the sponsor cared about depended on it, and it was the one thing we could still settle inside the window. The customer team already knew how to navigate their own governance, even if it was slow, and it was something that team had done many times.
 
 We handed the production work back to them and used the remaining time to prove how the system could support several journeys — which we achieved.
 
@@ -430,7 +432,7 @@ Choosing the simpler model was not a compromise. Its small performance disadvant
 
 ### Name the catcher before you build
 
-**Settle the maintenance model explicitly with the sponsor** — separately from naming who owns the outcome, which should already be settled. Their team, a partner, or a vendor-maintained product, and then design to it. A button-push industrialised system is *correct* if a partner is catching it and a failure if we assumed the customer team would iterate. The build follows the answer, so the answer can't be discovered at the end.
+**Settle the maintenance model explicitly with the sponsor** — separately from naming who owns the outcome, which should already be settled. Their team, a partner, or a vendor-maintained product, and then design to it. A button-push industrialised system is *correct* if a partner is catching it and a failure if we assumed the customer team would iterate. What we build depends on that answer, so it has to be settled before we start.
 
 **Test the ownership assumption while there is still time to change the plan.** If the receiving team is expected to maintain the system, avoid dividing the work so cleanly that their ability to do so only becomes visible at integration. Working on the same components and reviewing each other's contributions costs some speed, but it provides an early signal of whether the planned handover is credible.
 
@@ -453,28 +455,15 @@ readiness bar into a release rule the receiving organisation can operate. Let an
 follow the evidence, accepting that some actions should remain approval-bound. Decide out loud,
 together, what the window will hold.
 
-That isn't a playbook you can apply mechanically, and I'd be wary of anyone selling it as one. It's a
-sequence of decisions that keeps arriving in the same order, and a set of mistakes I've made often
-enough to recognise on the way in.
+That isn't a playbook you can apply mechanically, and I'd be wary of anyone selling it as one. It's a set of decisions that keeps coming round, and a set of mistakes I've made often enough to recognise on the way in.
 
 What ties it together is the thing I understood last. The window is what you have. What you're
 spending it on isn't the system — the system is the visible part. You're spending it on the distance
 between a thing that works and an organisation that relies on it.
 
-Those are two different achievements, and nearly everything above exists to close the gap between
-them. The captured traces and the evaluation set are how anybody knows the thing works at all. The
-comparator is what makes *is it ready* an answerable question instead of an argument. The autonomy
-of the system is earned in stages through evidence rather than granted on a demo. Deep domain knowledge
-keeps the work grounded in how the organisation actually operates. The shared backlog makes priorities
-and trade-offs visible. An engaged sponsor unblocks the organisation, resolves the business decisions
-the delivery team does not own, and uses the steering committee to surface difficult questions while
-there is still time to act. And the handover question is simply whether that reliance survives your
-leaving.
+The critics say this is consulting with a better title. Sometimes it is. What separates it isn't the outcome — nobody can commit to a result that lands after they've left and depends on people they don't manage, and pretending otherwise is how the expectation problems start. What separates it is that we can name, at the start, the things inside the window that drive that result, put targets on them, and be judged against them. A baseline measured. A gate that can stop a release. Their engineers shipping changes without us. Those are ours to deliver, and if we don't, no title protects us. They are also what the organisation is left holding when we go — the reason to do it with us rather than have it done for them.
 
-None of which is soft. Trust here isn't a feeling somebody extends to you. It's a judgement other
-people reach from evidence accumulated together over months and tested in practice. It is also what
-decides whether the thing you built gets used, and it is the part no amount of technical progress has
-made any easier.
+That is also what trust is, in this work. Not a feeling somebody extends to you, but a judgement they reach from evidence accumulated together over months — the leading measures met or missed, in the open. It decides whether the thing you built gets used, and it is the part no amount of technical progress has made any easier.
 
 The technology will keep getting cheaper and faster. That hasn't been the hard part for a while. A
 working system can be delivered inside the window. The harder achievement — an organisation that
