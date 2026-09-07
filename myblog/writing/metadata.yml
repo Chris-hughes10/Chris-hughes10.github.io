@@ -4,3 +4,10 @@
   date: "2021-05-11"
   reading-time: 10
   categories: ["Machine Learning", "Strategy"]
+
+- path: https://medium.com/data-science/how-i-started-writing-data-science-blog-posts-overcoming-fear-and-procrastination-148a095c7c94
+  title: "How I started writing Data Science blog posts: overcoming fear and procrastination"
+  subtitle: "The thought process and practices that got me past the mindset stopping me from writing"
+  date: "2022-11-04"
+  reading-time: 9
+  categories: [Writing, Career]
