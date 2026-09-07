@@ -1,28 +1,35 @@
 - path: https://medium.com/@chris.p.hughes10/beyond-vanilla-moe-fine-grained-experts-shared-experts-and-modern-architectural-innovations-f89dd62e433b
   title: "Beyond Vanilla MoE: Fine-Grained Experts, Shared Experts, and Modern Architectural Innovations"
   subtitle: "Exploring architectural innovations in state-of-the-art MoE models like DeepSeek V3, Qwen, and Llama 4"
-  date: "2024-12-15"
+  date: "2025-12-02"
   reading-time: 15
   categories: [LLMs, Architecture, "Deep Learning"]
 
 - path: https://medium.com/@chris.p.hughes10/how-moe-models-actually-learn-a-guide-to-auxiliary-losses-and-expert-balancing-293084e3f600
   title: "How MoE Models Actually Learn: A Guide to Auxiliary Losses and Expert Balancing"
   subtitle: "Understanding how Mixture of Experts models balance learning across experts"
-  date: "2024-12-01"
+  date: "2025-12-02"
   reading-time: 12
   categories: [LLMs, Architecture, "Deep Learning"]
 
 - path: https://medium.com/@chris.p.hughes10/inside-openais-gpt-oss-how-production-moe-really-works-cfa5f6a23caa
   title: "Inside OpenAI's gpt-oss: How Production MoE Really Works"
   subtitle: "A deep dive into how OpenAI implements Mixture of Experts architecture"
-  date: "2024-11-15"
+  date: "2025-10-13"
   reading-time: 15
   categories: [LLMs, Architecture, "Deep Learning"]
+
+- path: https://medium.com/@chris.p.hughes10/how-computers-store-numbers-foundations-of-floating-point-for-ai-engineers-1259f39f9f1b
+  title: "How Computers Store Numbers: Foundations of Floating Point for AI Engineers"
+  subtitle: "Understanding FP32, FP16, BF16 and FP8 — and why precision is the constraint behind training large models"
+  date: "2025-08-06"
+  reading-time: 14
+  categories: ["Deep Learning", "Machine Learning", LLMs]
 
 - path: https://medium.com/@chris.p.hughes10/building-scalable-mcp-servers-with-domain-driven-design-fb9454d4c726
   title: "Building Scalable MCP Servers with Domain-Driven Design"
   subtitle: "Applying DDD principles to build robust Model Context Protocol servers"
-  date: "2024-07-31"
+  date: "2025-07-31"
   reading-time: 10
   categories: [Agents, "Domain-Driven Design", Architecture]
 
@@ -32,6 +39,20 @@
   date: "2024-06-15"
   reading-time: 18
   categories: ["Computer Vision", "Deep Learning", PyTorch]
+
+- path: https://medium.com/data-science/de-coded-understanding-context-windows-for-transformer-models-cd1baca6427e
+  title: "De-Coded: Understanding Context Windows for Transformer Models"
+  subtitle: "Everything you need to know about how context windows affect Transformer training and usage"
+  date: "2024-01-27"
+  reading-time: 15
+  categories: [LLMs, Architecture, "Deep Learning"]
+
+- path: https://medium.com/data-science/de-coded-transformers-explained-in-plain-english-877814ba6429
+  title: "De-coded: Transformers explained in plain English"
+  subtitle: "No code, maths, or mention of Keys, Queries and Values"
+  date: "2023-10-09"
+  reading-time: 18
+  categories: [LLMs, Architecture, "Deep Learning"]
 
 - path: https://medium.com/@chris.p.hughes10/a-brief-overview-of-cross-entropy-loss-523aa56b75d5
   title: "A Brief Overview of Cross Entropy Loss"
@@ -46,6 +67,20 @@
   date: "2022-11-25"
   reading-time: 53
   categories: ["Computer Vision", "Deep Learning", PyTorch]
+
+- path: https://medium.com/data-science/demystifying-pytorchs-weightedrandomsampler-by-example-a68aceccb452
+  title: "Demystifying PyTorch's WeightedRandomSampler by example"
+  subtitle: "How to use weighted sampling to handle imbalanced datasets, explained step by step"
+  date: "2022-08-30"
+  reading-time: 14
+  categories: [PyTorch, "Deep Learning", "Machine Learning"]
+
+- path: https://medium.com/data-science-at-microsoft/comparing-matrix-factorization-with-transformers-for-movielens-recommendations-using-8e3cd3ec8bd8
+  title: "Comparing matrix factorization with transformers for MovieLens recommendations using PyTorch-accelerated"
+  subtitle: "Using transformers to predict ratings from sequences of past behaviour, and how that compares to matrix factorization"
+  date: "2022-06-06"
+  reading-time: 20
+  categories: ["Recommender Systems", PyTorch, "Deep Learning"]
 
 - path: https://medium.com/data-science/effortless-distributed-training-for-pytorch-models-with-azure-machine-learning-and-32797bd2336d?source=friends_link&sk=deded50c33e1ac784005aea43883aa37
   title: "Effortless distributed training for PyTorch models with Azure Machine Learning and PyTorch-accelerated"
