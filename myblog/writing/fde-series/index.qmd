@@ -67,7 +67,7 @@ The short version: scoped implementation is *build this thing for us*. The aspir
 
 The distinction can have a commercial shape, but the contract form does not define it. Time-and-materials work can have variable scope too. The difference is what governs change. In scoped implementation, the agreed deliverable is the primary focus, and departures from it are changes to manage. Here, the outcome is the primary focus: capacity and duration are fixed, scope is expected to move, and the joint team reprioritises one shared backlog as evidence emerges. The engagement ends when the capacity is spent or the term expires, whichever comes first — not when a predetermined list is finished.
 
-The quickest test of whether a requirement is genuinely descriptive is to **ask what would be different in the business at the end, and how we would know.** If the answer is a list of things to build, or a platform to prove, the requirement is prescriptive whatever language surrounds it — the deliverable is the requirement, and the outcome is decoration.
+The quickest test of whether a requirement is genuinely descriptive is to **ask what would be different in the business at the end, and how we would know.** If the answer is a list of things to build, or a platform to prove, the requirement is prescriptive whatever language surrounds it — the deliverable is the requirement, and the outcome focus is just how it was sold.
 
 I've redirected work on exactly this basis; one anonymised request makes the distinction concrete.
 
