@@ -2,8 +2,7 @@
 title: "Forward Deployed Engineering"
 subtitle: "How to choose the right work, build under a fixed deadline, and leave behind something that survives you"
 description: "A practical account of how forward deployed engineering works: qualifying the work, building under a fixed window, prioritising jointly, and designing for ownership."
-draft: true
-date: "2026-08-26"
+date: "2026-09-07"
 image: "fde_main.jpg"
 categories: [Delivery, AI, Leadership]
 reading-time: 35
@@ -22,6 +21,8 @@ The conditions that make this work different from anything else I've done are ea
 - We are up against the clock — when the engagement ends we leave, and what we built either keeps running without us or quietly stops mattering.
 
 Everything that follows derives from this context.
+
+Most of the examples here come from AI and machine-learning engagements, because that is where I have done this work. The delivery model is broader, but the claims that follow are grounded in that experience.
 
 I've written before, in [Hypothesis-Driven AI Delivery](../hypothesis-driven-ai-delivery/), about how I frame this type of work before it starts: getting clear on the
 outcome, making the unknowns explicit, validating the critical ones before committing to build. That covers how to frame and validate the solution. This is about what happens once an engagement begins. It comes down to four questions.
@@ -42,7 +43,7 @@ I started doing this kind of work.
 This is written for people building, leading, or commissioning embedded engineering work, whether or
 not they use the forward deployed title for it.
 
-They are numbered, but they don't queue up neatly. The handover question has to be answered before the building starts, and the prioritisation question gets asked every week. What they share is the constraint above, and each section is a position I've arrived at by getting it wrong at least once.
+The sections are numbered, but they don't queue up neatly. The handover question has to be answered before the building starts, and the prioritisation question gets asked every week. What they share is the constraint above, and each section is a position I've arrived at by getting it wrong at least once.
 
 ![The four questions of forward deployed engineering, and the two judgements that feed back from the handover](fde_four_questions.svg)
 
@@ -64,11 +65,11 @@ I think of descriptive as starting from a business outcome, agreeing how we'll m
 
 The short version: scoped implementation is *build this thing for us*. The aspiration of forward deployed engineering is *help us achieve this outcome by building it with us, and leave us more capable than you found us*.
 
-The distinction has a commercial shape as well as a philosophical one, which can be easy to conflate. In its clearest form, scoped implementation fixes what gets built and allows time and cost to move around it. What we are discussing inverts that: fixed capacity, fixed duration, variable scope. We agree how many people for how long, and what they work on is governed by a backlog prioritised jointly and revised as we learn from the engagement. It ends when the capacity is spent or the term expires, whichever comes first — not when a list is finished.
+The distinction can have a commercial shape, but the contract form does not define it. Time-and-materials work can have variable scope too. The difference is what governs change. In scoped implementation, the agreed deliverable is the primary focus, and departures from it are changes to manage. Here, the outcome is the primary focus: capacity and duration are fixed, scope is expected to move, and the joint team reprioritises one shared backlog as evidence emerges. The engagement ends when the capacity is spent or the term expires, whichever comes first — not when a predetermined list is finished.
 
-A strong indicator is to **ask who owns the outcome once we've gone, and whether that answer already exists.** If there is no named person inside the customer's organisation accountable for the result and involved while the work is happening, this isn't a forward deployed engagement, regardless of how the contract describes it. This doesn't settle who maintains the thing afterwards — a separate question, and one I'll come back to. But somebody on their side must remain accountable for acting on what the engagement establishes. If nobody is, we were contractors with a better title.
+The quickest test of whether a requirement is genuinely descriptive is to **ask what would be different in the business at the end, and how we would know.** If the answer is a list of things to build, or a platform to prove, the requirement is prescriptive whatever language surrounds it — the deliverable is the requirement, and the outcome is decoration.
 
-I've redirected work on exactly this basis. One anonymised request makes the distinction concrete.
+I've redirected work on exactly this basis; one anonymised request makes the distinction concrete.
 
 We were asked to deploy a particular platform and demonstrate its value against a set of use cases the customer had already chosen. The solution had been chosen before the conversation started, so had the use cases; which left no discovery to do. The question was whether they could get value from the platform. That is a question about the platform, not a question about their business.
 
@@ -86,15 +87,15 @@ Where I disagree is the conclusion, because the person deciding what is worth bu
 
 What we commit is capacity and duration. What we steer by is the outcome. Those are not the same thing, and customers hear the second one louder; especially when FDE is positioned as outcome-led. If you tell a customer that the engagement will be judged on whether a business metric moves, it is reasonable for them to hear a commitment that the metric *will* move. What's on offer is a fixed team for a fixed period, pointed at that outcome. Most of the challenges I've seen relating to setting expectations start from this misalignment between perceived commitments and actual commitments.
 
-I can completely understand this from the customer's perspective, if you are paying for an expensive team to come in and help you deliver an outcome, it takes a lot of trust to proceed if all that team commits to is an honest account at the end of how far it got and what it would take to finish. However, the outcome is lagging: it often lands after we've gone and depends on more than us, which is why it can't be the commitment.
+I can completely understand this from the customer's perspective. If you are paying for an expensive team to come in and help you deliver an outcome, it takes a lot of trust to proceed if all that team commits to is an honest account at the end of how far it got and what it would take to finish. However, the outcome is lagging: it often lands after we've gone and depends on more than us, which is why it can't be the commitment.
 
 The distinction I now make is between measures that tell you the outcome landed and measures that drive it. Inventory down, churn down, a forecasting capability the customer runs themselves — those are lagging, and they go in as shared direction. What the team is held to are the leading measures: things the joint team produces and controls inside the window, chosen as the best available drivers of the lagging ones. The lagging outcome's job is to keep the leading measures honest, not to become a penalty on a team for results it doesn't control.
 
-On a demand-forecasting engagement, the leading measures might be: a baseline for the current process, measured by week four; an evaluation gate the customer's own experts have calibrated, and that can stop a release; a model in production by week twelve, serving every SKU in the pilot stores; three of the customer's engineers shipping changes through that gate without us; monitoring and a runbook live. Each of those should have a reason it moves inventory. If you can't give one, you're measuring activity, or you've missed a driver.
+On a demand-forecasting engagement, the leading measures might be: a baseline for the current process, measured by week four; an evaluation gate the customer's own experts have calibrated, and that can stop or approve a release; a model in production by week twelve, serving every SKU in the pilot stores; three of the customer's engineers shipping changes through that gate without us; monitoring and a runbook live. Each of those should have a reason it brings inventory down. If you can't give one, you're measuring activity, or you've missed a driver.
 
-The targets have to be realistic. We're timeboxed, and we should only put a number down if we're confident it's reachable inside the window. We won't always hit them, and being slightly off is an easy conversation. Hitting a third of them isn't, and that's ours to answer for. Naming them is how we put skin in the game, especially with customers who haven't worked with us before. They can be contractual — milestones, acceptance, payment — and, like everything else, they're revisited as the engagement teaches us more.
+The targets have to be realistic. We're timeboxed, and we should only put a number down if we're confident it's reachable inside the window. We won't always hit them. Missing one narrowly is an easy conversation. Landing only a third of the list isn't, and that's ours to answer for. Naming them is how we put skin in the game, especially with customers who haven't worked with us before. They can be contractual — milestones, acceptance, payment — and, like everything else, they're revisited as the engagement teaches us more.
 
-Most of that list is capability rather than software. A baseline the customer owns, a gate their experts calibrated, a runbook they operate, three engineers shipping without us — those are things the organisation can do at the end that it couldn't at the start. That's what co-engineering buys and scoped implementation doesn't. The leading measures are the transfer, and the outcome is what the customer goes on to do with it once we've gone. A customer who only wanted the model has cheaper ways to get one.
+Most of that list is capability rather than software. A baseline the customer owns, a gate their experts calibrated, a runbook they operate, three engineers shipping without us — those are things the organisation can do at the end that it couldn't at the start. That's what co-engineering is designed to buy beyond the software itself. Taken together, the leading measures make concrete both what is delivered and what is transferred; the outcome is what the customer goes on to do with them once we've gone. A customer who only wanted the model has cheaper ways to get one.
 
 Even with all of that stated at the beginning, it can still be misheard: what an engagement commits to and what a sponsor promises internally can become two different narratives. It shows up most sharply when our engagement is one slice of a larger product or programme. We are accountable for the slice; the outcome that actually matters depends on the whole. Those two get conflated easily, and almost never on purpose — which is why being explicit about where the boundary sits, early and repeatedly, is a real part of the job rather than an administrative chore.
 
@@ -102,19 +103,19 @@ So the fix isn't a clever form of words. It's to keep saying it: the outcome is 
 
 ### Somebody has to own the outcome
 
-This condition is narrower than it sounds, and it is not negotiable. There must be a person inside the customer's organisation who is accountable for the outcome and involved while the work is happening. Not just a sponsor who receives updates — someone whose result this is. That role cannot be delegated outward: a vendor cannot own your outcome, and a product certainly can't.
+The question to ask is who owns the outcome once we've gone. The answer has to be a name, not a plan to find one: a person inside the customer's organisation who is accountable for the outcome and involved while the work is happening. Not just a sponsor who receives updates — someone whose result this is, and who will act on what the engagement establishes. That role cannot be delegated outward: a vendor cannot own your outcome, and a product certainly can't.
 
-This is a different question from who maintains and evolves the system afterwards, which may have several legitimate answers — their own team, a partner, or something they buy — each implying a different way of structuring the engagement. The owner, though, is the part that has to be true before anything starts. If there is nobody accountable on their side, the engagement will produce something impressive that decays quietly. I've done that. It's a worse outcome than not starting.
+This is a different question from who maintains and evolves the system afterwards, which may have several legitimate answers — their own team, a partner, or something they buy — each implying a different way of structuring the engagement. The owner, though, is the part that has to be true before anything starts, regardless of how the contract describes the work. If there is nobody accountable on their side, the engagement will produce something impressive that decays quietly. I've done that. It's a worse outcome than not starting, and whatever our titles said, we were contractors with a better title.
 
 ### There has to be something to build on
 
 This is the condition that decides whether the economics work, and the one I see discussed least.
 
-You cannot put something real into production inside a short window while building everything from scratch. What makes the bespoke layer affordable is everything underneath it that you didn't have to build: managed model platforms, data platforms, tooling, hosting, orchestration. That substrate is the reason a small team can do this at all.
+Building everything from scratch, you can get something simple into production inside a short window. The problems forward deployed engineering gets pointed at aren't simple. Getting one of those there with the gate, the monitoring, the runbook and the engineers shipping through it — the parts that survive you leaving — is the bespoke work. Do it from scratch and you are also building the platform it runs on, none of which is specific to the problem. A small team can't afford both inside the window. What makes the bespoke layer affordable is everything underneath it that you didn't have to build: managed model platforms, data platforms, tooling, hosting, orchestration. That substrate is the reason a small team can do this at all.
 
 There's an optional, but powerful, second layer on top of that — the patterns and scaffolding your own team accumulates across engagements. That work rarely looks like the interesting part, but it can be the difference between solving a problem once and being able to solve it repeatedly.
 
-Every viable version of this model I've seen has that substrate. You either build it — an enormous, sustained investment that almost nobody can now justify per customer — or you stand on someone else's. What changed over the last few years is that standing on someone else's became genuinely viable, and I think that's a large part of why this model has spread as fast as it has.
+Every viable version of this model I've seen has that substrate. You either build it — an enormous, sustained investment that almost nobody can now justify per customer — or you stand on someone else's. What changed over the last few years is that standing on someone else's became genuinely viable. The model — the piece that used to be the bulk of the bespoke work — became something you call rather than build, and the platforms around it became things a customer already has or can switch on, priced by use rather than by a build. I think that's a large part of why this model has spread as fast as it has.
 
 It also explains the fragility. A team adopting the title with neither layer is starting bespoke delivery from zero on every engagement. Without reusable foundations or accumulated accelerators, the model loses the leverage that makes a short embedded engagement economically coherent. Changing the title does not change those economics. When critics say this is consulting with a new name, that is the case they are describing — and for those teams, they are right.
 
@@ -130,7 +131,7 @@ The public framing is that forward deployed engineering is definitionally an upm
 
 ### Why I do it anyway
 
-This is the most interesting work I've done. You end up deep inside somebody else's domain — how a manufacturer decides a part is defective, how a stylist thinks about what goes with what, what a support engineer actually knows that has never been written down anywhere. You have to understand it well enough to collaborate with people who do it for a living. That's a real privilege, and it's the part I'd miss most.
+This is the most interesting work I've done. You end up deep inside somebody else's domain — how a manufacturer decides a part is defective, how a stylist thinks about which items are complementary, what a support engineer actually knows that has never been written down anywhere. You have to understand it well enough to collaborate with people who do it for a living. That's a real privilege, and it's the part I'd miss most.
 
 The title argument will resolve itself, probably by the term losing its edges the way these terms do. The conditions won't change. Descriptive requirements, somebody who owns the outcome, something to build on — get those three right and the label doesn't matter much. Get them wrong and no amount of naming will help.
 
@@ -142,11 +143,11 @@ Now what do you actually do with it?
 
 ## 02 · The Fixed Window
 
-*You have a fixed window inside someone else's organisation. Everything else follows from that.*
+*You have a fixed window of time inside someone else's organisation. Everything else follows from that.*
 
 ![](fde2.jpg){fig-alt="Two engineers working side by side on a factory floor beneath a large countdown clock."}
 
-The clock creates one strong instinct: start building immediately. Time is short, the sponsor is watching, and code — now cheap to generate — is the easiest output to mistake for progress. I've followed that instinct and watched other people follow it, and I now believe it is usually wrong. Inside a fixed window, the highest-leverage early work is often understanding how the customer's work is done today, and instrumenting what the existing process fails to record, rather than building the proposed solution.
+The clock creates a strong instinct: start building immediately. Time is short, the sponsor is watching, and code — now cheap to generate — is the easiest output to mistake for progress. I've followed that instinct and watched other people follow it, and I now believe it is usually wrong. Inside a fixed window, the highest-leverage early work is often understanding how the customer's work is done today, and instrumenting what the existing process fails to record, rather than rushing to build the proposed solution.
 
 ### Capture the work before you change it
 
@@ -162,11 +163,11 @@ The second thing often missing is the baseline. Ask what the current process cos
 
 The third is how experts actually solve the problem, rather than how they describe solving it. Interviews reveal the rules they can articulate. Capturing traces of them working real cases start to finish reveals the ones they can't — the exceptions, the shortcuts, the judgement calls that never made it into a procedure document.
 
-In this type of work, traces of the existing process are often among the most valuable early artefacts the team produces. A well-designed capture exercise turns tacit knowledge into inputs the system can use: hard constraints to enforce in code, repeatable patterns to encode in workflows and evaluations, and reasoning to provide to an agent when a decision still requires judgement. The same traces can supply examples for the evaluation set and evidence to compare against the baseline. Without them, the team risks spending the rest of a short engagement arguing from opinion.
+In this type of work, traces of the existing process are often among the most valuable early artefacts the team produces. A well-designed capture exercise turns tacit knowledge into inputs the system can use: hard constraints to enforce in code, repeatable patterns to encode in workflows, and reasoning to provide to an agent when a decision still requires judgement. The same traces can supply examples for the evaluation set and evidence to compare against the baseline. Without them, the team risks spending the rest of a short engagement arguing from opinion.
 
 #### Design capture people can sustain
 
-The technical work here is often more straightforward than the organisational change it requires, and that is the trap. We aren't automating a process yet — we're making it legible first, and to do that we are asking people to add steps to their day for a benefit that arrives later.
+The technical work here is often more straightforward than the organisational change it requires, and that is the trap. We aren't automating a process yet — we're making it legible first, and to do that we are asking people to add steps to their daily work for a benefit that arrives later.
 
 Whether the capture works has less to do with seniority or technical sophistication than with who benefits from it, and whether the people doing the work have any slack.
 
@@ -181,8 +182,6 @@ So where the benefit lands with the person doing the work, involve them properly
 The next step is to work out how much of the problem doesn't need a model at all. Reading how experts resolved a hundred real cases surfaces constraints nobody thought to mention in a workshop, because to them they were too obvious to say out loud — and most of those belong in code, not in a prompt. Wherever a deterministic process can be extracted, extract it: it's more reliable, easier to explain, and easier for someone else to change after the original team has gone. The model proposes; deterministic checks dispose.
 
 ### Measure against existing performance, not perfection
-
-I have this conversation on many classification or detection projects.
 
 The stakeholder wants to know when it will be right every time. Not in those words, but that's the bar being described, and underneath it is an assumption that the process being replaced is currently correct. It isn't. The people doing this work make mistakes too, they make different mistakes on different days, and in many organisations I've worked with that error rate hasn't been measured.
 
@@ -317,7 +316,7 @@ We handed the production work back to them and used the remaining time to prove 
 
 We answered the question that could have killed the whole approach, while there was still time to act on the answer. However, this meant handing back the most visible part of the original ambition and protecting the less visible technical risk. It felt backwards, but it was the better use of the time we had.
 
-Some work simply fell away. We had wanted to be there when the first real traffic arrived, so we could refine monitoring and observability against live data. We didn't get a chance to provide any input into this. It was a straightforward cost of a window that wasn't big enough.
+Some work simply fell away. We had wanted to be there when the first real traffic arrived, so we could refine monitoring and observability against live data. We never got that chance. It was a straightforward cost of a window that wasn't big enough.
 
 The customer continued the deployment after we left, and I believe they completed it, but I don't know for certain. Once work is handed back, you give up the right to watch how it ends.
 
