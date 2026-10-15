@@ -75,12 +75,33 @@
   reading-time: 14
   categories: [PyTorch, "Deep Learning", "Machine Learning"]
 
+- path: https://medium.com/data-science/slicing-images-into-overlapping-patches-at-runtime-911fa38618d7
+  title: "Slicing images into overlapping patches at runtime"
+  subtitle: "An efficient approach to slicing high-resolution images for computer vision tasks"
+  date: "2022-06-20"
+  reading-time: 12
+  categories: ["Computer Vision", PyTorch, "Deep Learning"]
+
 - path: https://medium.com/data-science-at-microsoft/comparing-matrix-factorization-with-transformers-for-movielens-recommendations-using-8e3cd3ec8bd8
   title: "Comparing matrix factorization with transformers for MovieLens recommendations using PyTorch-accelerated"
   subtitle: "Using transformers to predict ratings from sequences of past behaviour, and how that compares to matrix factorization"
   date: "2022-06-06"
   reading-time: 20
   categories: ["Recommender Systems", PyTorch, "Deep Learning"]
+
+- path: https://medium.com/data-science/transfer-learning-on-greyscale-images-how-to-fine-tune-pretrained-models-on-black-and-white-9a5150755c7a
+  title: "Transfer Learning on Greyscale Images: How to Fine-Tune Pretrained Models on Black-and-White Datasets"
+  subtitle: "Everything you need to know to understand why the number of channels matters and how to work around this"
+  date: "2022-02-24"
+  reading-time: 19
+  categories: ["Computer Vision", "Deep Learning", PyTorch]
+
+- path: https://medium.com/data-science/getting-started-with-pytorch-image-models-timm-a-practitioners-guide-4e77b4bf9055
+  title: "Getting Started with PyTorch Image Models (timm): A Practitioner's Guide"
+  subtitle: "How to use this fantastic library in your own training scripts"
+  date: "2022-02-01"
+  reading-time: 40
+  categories: [PyTorch, "Computer Vision", "Deep Learning"]
 
 - path: https://medium.com/data-science/effortless-distributed-training-for-pytorch-models-with-azure-machine-learning-and-32797bd2336d?source=friends_link&sk=deded50c33e1ac784005aea43883aa37
   title: "Effortless distributed training for PyTorch models with Azure Machine Learning and PyTorch-accelerated"
