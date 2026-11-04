@@ -33,6 +33,13 @@
   reading-time: 10
   categories: [Agents, "Domain-Driven Design", Architecture]
 
+- path: https://medium.com/@chris.p.hughes10/understanding-ppo-a-game-changer-in-ai-decision-making-explained-for-rl-newcomers-913a0bc98d2b
+  title: "Understanding PPO: A Game-Changer in AI Decision-Making Explained for RL Newcomers"
+  subtitle: "From Theory to Implementation: A Comprehensive Guide to Reinforcement Learning's Game-Changing Algorithm"
+  date: "2024-09-10"
+  reading-time: 44
+  categories: ["Reinforcement Learning", "Deep Learning", PyTorch]
+
 - path: https://medium.com/@chris.p.hughes10/rethinking-object-detection-as-language-modelling-lessons-from-reimplementing-pix2seq-049104083747
   title: "Rethinking Object Detection as Language Modelling: Lessons from Reimplementing Pix2Seq"
   subtitle: "Insights from building a modern object detection system using sequence generation"
