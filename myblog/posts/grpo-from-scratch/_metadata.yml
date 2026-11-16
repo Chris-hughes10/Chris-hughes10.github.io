@@ -1,0 +1,7 @@
+title: "GRPO from Scratch: Reinforcement Learning for LLMs in Plain PyTorch"
+subtitle: "Build a complete GRPO training loop one piece at a time, train a real model with it, and check every piece against verl."
+date: "2026-11-16"
+categories: ["Reinforcement Learning", LLMs, PyTorch]
+description: "A complete GRPO training loop in plain PyTorch: sampling, log-probs, group-relative advantages, batching and PPO clipping, used to train Qwen2.5-0.5B and checked against verl's implementation."
+reading-time: 80
+draft: true   # rendered, but not listed or linked anywhere (the site uses draft-mode: unlinked); remove to publish
